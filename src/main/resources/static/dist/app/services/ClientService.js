@@ -9,17 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { fetchAllClients } from "../../api/endpoints.js";
 export class ClientService {
-    //private clients: Client[]=[];
+    constructor() {
+        this.clients = [];
+    }
     getAllClients() {
         return __awaiter(this, void 0, void 0, function* () {
             const fetchClients = yield fetchAllClients();
             if (fetchClients) {
-                //this.clients=[...fetchClients];
-                console.log('Clients:', fetchClients);
+                this.clients = [...fetchClients];
+                //console.log(this.clients);
             }
             else {
                 console.log('Error al cargar los usuarios.');
             }
+            return this.clients;
         });
     }
 }

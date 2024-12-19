@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.scoutfly.com.scoutfly.db.hosting.entities.Hosting;
 
 import jakarta.persistence.CascadeType;
@@ -14,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 
@@ -32,12 +34,19 @@ public class Client {
     @Column(name="create_at")
     private LocalDateTime createAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy="client",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private List<Hosting> listHosting;
 
     public Client() {
        this.listHosting=new ArrayList<>();
     }
+
+    @PrePersist
+    public void prePersist() {
+        this.createAt = LocalDateTime.now();
+    }
+
     public Long getId() {
         return id;
     }

@@ -11,6 +11,7 @@ export const API_BASE_URL = '/scoutfly/api';
 export const GET_USERS = API_BASE_URL + '/clients';
 export function fetchAllClients() {
     return __awaiter(this, void 0, void 0, function* () {
+        let data = null;
         try {
             const response = yield fetch(GET_USERS, {
                 method: 'GET', // Método de la solicitud
@@ -20,16 +21,14 @@ export function fetchAllClients() {
             });
             // Verificar si la respuesta es exitosa (status 200-299)
             if (!response.ok) {
-                console.error('HTTP Error:', response.statusText);
-                return null;
+                throw new Error('HTTP Error: ' + response.statusText);
             }
-            // Parsear la respuesta como JSON
-            const data = yield response.json();
-            return data;
+            const responseData = yield response.json();
+            data = responseData.body;
         }
         catch (error) {
             console.error('Fetch Error:', error);
-            return null;
         }
+        return data;
     });
 }

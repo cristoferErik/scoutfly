@@ -1,0 +1,42 @@
+/*Variables of colors*/
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.navbar {
+  width: 100%;
+  text-transform: uppercase;
+  margin: 1rem 0rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.navbar .nav-container {
+  display: flex;
+  background-color: #1c1c1c;
+  padding: 0 2rem;
+}
+.navbar .nav-container .menu {
+  margin-block: 0;
+  margin-inline: 0;
+  padding-inline: 0;
+  display: flex;
+}
+.navbar .nav-container .menu li {
+  display: flex;
+}
+.navbar .nav-container .menu li a {
+  padding: 2rem 3rem;
+  color: #d8dde4;
+  transition: background-color 0.5s ease;
+}
+.navbar .nav-container .menu li a:hover {
+  background-color: rgb(84, 97, 93);
+  transform: scale(1.05);
+}
+.navbar .nav-container .menu li a:active {
+  transform: scale(1);
+  transition: transform 0.5s ease;
+}

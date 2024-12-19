@@ -16,6 +16,8 @@ export async function fetchAllClients<T>(): Promise<T | null> {
         if (!response.ok) {
             throw new Error('HTTP Error: ' + response.statusText);
         } 
+        const responseData= await response.json();
+        data = responseData.body;
     } catch (error) {
         console.error('Fetch Error:', error);
     }

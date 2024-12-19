@@ -1,0 +1,31 @@
+@use "../abstract/variables" as v;
+
+/* roboto-regular - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../../assets/Roboto/roboto-v32-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    scroll-padding-top: 0rem;
+}
+body{
+    font-family: v.$main-font;
+    font-size: v.$main-sf;
+    color: v.$light-font-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: v.$background-color;
+}
+*, 
+*:before,
+*:after {
+    box-sizing: inherit;
+}

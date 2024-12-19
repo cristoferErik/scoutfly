@@ -10,19 +10,55 @@ export async function renderClients() {
         //Se aggiungiamo await aspettara che finisca per poter continuare
         const clients= await clientService.getAllClients();
         if(clients.length>0){
-            let container=``;
-            clients.forEach((client)=>{
-                container=`
-                    <div>
-                        <div>Nome</div>
-                        <div>Cognome</div>
-                        <div>Indirizzo</div>
-                        <div>telefono</div>
-                        <div>Email</div>
-                    </div>
+            /*------------------------TABLE------------------------------- */
+            const table=document.createElement('table');
+            table.classList.add('table');
+            {
+                /*------------------------HEADER------------------------------- */
+                const header= document.createElement('thead');
+                header.classList.add('theader');
+                header.innerHTML=
+                `       <tr>
+                            <th>Id</th>
+                            <th>Nome</th>
+                            <th>Cognome</th>
+                            <th>Indirizzo</th>
+                            <th>telefono</th>
+                            <th>Email</th>
+                            <th>data creazione</th>
+                            <th>action</th>
+                        </tr>
+                            
                 `;
-            });
-
+                /*------------------------HEADER------------------------------- */
+                /*-------------------------BODY------------------------------ */
+                const body= document.createElement('tbody');
+                body.classList.add('tbody');
+                {
+                    /*-------------------------ROW------------------------------ */
+                    clients.forEach((client)=>{
+                        const row=document.createElement('tr');
+                        row.innerHTML=
+                        `
+                            <td>${client.id}</td>
+                            <td>${client.nome}</td>
+                            <td>${client.cognome}</td>
+                            <td>${client.indirizzo}</td>
+                            <td>${client.telefono}</td>
+                            <td>${client.email}</td>
+                            <td>${client.createAt}</td>
+                            <td class="button-container"><button type="button" class="button">...</button></td>
+                        `;
+                        body.appendChild(row);
+                    });
+                    /*-------------------------ROW------------------------------ */
+                }
+                table.appendChild(header);
+                table.appendChild(body);
+               /*-------------------------BODY------------------------------ */
+            }
+            /*------------------------TABLE------------------------------- */
+            clientContainer.appendChild(table);
         }
     }
 }

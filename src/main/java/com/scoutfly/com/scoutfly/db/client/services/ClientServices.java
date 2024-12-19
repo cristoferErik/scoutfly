@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.scoutfly.com.scoutfly.db.client.entities.Client;
 import com.scoutfly.com.scoutfly.db.client.repositories.ClientRepository;
@@ -14,7 +15,7 @@ public class ClientServices {
     @Autowired
     private ClientRepository clientRepository;
 
-    
+    @Transactional(readOnly=true)
     public Page<Client>findAllPageClients(Pageable pageable){
         return this.clientRepository.findAll(pageable);
     }

@@ -8,6 +8,7 @@ export class ClientService{
         const fetchClients = await fetchAllClients<Client[]>();
         if (fetchClients) {
             this.clients=[...fetchClients];
+            //console.log(this.clients);
         } else {
             console.log('Error al cargar los usuarios.');
         }

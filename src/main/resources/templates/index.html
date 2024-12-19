@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/styles/css/main/index.css}">
+    <link rel="stylesheet" th:href="@{/styles/css/modules/menu.css}">
     <title>Document</title>
 </head>
 <body>
-    <div id="client-container">
-
+    <nav th:replace="~{modules/menu}"></nav>
+    <div class="card">
+        <div id="client-container" class="table-container"></div>
     </div>
-    <script type="module" th:src="@{/dist/main/ClientMain.js}"></script>
+    <script type="module" th:src="@{/dist/ui/ClientUI.js}"></script>
 </body>
 </html>
