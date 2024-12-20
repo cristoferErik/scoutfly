@@ -1,3 +1,7 @@
+import { Client } from "../app/models/Client.js";//Aggiungere js alle
+import { segmentClient } from "../components/ClientComponent.js";
+
+
 export function addEventListenerClientButton(element:string):void{
     const buttonContainers=document.querySelectorAll(element);
     buttonContainers.forEach(buttonContainer=>{
@@ -18,10 +22,16 @@ export function addEventListenerClientButton(element:string):void{
                     if(!json){
                         break;
                     }
-                    const client=JSON.parse(json);
-                    
-                    //const clientContainer=document.getElementById('client-container');
-                    //if(clientContainer)clientContainer.style.display="none";
+                    let client:Client;
+                    try{
+                        client=JSON.parse(json);
+                         const clientContainer=document.getElementById('client-container');
+                        if(clientContainer)clientContainer.style.display="none";//Sparirà la tabella
+                        segmentClient(client);
+                    }catch(error){
+                        console.error('Error parsing JSON:', error);
+                    }    
+                   
                     break;
                 default:
                     console.log("Azione sconosciuta!");

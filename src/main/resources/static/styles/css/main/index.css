@@ -309,6 +309,7 @@ template {
 
 /*Variables of colors*/
 /*Colors of buttons*/
+/*Color of card for one entity*/
 /* roboto-regular - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
@@ -326,7 +327,7 @@ html {
 body {
   font-family: "Roboto", sans-serif;
   font-size: 1.5rem;
-  color: #d8dde4;
+  color: #e8ebf0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -338,6 +339,47 @@ body {
 *:before,
 *:after {
   box-sizing: inherit;
+}
+
+.container-data .title {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  align-items: center;
+  text-transform: uppercase;
+  background-color: #343a40;
+  border: 1px solid #586c7a;
+}
+.container-data .container-detail {
+  border: 1px solid #586c7a;
+  display: flex;
+  background-color: #3b4853;
+}
+.container-data .container-detail .item {
+  display: flex;
+  width: 100%;
+}
+.container-data .container-detail .item .subtitle {
+  background-color: #517b74;
+}
+.container-data .container-detail .item div {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  white-space: nowrap;
+  border-collapse: collapse;
+  width: 100%;
+  padding: 2rem 4rem;
+}
+@media (max-width: 900px) {
+  .container-data .container-detail .item {
+    display: block;
+  }
+}
+@media (max-width: 600px) {
+  .container-data .container-detail {
+    display: block;
+  }
 }
 
 .card {
@@ -361,6 +403,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
   gap: 10px;
 }
 .button-container .button {
@@ -368,6 +411,7 @@ body {
   border-radius: 4px;
   padding: 0.8rem 2rem;
   cursor: pointer;
+  box-shadow: 1px 2px #231;
 }
 .button-container .button:hover {
   transform: scale(1.25);
@@ -381,7 +425,7 @@ body {
 
 .bt-red {
   background-color: #8d2b2b;
-  color: #d8dde4;
+  color: #e8ebf0;
 }
 .bt-red:hover {
   background-color: #a43333;
@@ -389,7 +433,7 @@ body {
 
 .bt-green {
   background-color: #1e7e34;
-  color: #d8dde4;
+  color: #e8ebf0;
 }
 .bt-green:hover {
   background-color: #27a445;
@@ -397,7 +441,7 @@ body {
 
 .bt-light-blue {
   background-color: #0c705e;
-  color: #d8dde4;
+  color: #e8ebf0;
 }
 .bt-light-blue:hover {
   background-color: #22917c;
@@ -408,11 +452,12 @@ body {
   overflow: auto;
 }
 .card .table-container .table {
+  border: 1px solid black; /* Define el borde de la tabla */
+  border-collapse: collapse;
+  border-spacing: 0;
   width: 100%;
 }
 .card .table-container .table .theader {
-  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
-  border: 10px solid rgba(0, 0, 0, 0.15);
   background-color: #343a40;
 }
 .card .table-container .table .theader tr th {
@@ -424,7 +469,6 @@ body {
   font-weight: bold;
   letter-spacing: 0.05rem;
   text-transform: uppercase;
-  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
 }
 .card .table-container .table .tbody {
   background-color: #294865;
@@ -437,7 +481,6 @@ body {
 }
 .card .table-container .table .tbody tr td {
   padding: 1rem 1rem;
-  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
 }
 .card .table-container .table .tbody tr:hover {
   background-color: #485766;
@@ -448,4 +491,10 @@ body {
     display: flex;
     width: 100%;
   }
+}
+.client-segment {
+  display: none;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }

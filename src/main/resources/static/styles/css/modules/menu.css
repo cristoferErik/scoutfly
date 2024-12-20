@@ -1,5 +1,6 @@
 /*Variables of colors*/
 /*Colors of buttons*/
+/*Color of card for one entity*/
 a {
   text-decoration: none;
 }
@@ -30,7 +31,7 @@ ul {
 }
 .navbar .nav-container .menu li a {
   padding: 2rem 3rem;
-  color: #d8dde4;
+  color: #e8ebf0;
   transition: background-color 0.5s ease;
   white-space: nowrap;
 }

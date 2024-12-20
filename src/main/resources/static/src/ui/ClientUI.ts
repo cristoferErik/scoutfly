@@ -1,5 +1,5 @@
 /*Questo script serve per caricare i dati quando si apra una finestra! */
-import { addEventListenerClientButton } from "../app/modules/ClientModules.js";
+import { addEventListenerClientButton } from "../modules/ClientModules.js";
 import { ClientService } from "../app/services/ClientService.js";
 
 export async function renderClients() {
@@ -13,6 +13,7 @@ export async function renderClients() {
             /*------------------------TABLE------------------------------- */
             const table=document.createElement('table');
             table.classList.add('table');
+            table.setAttribute('border','1');
             {
                 /*------------------------HEADER------------------------------- */
                 const header= document.createElement('thead');
@@ -47,12 +48,14 @@ export async function renderClients() {
                             <td>${client.telefono}</td>
                             <td>${client.email}</td>
                             <td>${client.createAt}</td>
-                            <td class="button-container">
-                                <button type="button" name="vedi" class="button bt-green">vedi</button>
-                                <button type="button" name="elimina" class="button bt-red">elimina</button>
-                                <button type="button" name="seleziona" class="button bt-light-blue" data-client='${JSON.stringify(client)}'>
-                                    <img class="icon" src="../../assets/images/check.svg" alt="">
-                                </button>
+                            <td>
+                                <div class="button-container">
+                                    <button type="button" name="vedi" class="button bt-green">vedi</button>
+                                    <button type="button" name="elimina" class="button bt-red">elimina</button>
+                                    <button type="button" name="seleziona" class="button bt-light-blue" data-client='${JSON.stringify(client)}'>
+                                        <img class="icon" src="../../assets/images/check.svg" alt="">
+                                    </button>
+                                </div>
                             </td>
                         `;
                         body.appendChild(row);

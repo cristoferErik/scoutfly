@@ -29,3 +29,44 @@ body{
 *:after {
     box-sizing: inherit;
 }
+
+//CardGlobal to show one Client, one Hosting ...ecc
+.container-data{
+    .title{
+        display: flex;
+        justify-content:space-between;
+        padding: 1rem 2rem; 
+        align-items: center;
+        text-transform: uppercase;
+        background-color: v.$dark-gray-color;
+        border: 1px solid #586c7a;
+    }
+    .container-detail{
+        border: 1px solid #586c7a;
+        display: flex;
+        background-color: #3b4853;
+        .item{
+            display: flex;
+            width: 100%;
+            .subtitle{
+                background-color:  #517b74;
+            }
+            div{
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                white-space: nowrap;
+                
+                border-collapse: collapse; 
+                width: 100%;
+                padding: 2rem 4rem;
+            }
+            @media (max-width:900px){
+                display: block;
+            }
+        }
+        @media(max-width:600px){
+            display: block;
+        }
+    }
+}

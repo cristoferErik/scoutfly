@@ -21,12 +21,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border: none;
     gap: 10px;
     .button{
         border: none;
         border-radius: 4px;
         padding: 0.8rem 2rem;
         cursor: pointer;
+        box-shadow: 1px 2px  #231;
         &:hover{
             transform: scale(1.25);
         }
