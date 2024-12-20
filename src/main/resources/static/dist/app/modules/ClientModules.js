@@ -1,6 +1,5 @@
 export function addEventListenerClientButton(element) {
     const buttonContainers = document.querySelectorAll(element);
-    console.log(buttonContainers);
     buttonContainers.forEach(buttonContainer => {
         buttonContainer === null || buttonContainer === void 0 ? void 0 : buttonContainer.addEventListener('click', (event) => {
             const target = event === null || event === void 0 ? void 0 : event.target;
@@ -9,13 +8,15 @@ export function addEventListenerClientButton(element) {
                 return;
             switch (button.name) {
                 case 'vedi':
-                    console.log('vedi');
                     break;
                 case 'elimina':
                     console.log('elimina');
                     break;
                 case 'seleziona':
                     console.log('seleziona');
+                    const json = button.dataset.client;
+                    if (json)
+                        console.log(JSON.parse(json));
                     //const clientContainer=document.getElementById('client-container');
                     //if(clientContainer)clientContainer.style.display="none";
                     break;

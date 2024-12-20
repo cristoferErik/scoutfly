@@ -50,7 +50,7 @@ export async function renderClients() {
                             <td class="button-container">
                                 <button type="button" name="vedi" class="button bt-green">vedi</button>
                                 <button type="button" name="elimina" class="button bt-red">elimina</button>
-                                <button type="button" name="seleziona" class="button bt-light-blue" value=${client.id}>
+                                <button type="button" name="seleziona" class="button bt-light-blue" data-client='${JSON.stringify(client)}'>
                                     <img class="icon" src="../../assets/images/check.svg" alt="">
                                 </button>
                             </td>
@@ -69,5 +69,6 @@ export async function renderClients() {
     }
     addEventListenerClientButton('.button-container');
 }
+
 renderClients();
 
