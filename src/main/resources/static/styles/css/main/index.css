@@ -308,6 +308,7 @@ template {
 }
 
 /*Variables of colors*/
+/*Colors of buttons*/
 /* roboto-regular - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
@@ -355,19 +356,51 @@ body {
   transition: transform 0.5s ease;
 }
 
+/*Buttons*/
 .button-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
 }
 .button-container .button {
-  min-width: 5rem;
-  background-color: rgb(122, 148, 122);
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
 }
 .button-container .button:hover {
   transform: scale(1.25);
+}
+.button-container .button .icon {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+  width: 2.5rem;
+}
+
+.bt-red {
+  background-color: #8d2b2b;
+  color: #d8dde4;
+}
+.bt-red:hover {
+  background-color: #a43333;
+}
+
+.bt-green {
+  background-color: #1e7e34;
+  color: #d8dde4;
+}
+.bt-green:hover {
+  background-color: #27a445;
+}
+
+.bt-light-blue {
+  background-color: #0c705e;
+  color: #d8dde4;
+}
+.bt-light-blue:hover {
+  background-color: #22917c;
 }
 
 .card .table-container {
@@ -401,16 +434,15 @@ body {
 }
 .card .table-container .table .tbody tr td {
   padding: 1rem 1rem;
-  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
 }
 .card .table-container .table .tbody tr:hover {
   background-color: #485766;
 }
 
-@media (max-width: 870px) {
+@media (max-width: 1140px) {
   .card {
     display: flex;
     width: 100%;
-    min-width: 60rem;
   }
 }

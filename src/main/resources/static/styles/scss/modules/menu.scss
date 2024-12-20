@@ -20,13 +20,13 @@ ul{
             margin-inline: 0;
             padding-inline:0;
             display: flex;
-            
             li{
                 display: flex;
                 a{
                     padding:2rem 3rem;
                     color: v.$light-font-color;
                     transition: background-color 0.5s ease; 
+                    white-space: nowrap;
                     &:hover{
                         background-color: rgb(84, 97, 93);
                         transform: scale(1.05);
@@ -38,6 +38,26 @@ ul{
                 }
             }
             
+        }
+    }
+}
+@media (max-width: 768px) {
+    .navbar{
+        .nav-container {
+            padding: 0rem;
+            .menu {
+                display: flex;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                li {
+                    width: 100%;
+                    text-align: center;
+                    a {
+                        width: 100%;
+                    }
+                }
+            }
         }
     }
 }

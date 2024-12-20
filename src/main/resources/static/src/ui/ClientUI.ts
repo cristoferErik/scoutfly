@@ -1,6 +1,6 @@
 /*Questo script serve per caricare i dati quando si apra una finestra! */
+import { addEventListenerButton } from "../app/modules/Buttons.js";
 import { ClientService } from "../app/services/ClientService.js";
-
 
 export async function renderClients() {
     const clientContainer = document.getElementById("client-container");
@@ -47,7 +47,13 @@ export async function renderClients() {
                             <td>${client.telefono}</td>
                             <td>${client.email}</td>
                             <td>${client.createAt}</td>
-                            <td class="button-container"><button type="button" class="button">...</button></td>
+                            <td class="button-container">
+                                <button type="button" name="vedi" class="button bt-green">vedi</button>
+                                <button type="button" name="elimina" class="button bt-red">elimina</button>
+                                <button type="button" name="seleziona" class="button bt-light-blue" value=${client.id}>
+                                    <img class="icon" src="../../assets/images/check.svg" alt="">
+                                </button>
+                            </td>
                         `;
                         body.appendChild(row);
                     });
@@ -61,5 +67,7 @@ export async function renderClients() {
             clientContainer.appendChild(table);
         }
     }
+    addEventListenerButton('.button-container');
 }
 renderClients();
+

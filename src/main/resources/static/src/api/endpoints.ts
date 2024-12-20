@@ -2,6 +2,8 @@ export const API_BASE_URL = '/scoutfly/api';
 
 export const GET_USERS= API_BASE_URL +'/clients';
 
+
+
 export async function fetchAllClients<T>(): Promise<T | null> {
     let data:T|null=null;
     try {

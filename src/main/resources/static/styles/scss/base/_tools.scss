@@ -16,19 +16,47 @@
         transition: transform 0.5s ease; 
     }
 }
+/*Buttons*/
 .button-container{
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    gap: 10px;
     .button{
-        min-width: 5rem;
-        background-color: rgb(122, 148, 122);
         border: none;
-        border-radius: 5px;
+        border-radius: 4px;
+        padding: 0.5rem 0rem;
+        cursor: pointer;
         &:hover{
             transform: scale(1.25);
         }
+        .icon{
+            display: flex;
+            justify-self: center;
+            align-items: center;
+            width:2.5rem;
+        }
+    }
+}
+.bt-red{
+    background-color: v.$dark-button-red-color;
+    color: v.$light-font-color;
+    &:hover{
+        background-color: v.$light-button-red-color;
+    }
+}
+.bt-green{
+    background-color: v.$dark-button-green-color;
+    color: v.$light-font-color;
+    &:hover{
+        background-color: v.$light-button-green-color;
+    }
+}
+.bt-light-blue{
+    background-color: v.$dark-button-light-blue-color;
+    color: v.$light-font-color;
+    &:hover{
+        background-color: v.$light-button-light-blue-color;
     }
 }
 
