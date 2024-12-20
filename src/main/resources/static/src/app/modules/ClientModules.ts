@@ -1,4 +1,4 @@
-export function addEventListenerButton(element:string):void{
+export function addEventListenerClientButton(element:string):void{
     const buttonContainers=document.querySelectorAll(element);
     console.log(buttonContainers);
     buttonContainers.forEach(buttonContainer=>{
@@ -16,6 +16,8 @@ export function addEventListenerButton(element:string):void{
                     break;
                 case 'seleziona':
                     console.log('seleziona');
+                    //const clientContainer=document.getElementById('client-container');
+                    //if(clientContainer)clientContainer.style.display="none";
                     break;
                 default:
                     console.log("Azione sconosciuta!");

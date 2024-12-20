@@ -1,5 +1,5 @@
 /*Questo script serve per caricare i dati quando si apra una finestra! */
-import { addEventListenerButton } from "../app/modules/Buttons.js";
+import { addEventListenerClientButton } from "../app/modules/ClientModules.js";
 import { ClientService } from "../app/services/ClientService.js";
 
 export async function renderClients() {
@@ -67,7 +67,7 @@ export async function renderClients() {
             clientContainer.appendChild(table);
         }
     }
-    addEventListenerButton('.button-container');
+    addEventListenerClientButton('.button-container');
 }
 renderClients();
 
