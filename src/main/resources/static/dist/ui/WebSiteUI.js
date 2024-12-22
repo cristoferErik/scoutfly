@@ -8,9 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { WebSiteService } from "../app/services/WebSiteService.js";
+import { ActivityFilters } from "../app/models/Activity.js";
+import { ActivityUI } from "./ActivityUI.js";
 export class WebSiteUI {
     constructor() {
         this.webSiteService = new WebSiteService();
+        this.activityUI = new ActivityUI();
     }
     renderWebSites(hostingId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -121,6 +124,9 @@ export class WebSiteUI {
                                     if (websiteContainer)
                                         websiteContainer.style.display = "none"; //Sparirà la tabella
                                     this.segmentWebSite(website);
+                                    let activityFilters = new ActivityFilters();
+                                    activityFilters.webSiteId = website.id;
+                                    this.activityUI.renderActivities(activityFilters);
                                 }
                                 catch (error) {
                                     console.error("Error parsing JSON:", error);
@@ -183,6 +189,7 @@ export class WebSiteUI {
                             if (websiteContainer)
                                 websiteContainer.style.display = "block"; //Sparirà la tabella
                             websiteSegment.style.display = "none";
+                            this.reloadUIs();
                             break;
                         default:
                             console.log("Azione sconosciuta");
@@ -199,5 +206,13 @@ export class WebSiteUI {
         const websiteCard = document.getElementById("website-card");
         if (websiteCard)
             websiteCard.style.display = "block";
+    }
+    reloadUIs() {
+        const activityCard = document.getElementById("activity-card");
+        if (activityCard)
+            activityCard.style.display = `none`;
+        const activitySegment = document.getElementById("activity-segment");
+        if (activitySegment)
+            activitySegment.style.display = "none";
     }
 }

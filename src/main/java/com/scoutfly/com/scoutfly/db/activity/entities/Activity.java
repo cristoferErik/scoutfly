@@ -2,6 +2,7 @@ package com.scoutfly.com.scoutfly.db.activity.entities;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.scoutfly.com.scoutfly.db.activity.enumerator.EnumActivity.EnumCategoria;
 import com.scoutfly.com.scoutfly.db.activity.enumerator.EnumActivity.EnumStatus;
 import com.scoutfly.com.scoutfly.db.website.entities.WebSite;
@@ -27,7 +28,7 @@ public class Activity {
     private Long id;
     private String nome;
     private String descrizione;
-    private String prezzo;
+    private Double prezzo;
 
     @Enumerated(EnumType.STRING)
     private EnumCategoria categoria;
@@ -39,7 +40,10 @@ public class Activity {
     private LocalDateTime dataLimite;
     
     @Column(name="durata_ore")
-    private double durataOre;
+    private Integer durataOre;
+
+    @Column(name="prezzo_totale")
+    private Double prezzoTotale;
 
     @Column(name="create_at")
     private LocalDateTime createAt;
@@ -47,6 +51,7 @@ public class Activity {
     @Column(name="update_at")
     private LocalDateTime updateAt;
 
+    @JsonIgnore
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="website_id")
     private WebSite webSite;
@@ -75,14 +80,6 @@ public class Activity {
         this.descrizione = descrizione;
     }
 
-    public String getPrezzo() {
-        return prezzo;
-    }
-
-    public void setPrezzo(String prezzo) {
-        this.prezzo = prezzo;
-    }
-
     public EnumCategoria getCategoria() {
         return categoria;
     }
@@ -105,14 +102,6 @@ public class Activity {
 
     public void setDataLimite(LocalDateTime dataLimite) {
         this.dataLimite = dataLimite;
-    }
-
-    public double getDurataOre() {
-        return durataOre;
-    }
-
-    public void setDurataOre(double durataOre) {
-        this.durataOre = durataOre;
     }
 
     public LocalDateTime getCreateAt() {
@@ -139,6 +128,28 @@ public class Activity {
         this.webSite = webSite;
     }
 
+    public Double getPrezzo() {
+        return prezzo;
+    }
 
+    public void setPrezzo(Double prezzo) {
+        this.prezzo = prezzo;
+    }
+
+    public Integer getDurataOre() {
+        return durataOre;
+    }
+
+    public void setDurataOre(Integer durataOre) {
+        this.durataOre = durataOre;
+    }
+
+    public Double getPrezzoTotale() {
+        return prezzoTotale;
+    }
+
+    public void setPrezzoTotale(Double prezzoTotale) {
+        this.prezzoTotale = prezzoTotale;
+    }
     
 }

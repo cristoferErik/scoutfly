@@ -211,5 +211,6 @@ export class HostingUI {
         const websiteSegment = document.getElementById("website-segment");
         if (websiteSegment)
             websiteSegment.style.display = "none";
+        this.webSiteUI.reloadUIs();
     }
 }

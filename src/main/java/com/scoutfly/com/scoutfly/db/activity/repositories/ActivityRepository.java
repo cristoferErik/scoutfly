@@ -19,13 +19,15 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>{
                 (:categoria is NULL OR a.categoria =: categoria)AND
                 (:status is NULL OR a.status= :status) AND
                 (:dataIniziale is NULL OR a.createAt>= :dataIniziale) AND
-                (:dataFinale is NULL OR a.createAt<= :dataFinale)
+                (:dataFinale is NULL OR a.createAt<= :dataFinale) AND
+                (a.webSite.id= :webSiteId)
             """)
     Page<Activity> findActivitiesByFilters(Pageable pageable,
                                             EnumActivity.EnumCategoria categoria,
                                             EnumActivity.EnumStatus status,
                                             LocalDate dataIniziale,
-                                            LocalDate dataFinale
+                                            LocalDate dataFinale,
+                                            Long webSiteId
                                             );
 
 }

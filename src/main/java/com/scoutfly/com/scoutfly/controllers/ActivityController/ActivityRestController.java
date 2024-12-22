@@ -10,7 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,11 +25,11 @@ public class ActivityRestController {
     @Autowired
     private ActivityServices activityServices;
 
-    @GetMapping("/activities")
+    @PostMapping("/activities")
     public ResponseEntity<?> findAllPageActivities(       
         @RequestParam (value= "page",defaultValue="0") Integer page,
         @RequestParam (value="size",defaultValue="10") Integer size,
-        ActivityFilters activityFilters)
+        @RequestBody ActivityFilters activityFilters)
     {
         Map<String,Object> response= new HashMap<>();
         Pageable pageable = PageRequest.of(page,size);

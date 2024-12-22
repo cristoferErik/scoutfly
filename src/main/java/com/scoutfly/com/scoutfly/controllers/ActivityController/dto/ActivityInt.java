@@ -7,11 +7,12 @@ import com.scoutfly.com.scoutfly.db.activity.enumerator.EnumActivity;
 public interface ActivityInt {
 
     public class ActivityFilters{
+        private Long webSiteId;
         private EnumActivity.EnumCategoria categoria;
         private EnumActivity.EnumStatus status;
         private LocalDate dataIniziale;
         private LocalDate dataFinale;
-
+        
         public EnumActivity.EnumCategoria getCategoria() {
             return categoria;
         }
@@ -42,6 +43,14 @@ public interface ActivityInt {
 
         public void setDataFinale(LocalDate dataFinale) {
             this.dataFinale = dataFinale;
+        }
+
+        public Long getWebSiteId() {
+            return webSiteId;
+        }
+
+        public void setWebSiteId(Long webSiteId) {
+            this.webSiteId = webSiteId;
         }
 
 

@@ -199,5 +199,7 @@ export class HostingUI {
         if(websiteCard)websiteCard.style.display=`none`;
         const websiteSegment=document.getElementById("website-segment");
         if(websiteSegment) websiteSegment.style.display="none";
+
+        this.webSiteUI.reloadUIs();
     }
 }

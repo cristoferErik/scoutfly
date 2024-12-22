@@ -11,6 +11,7 @@ export const API_BASE_URL = '/scoutfly/api';
 export const GET_USERS = API_BASE_URL + '/clients';
 export const GET_HOSTINGS_BY_CLIENT = API_BASE_URL + '/hostings';
 export const GET_WEBSITES_BY_HOSTING = API_BASE_URL + '/websites';
+export const GET_ACTIVITIES_BY_WEBSITE = API_BASE_URL + '/activities';
 //Con questo ottengo i dati che vengo del backend
 export function fetchAllClients() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -67,6 +68,30 @@ export function fetchAllWebSiteByHosting(hostingId) {
                 headers: {
                     'Content-Type': 'application/json', // Cabecera
                 },
+            });
+            // Verificar si la respuesta es exitosa (status 200-299)
+            if (!response.ok) {
+                throw new Error('HTTP Error: ' + response.statusText);
+            }
+            const responseData = yield response.json();
+            data = responseData.body;
+        }
+        catch (error) {
+            console.error('Fetch Error:', error);
+        }
+        return data;
+    });
+}
+export function fetchAllActivitiesByWebSite(activityFilters) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let data = null;
+        try {
+            const response = yield fetch(`${GET_ACTIVITIES_BY_WEBSITE}`, {
+                method: 'POST', // Método de la solicitud
+                headers: {
+                    'Content-Type': 'application/json', // Cabecera
+                },
+                body: JSON.stringify(activityFilters),
             });
             // Verificar si la respuesta es exitosa (status 200-299)
             if (!response.ok) {

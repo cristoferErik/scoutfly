@@ -199,9 +199,6 @@ export class ClientUI {
         const hostingSegment=document.getElementById("hosting-segment");
         if(hostingSegment) hostingSegment.style.display="none";
 
-        const websiteCard = document.getElementById("website-card");
-        if(websiteCard)websiteCard.style.display=`none`;
-        const websiteSegment=document.getElementById("website-segment");
-        if(websiteSegment) websiteSegment.style.display="none";
+        this.hostingUI.reloadUIs();
     }
 }

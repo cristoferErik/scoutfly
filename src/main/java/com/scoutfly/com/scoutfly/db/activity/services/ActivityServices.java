@@ -22,6 +22,13 @@ public class ActivityServices {
         Pageable pageable,
         ActivityInt.ActivityFilters activityFilters
     ){
-        return this.activityRepository.findActivitiesByFilters(pageable,activityFilters.getCategoria(),activityFilters.getStatus(),activityFilters.getDataIniziale(),activityFilters.getDataFinale());
+        
+        return this.activityRepository.findActivitiesByFilters(pageable,
+        activityFilters.getCategoria(),
+        activityFilters.getStatus(),
+        activityFilters.getDataIniziale(),
+        activityFilters.getDataFinale(),
+        activityFilters.getWebSiteId()
+        );
     }
 }
