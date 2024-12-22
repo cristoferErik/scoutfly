@@ -41,7 +41,7 @@ public class Hosting {
     @Column(name="data_modifica")
     private LocalDateTime dataModifica;
 
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="client_id",nullable=false)
     private Client client;

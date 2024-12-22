@@ -1,11 +1,11 @@
 @use "../abstract/variables" as v;
 
-
 .card{
-    display: block;
+    display: none;
     background: v.$blue-container-color;
     padding: 1rem;
     margin: 2rem;
+    width: 80%;
     box-shadow:2px 4px 20px rgba(0, 0, 0, 0.1);
     & {
         transform: translate(0px, 0px); /* Estado inicial */
@@ -15,7 +15,11 @@
         transform: translate(0px,10px);
         transition: transform 0.5s ease; 
     }
+    @media (max-width: 1180px) {
+        width: 100%;
+    }
 }
+
 /*Buttons*/
 .button-container{
     display: flex;

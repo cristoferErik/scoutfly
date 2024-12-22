@@ -7,12 +7,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { ClientService } from "../app/services/ClientService.js";
-function initialize() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const clientService = new ClientService();
-        //Se aggiungiamo await aspettara che finisca per poter continuare
-        clientService.getAllClients();
-    });
+import { fetchAllHostingsByClient } from "../../api/endpoints.js";
+export class HostingService {
+    constructor() {
+        this.hostings = [];
+    }
+    getAllHostingsByClient(clientId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const fetchHostings = yield fetchAllHostingsByClient(clientId);
+            if (fetchHostings) {
+                this.hostings = [...fetchHostings];
+                //console.log(this.clients);
+            }
+            else {
+                console.log('Error al cargar los usuarios.');
+            }
+            return this.hostings;
+        });
+    }
 }
-initialize();

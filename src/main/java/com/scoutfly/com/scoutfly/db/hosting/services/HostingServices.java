@@ -16,7 +16,7 @@ public class HostingServices {
     HostingRepository hostingRepository;
 
     @Transactional(readOnly=true)
-    public Page<Hosting>findAllPageHostings(Pageable pageable){
-        return this.hostingRepository.findAll(pageable);
+    public Page<Hosting>findAllPageHostings(Pageable pageable,Long clientId){
+        return this.hostingRepository.findAllByClient(pageable,clientId);
     }
 }

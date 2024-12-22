@@ -29,7 +29,60 @@ body{
 *:after {
     box-sizing: inherit;
 }
+.container-bigTittle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    border: 1px solid black;
+    margin-bottom: 1rem;
+    background-color: #294865;
+    font-weight: bold;
+    font-size: 1.8rem;
+}
 
+/*Table container*/
+.table-container{
+    width: auto;
+    overflow: auto;
+    .table{
+        border: 1px solid black; /* Define el borde de la tabla */
+        border-collapse: collapse;
+        border-spacing: 0 ;
+        width: 100%;
+        .theader{
+            background-color: v.$dark-gray-color;
+            tr{
+                th{
+                    text-align: center;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    padding: 1rem 1rem;
+                    font-weight: bold;
+                    letter-spacing: 0.05rem;
+                    text-transform: uppercase;  
+                }
+            }
+        }
+        .tbody{
+            background-color: #294865;
+            tr{
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                
+                td{
+                    padding: 1rem 1rem;
+                }
+                &:hover{
+                    background-color: #485766;
+                }
+            }
+        }
+    }
+}
 //CardGlobal to show one Client, one Hosting ...ecc
 .container-data{
     .title{
@@ -67,6 +120,17 @@ body{
         }
         @media(max-width:600px){
             display: block;
+            min-width: 0;
         }
+    }
+}
+.segment{
+    display: none;
+    width: 100%;
+    min-width: 90rem;
+    justify-content: center;
+    align-items: center;
+    @media (max-width:950px){
+        min-width: 0rem;
     }
 }

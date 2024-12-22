@@ -8,5 +8,4 @@ export interface Client{
     telefono:string,
     email:string,
     createAt: Date,
-    hostings:Hosting[]
 }

@@ -26,11 +26,12 @@ public class HostingRestController {
     @GetMapping("/hostings")
     public ResponseEntity<?> findAllPageHostings(       
         @RequestParam (value= "page",defaultValue="0") Integer page,
-        @RequestParam (value="size",defaultValue="10") Integer size)
+        @RequestParam (value="size",defaultValue="10") Integer size,
+        @RequestParam Long clientId)
     {
         Map<String,Object> response= new HashMap<>();
         Pageable pageable = PageRequest.of(page,size);
-        Page<Hosting> hostingsPage=this.hostingServices.findAllPageHostings(pageable);
+        Page<Hosting> hostingsPage=this.hostingServices.findAllPageHostings(pageable,clientId);
 
         response.put("status","success");
         response.put("body",hostingsPage.getContent());

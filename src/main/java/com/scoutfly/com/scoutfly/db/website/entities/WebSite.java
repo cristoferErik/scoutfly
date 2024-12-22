@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.scoutfly.com.scoutfly.db.activity.entities.Activity;
 import com.scoutfly.com.scoutfly.db.hosting.entities.Hosting;
 
@@ -44,10 +45,12 @@ public class WebSite {
     @Column(name="data_modifica")
     private LocalDateTime dataModifica;
 
+    @JsonIgnore
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="hosting_id",nullable=false)
     private Hosting hosting;
 
+    @JsonIgnore
     @OneToMany(mappedBy="webSite",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
     private List<Activity> listActivity;
 

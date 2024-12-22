@@ -16,7 +16,7 @@ public class WebSiteServices {
     private WebSiteRepository webSiteRepository;
 
     @Transactional(readOnly=true)
-    public Page<WebSite>findAllPageWebSites(Pageable pageable){
-        return this.webSiteRepository.findAll(pageable);
+    public Page<WebSite>findAllPageWebSites(Pageable pageable,Long HostingId){
+        return this.webSiteRepository.findAllPageWebSitesByHosting(pageable,HostingId);
     }
 }

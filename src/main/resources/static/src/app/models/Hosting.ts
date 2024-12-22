@@ -1,3 +1,5 @@
+import { Client } from "./Client.js";
+
 export interface Hosting{
     id:number,
     nome:string,
@@ -7,5 +9,5 @@ export interface Hosting{
     proveedor:string,
     dataCreazione:string,
     dataModifica:String,
-    
+    client:Client,
 }

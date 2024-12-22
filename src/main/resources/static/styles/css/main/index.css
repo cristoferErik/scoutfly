@@ -341,6 +341,58 @@ body {
   box-sizing: inherit;
 }
 
+.container-bigTittle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  border: 1px solid black;
+  margin-bottom: 1rem;
+  background-color: #294865;
+  font-weight: bold;
+  font-size: 1.8rem;
+}
+
+/*Table container*/
+.table-container {
+  width: auto;
+  overflow: auto;
+}
+.table-container .table {
+  border: 1px solid black; /* Define el borde de la tabla */
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+.table-container .table .theader {
+  background-color: #343a40;
+}
+.table-container .table .theader tr th {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 1rem 1rem;
+  font-weight: bold;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+}
+.table-container .table .tbody {
+  background-color: #294865;
+}
+.table-container .table .tbody tr {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.table-container .table .tbody tr td {
+  padding: 1rem 1rem;
+}
+.table-container .table .tbody tr:hover {
+  background-color: #485766;
+}
+
 .container-data .title {
   display: flex;
   justify-content: space-between;
@@ -379,14 +431,29 @@ body {
 @media (max-width: 600px) {
   .container-data .container-detail {
     display: block;
+    min-width: 0;
+  }
+}
+
+.segment {
+  display: none;
+  width: 100%;
+  min-width: 90rem;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 950px) {
+  .segment {
+    min-width: 0rem;
   }
 }
 
 .card {
-  display: block;
+  display: none;
   background: #1b2e50;
   padding: 1rem;
   margin: 2rem;
+  width: 80%;
   box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.1);
 }
 .card {
@@ -396,6 +463,11 @@ body {
 .card:hover {
   transform: translate(0px, 10px);
   transition: transform 0.5s ease;
+}
+@media (max-width: 1180px) {
+  .card {
+    width: 100%;
+  }
 }
 
 /*Buttons*/
@@ -445,56 +517,4 @@ body {
 }
 .bt-light-blue:hover {
   background-color: #22917c;
-}
-
-.card .table-container {
-  width: auto;
-  overflow: auto;
-}
-.card .table-container .table {
-  border: 1px solid black; /* Define el borde de la tabla */
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-}
-.card .table-container .table .theader {
-  background-color: #343a40;
-}
-.card .table-container .table .theader tr th {
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 1rem 1rem;
-  font-weight: bold;
-  letter-spacing: 0.05rem;
-  text-transform: uppercase;
-}
-.card .table-container .table .tbody {
-  background-color: #294865;
-}
-.card .table-container .table .tbody tr {
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.card .table-container .table .tbody tr td {
-  padding: 1rem 1rem;
-}
-.card .table-container .table .tbody tr:hover {
-  background-color: #485766;
-}
-
-@media (max-width: 1140px) {
-  .card {
-    display: flex;
-    width: 100%;
-  }
-}
-.client-segment {
-  display: none;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
 }
