@@ -1,0 +1,90 @@
+@use '../abstract/variables' as v;
+.card-email{
+    display: block;
+    background: v.$blue-container-color;
+    padding: 1rem;
+    margin: 2rem;
+    width: 60%;
+    min-width: 60rem;
+    box-shadow:2px 4px 20px rgba(0, 0, 0, 0.1);
+    transform: translate(0px, 0px); /* Estado inicial */
+    transition: transform 0.3s ease;
+    &:hover{
+        transform: translate(0px,10px);
+        transition: transform 0.5s ease; 
+    }
+    .email-container{
+        .item-email{
+            display: flex;
+            width: 100%;
+            text-align: center;
+            align-content: center;
+            align-items: center;
+            border: 1px solid #586c7a;
+            margin: 0.5rem 0;
+            background-color: #3b4853;
+            
+            label{
+                background-color:  v.$sky-color ;
+                padding: 1rem 1rem;
+            }
+           
+            input{
+                flex: 1;
+            }
+            textarea,input{
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.0);
+                outline: none;
+                padding:1rem 0.5rem;
+                color:v.$light-font-color;
+                border: none;
+            }
+            textarea{
+                min-height: 20rem;
+            }
+        }
+    }
+    @media (max-width:610px){
+        min-width: auto;
+        width: 100%;
+    }
+}
+
+
+/*Per allegare un documento*/
+.file-container{
+    display: block;
+    margin: 0.5rem 0;
+    background-color: #3b4853;
+    .file-label{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding:1rem 0.25rem;
+        border: 1px solid #586c7a;
+        background-color:  v.$sky-color;
+        cursor: pointer;
+        &:hover{
+            background-color: v.$sky-light-color;
+        }
+    }
+    .file-list{
+        display: block;
+        padding: 0.5rem;
+        li{
+            display: flex;
+            justify-content: center;
+        }
+        .remove-file{
+            cursor: pointer;
+        }
+    }
+    
+    
+}
+.file{
+    width: 100%;
+    display: none;
+}

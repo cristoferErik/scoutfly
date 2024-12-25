@@ -310,6 +310,81 @@ template {
 /*Variables of colors*/
 /*Colors of buttons*/
 /*Color of card for one entity*/
+/*Color of fields*/
+/**/
+.card {
+  display: none;
+  background: #1b2e50;
+  padding: 1rem;
+  margin: 2rem;
+  width: 90%;
+  box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.1);
+}
+.card {
+  transform: translate(0px, 0px); /* Estado inicial */
+  transition: transform 0.3s ease;
+}
+.card:hover {
+  transform: translate(0px, 10px);
+  transition: transform 0.5s ease;
+}
+@media (max-width: 1180px) {
+  .card {
+    width: 100%;
+  }
+}
+
+/*Buttons*/
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  gap: 10px;
+}
+.button-container .button {
+  border: none;
+  flex: 1;
+  border-radius: 2px;
+  padding: 0.8rem 2rem;
+  cursor: pointer;
+}
+.button-container .button .icon {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+  width: 2.5rem;
+}
+
+.mg-y-1 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.bt-red {
+  background-color: #8d2b2b;
+  color: #e8ebf0;
+}
+.bt-red:hover {
+  background-color: #a43333;
+}
+
+.bt-green {
+  background-color: #247a67;
+  color: #e8ebf0;
+}
+.bt-green:hover {
+  background-color: #3d8f7d;
+}
+
+.bt-light-blue {
+  background-color: #0c705e;
+  color: #e8ebf0;
+}
+.bt-light-blue:hover {
+  background-color: #22917c;
+}
+
 /* roboto-regular - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
@@ -339,6 +414,16 @@ body {
 *:before,
 *:after {
   box-sizing: inherit;
+}
+
+ul {
+  margin-block: 0;
+  margin-inline: 0;
+  padding-inline: 0;
+}
+
+li {
+  list-style-type: none;
 }
 
 .container-bigTittle {
@@ -448,73 +533,88 @@ body {
   }
 }
 
-.card {
-  display: none;
+.card-email {
+  display: block;
   background: #1b2e50;
   padding: 1rem;
   margin: 2rem;
-  width: 80%;
+  width: 60%;
+  min-width: 60rem;
   box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.1);
-}
-.card {
   transform: translate(0px, 0px); /* Estado inicial */
   transition: transform 0.3s ease;
 }
-.card:hover {
+.card-email:hover {
   transform: translate(0px, 10px);
   transition: transform 0.5s ease;
 }
-@media (max-width: 1180px) {
-  .card {
+.card-email .email-container .item-email {
+  display: flex;
+  width: 100%;
+  text-align: center;
+  align-content: center;
+  align-items: center;
+  border: 1px solid #586c7a;
+  margin: 0.5rem 0;
+  background-color: #3b4853;
+}
+.card-email .email-container .item-email label {
+  background-color: #0c6970;
+  padding: 1rem 1rem;
+}
+.card-email .email-container .item-email input {
+  flex: 1;
+}
+.card-email .email-container .item-email textarea, .card-email .email-container .item-email input {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  outline: none;
+  padding: 1rem 0.5rem;
+  color: #e8ebf0;
+  border: none;
+}
+.card-email .email-container .item-email textarea {
+  min-height: 20rem;
+}
+@media (max-width: 610px) {
+  .card-email {
+    min-width: auto;
     width: 100%;
   }
 }
 
-/*Buttons*/
-.button-container {
+/*Per allegare un documento*/
+.file-container {
+  display: block;
+  margin: 0.5rem 0;
+  background-color: #3b4853;
+}
+.file-container .file-label {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: none;
-  gap: 10px;
-}
-.button-container .button {
-  border: none;
-  border-radius: 4px;
-  padding: 0.8rem 2rem;
+  width: 100%;
+  padding: 1rem 0.25rem;
+  border: 1px solid #586c7a;
+  background-color: #0c6970;
   cursor: pointer;
-  box-shadow: 1px 2px #231;
 }
-.button-container .button:hover {
-  transform: scale(1.25);
+.file-container .file-label:hover {
+  background-color: #127c84;
 }
-.button-container .button .icon {
+.file-container .file-list {
+  display: block;
+  padding: 0.5rem;
+}
+.file-container .file-list li {
   display: flex;
-  justify-self: center;
-  align-items: center;
-  width: 2.5rem;
+  justify-content: center;
+}
+.file-container .file-list .remove-file {
+  cursor: pointer;
 }
 
-.bt-red {
-  background-color: #8d2b2b;
-  color: #e8ebf0;
-}
-.bt-red:hover {
-  background-color: #a43333;
-}
-
-.bt-green {
-  background-color: #1e7e34;
-  color: #e8ebf0;
-}
-.bt-green:hover {
-  background-color: #27a445;
-}
-
-.bt-light-blue {
-  background-color: #0c705e;
-  color: #e8ebf0;
-}
-.bt-light-blue:hover {
-  background-color: #22917c;
+.file {
+  width: 100%;
+  display: none;
 }

@@ -1,5 +1,5 @@
 @use "../abstract/variables" as v;
-
+@forward "./tools";
 /* roboto-regular - latin */
 @font-face {
     font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
@@ -28,6 +28,14 @@ body{
 *:before,
 *:after {
     box-sizing: inherit;
+}
+ul{
+    margin-block: 0;
+    margin-inline: 0;
+    padding-inline: 0;
+}
+li{
+    list-style-type: none;
 }
 .container-bigTittle{
     display: flex;

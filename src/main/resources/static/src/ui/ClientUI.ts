@@ -196,6 +196,7 @@ export class ClientUI {
         
         const hostingCard = document.getElementById("hosting-card");
         if(hostingCard)hostingCard.style.display=`none`;
+        
         const hostingSegment=document.getElementById("hosting-segment");
         if(hostingSegment) hostingSegment.style.display="none";
 

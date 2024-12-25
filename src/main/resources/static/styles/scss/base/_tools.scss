@@ -5,7 +5,7 @@
     background: v.$blue-container-color;
     padding: 1rem;
     margin: 2rem;
-    width: 80%;
+    width: 90%;
     box-shadow:2px 4px 20px rgba(0, 0, 0, 0.1);
     & {
         transform: translate(0px, 0px); /* Estado inicial */
@@ -29,13 +29,10 @@
     gap: 10px;
     .button{
         border: none;
-        border-radius: 4px;
+        flex: 1;
+        border-radius: 2px;
         padding: 0.8rem 2rem;
         cursor: pointer;
-        box-shadow: 1px 2px  #231;
-        &:hover{
-            transform: scale(1.25);
-        }
         .icon{
             display: flex;
             justify-self: center;
@@ -43,6 +40,10 @@
             width:2.5rem;
         }
     }
+}
+.mg-y-1{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 .bt-red{
     background-color: v.$dark-button-red-color;
@@ -52,10 +53,10 @@
     }
 }
 .bt-green{
-    background-color: v.$dark-button-green-color;
+    background-color:  v.$green-water-color;
     color: v.$light-font-color;
     &:hover{
-        background-color: v.$light-button-green-color;
+        background-color: v.$green-light-water-color;
     }
 }
 .bt-light-blue{
