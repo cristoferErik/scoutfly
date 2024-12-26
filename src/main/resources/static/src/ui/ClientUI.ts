@@ -80,12 +80,15 @@ export class ClientUI {
         }
 
         this.addEventListenerClientButton(this.clientService);
+        this.addModalInsertClient();
     }
     //Aggiunge un'evento click ai buttoni che sono dentro della tabella renderClients
     addEventListenerClientButton(clientService: ClientService): void {
         const element = document.getElementById("client-container");
         if (!element) return;
-        const buttonContainers = element.querySelectorAll(".button-container");
+        const tableContainer = element.querySelector(".table-container");
+        if(!tableContainer) return;
+        const buttonContainers = tableContainer.querySelectorAll(".button-container");
         buttonContainers.forEach((buttonContainer) => {
             buttonContainer?.addEventListener("click", (event) => {
                 const target = event?.target as HTMLElement;
@@ -186,6 +189,71 @@ export class ClientUI {
             console.error("clientSegment doesnt exist!");
         }
     }
+    /*Questo buttone ti permette aprire il modale per inserire un nuovo Cliente! */
+    addModalInsertClient(){
+        let clientCard=document.getElementById("client-card");
+        let buttons=clientCard?.querySelectorAll('[name]');
+        buttons?.forEach((button) => {
+            let btn = button as HTMLInputElement;
+            if(btn.name=='inserire'){
+                btn.addEventListener('click',() => {
+                    this.modalInsertClient();
+                });
+            }
+        });
+    }
+    modalInsertClient(){
+        let modal=document.getElementById('modal');
+        /*In caso fai clic fuori del modal, si chiudera */
+        modal?.addEventListener('click',(event)=>{
+            if(event.target === modal){
+                modal.style.display="none";
+                modal.innerHTML=``;
+            }
+        });
+        if(!modal) return;
+        modal.style.display="flex";
+        modal.innerHTML=``;
+        let contenuto=`
+            <div class="card-modal">
+                <div class="container-bigTittle">
+                    <p>Nuovo Cliente</p>
+                </div>
+                <div class="items">
+                    <div class="item">
+                        <label for="">Nome</label>
+                        <input name="Nome" type="text">
+                    </div>
+                    <div class="item"> 
+                        <label for="">Cognome</label>
+                        <input name="Cognome" type="text">
+                    </div>
+                </div>
+                <div class="items">
+                    <div class="item">
+                        <label for="">Indirizzo</label>
+                        <input name="Indirizzo" type="text">
+                    </div>
+                    <div class="item">
+                        <label for="">Telefono</label>
+                        <input name="Telefono" type="text">
+                    </div>
+                </div>
+                <div class="items">
+                    <div class="item">
+                        <label for="">Email</label>
+                        <input name="Email" type="text">
+                    </div>
+                </div>
+                <div class="button-container mg-y-1">
+                    <button class="button bt-green" name="inserire" type="button">Inserire</button>
+                </div>
+            </div>
+        `;
+        modal.innerHTML=contenuto;
+    }
+
+
     openUI(){
         const clientCard=document.getElementById(`client-card`);
         if(clientCard)clientCard.style.display=`block`;

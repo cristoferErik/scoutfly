@@ -385,6 +385,67 @@ template {
   background-color: #22917c;
 }
 
+/*Codice del modal*/
+.modal {
+  position: absolute;
+  display: none;
+  height: 100%;
+  justify-content: center;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+.modal .card-modal {
+  position: fixed;
+  margin-top: 20rem;
+  width: 90rem;
+  z-index: 1000;
+  background: #1b2e50;
+  padding: 1rem;
+}
+.modal .card-modal .items {
+  display: flex;
+  border: 1px solid #586c7a;
+  margin: 0.5rem 0;
+}
+.modal .card-modal .items .item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  background-color: #3b4853;
+}
+.modal .card-modal .items .item label {
+  width: auto;
+  padding: 1rem 1rem;
+  background-color: #517b74;
+}
+.modal .card-modal .items .item input[type=text] {
+  flex: 1;
+  width: 100%;
+  padding: 1rem 0.5rem;
+  color: #e8ebf0;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  outline: none;
+}
+@media (max-width: 650px) {
+  .modal .card-modal .items {
+    display: block;
+    border: none;
+  }
+  .modal .card-modal .items .item {
+    border: 1px solid #586c7a;
+    margin: 1rem 0rem;
+  }
+}
+@media (max-width: 920px) {
+  .modal .card-modal {
+    width: 100%;
+  }
+}
+
 /* roboto-regular - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
@@ -400,6 +461,7 @@ html {
 }
 
 body {
+  position: relative;
   font-family: "Roboto", sans-serif;
   font-size: 1.5rem;
   color: #e8ebf0;
