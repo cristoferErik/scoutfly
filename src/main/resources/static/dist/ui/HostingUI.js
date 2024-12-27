@@ -10,23 +10,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { HostingService } from "../app/services/HostingService.js";
 import { WebSiteUI } from "./WebSiteUI.js";
 export class HostingUI {
-    constructor() {
+    constructor(clienteId) {
         this.hostingService = new HostingService();
-        this.webSiteUI = new WebSiteUI();
+        this.clienteId = clienteId;
     }
-    renderHostings(clientId) {
+    renderHostings() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.openUI();
-            const hostingContainer = document.getElementById("hosting-container");
-            if (!hostingContainer)
+            const body = document.getElementById("body");
+            if (!body)
                 return;
-            hostingContainer.style.display = `block`;
-            const tableContainer = hostingContainer.querySelector(".table-container");
+            const hostingCard = document.createElement("div");
+            hostingCard.id = "hosting-card";
+            hostingCard.className = "card";
+            hostingCard.innerHTML =
+                `
+            <div id="hosting-container" >
+                <div class="container-bigTittle">
+                    <p>Hosting</p>
+                </div>
+                <div class="table-container"></div>
+                <div class="button-container mg-y-1">
+                    <button class="button bt-green" name="inserire" type="button">Inserire</button>
+                </div>
+            </div>
+            `;
+            body.appendChild(hostingCard);
+            const tableContainer = hostingCard.querySelector(".table-container");
             if (!tableContainer)
                 return;
-            tableContainer.innerHTML = ``;
             //Se aggiungiamo await aspettara che finisca per poter continuare
-            const hostings = yield this.hostingService.getAllHostingsByClient(clientId);
+            const hostings = yield this.hostingService.getAllHostingsByClient(this.clienteId);
             if (hostings.length > 0) {
                 console.log(hostings.length);
                 /*------------------------TABLE------------------------------- */
@@ -91,6 +104,7 @@ export class HostingUI {
                 tableContainer.appendChild(table);
             }
             this.addEventListenerHostingButton(this.hostingService);
+            this.addModalInsertHosting();
         });
     }
     //Aggiunge un'evento click ai buttoni che sono dentro della tabella renderClients
@@ -98,7 +112,10 @@ export class HostingUI {
         const element = document.getElementById("hosting-container");
         if (!element)
             return;
-        const buttonContainers = element.querySelectorAll(".button-container");
+        const tableContainer = element.querySelector(".table-container");
+        if (!tableContainer)
+            return;
+        const buttonContainers = tableContainer.querySelectorAll(".button-container");
         buttonContainers.forEach((buttonContainer) => {
             buttonContainer === null || buttonContainer === void 0 ? void 0 : buttonContainer.addEventListener("click", (event) => {
                 const target = event === null || event === void 0 ? void 0 : event.target;
@@ -119,11 +136,11 @@ export class HostingUI {
                             let hosting = hostingService.hostings.find((hosting) => hosting.id === hostingId);
                             if (hosting) {
                                 try {
-                                    const hostingContainer = document.getElementById("hosting-container");
-                                    if (hostingContainer)
-                                        hostingContainer.style.display = "none"; //Sparirà la tabella
+                                    const hostingCard = document.getElementById("hosting-card");
+                                    hostingCard === null || hostingCard === void 0 ? void 0 : hostingCard.remove();
                                     this.segmentHosting(hosting);
-                                    this.webSiteUI.renderWebSites(hosting.id);
+                                    let webSiteUI = new WebSiteUI(hosting.id);
+                                    webSiteUI.renderWebSites();
                                 }
                                 catch (error) {
                                     console.error("Error parsing JSON:", error);
@@ -140,34 +157,40 @@ export class HostingUI {
     }
     /*La riga che si mostra quando si clica dentro del bottone seleziona */
     segmentHosting(hosting) {
-        const hostingSegment = document.getElementById("hosting-segment");
-        if (!hostingSegment)
+        const body = document.getElementById("body");
+        if (!body)
             return;
-        hostingSegment.style.display = "block";
-        hostingSegment.innerHTML = `
-            <div class="container-data">
-                <div class="title">
-                    <div>Hosting</div>
-                    <div class="button-container">
-                        <button class="button" name="back"  type="button"><-Back</button>
+        const hostingCard = document.createElement("div");
+        hostingCard.id = "hosting-card";
+        hostingCard.className = "card";
+        hostingCard.innerHTML =
+            `
+                <div id="hosting-segment" class="segment">
+                    <div class="container-data">
+                        <div class="title">
+                            <div>Hosting</div>
+                            <div class="button-container">
+                                <button class="button" name="back"  type="button"><-Back</button>
+                            </div>
+                        </div>
+                        <div class="container-detail">
+                            <div class="item">
+                                <div class="subtitle">Id</div>
+                                <div >${hosting.id}</div>
+                            </div>
+                            <div class="item">
+                                <div class="subtitle">Nome</div>
+                                <div >${hosting.nome}</div>
+                            </div>
+                            <div class="item">
+                                <div class="subtitle">Url</div>
+                                <div>${hosting.url}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="container-detail">
-                    <div class="item">
-                        <div class="subtitle">Id</div>
-                        <div >${hosting.id}</div>
-                    </div>
-                    <div class="item">
-                        <div class="subtitle">Nome</div>
-                        <div >${hosting.nome}</div>
-                    </div>
-                    <div class="item">
-                        <div class="subtitle">Url</div>
-                        <div>${hosting.url}</div>
-                    </div>
-                </div>
-            </div>
-        `;
+            `;
+        body.appendChild(hostingCard);
         this.addEventListenerHostingSegment();
     }
     addEventListenerHostingSegment() {
@@ -182,10 +205,6 @@ export class HostingUI {
                         return;
                     switch (button.name) {
                         case 'back':
-                            const hostingContainer = document.getElementById('hosting-container');
-                            if (hostingContainer)
-                                hostingContainer.style.display = "block"; //Sparirà la tabella
-                            hostingSegment.style.display = "none";
                             this.reloadUIs();
                             break;
                         default:
@@ -199,18 +218,75 @@ export class HostingUI {
             console.error("clientSegment doesnt exist!");
         }
     }
-    openUI() {
-        const hostingCard = document.getElementById("hosting-card");
-        if (hostingCard)
-            hostingCard.style.display = "block";
+    /*Questo buttone ti permette aprire il modale per inserire un nuovo Cliente! */
+    addModalInsertHosting() {
+        let hostingCard = document.getElementById("hosting-card");
+        let buttons = hostingCard === null || hostingCard === void 0 ? void 0 : hostingCard.querySelectorAll('[name]');
+        buttons === null || buttons === void 0 ? void 0 : buttons.forEach((button) => {
+            let btn = button;
+            if (btn.name == 'inserire') {
+                btn.addEventListener('click', () => {
+                    this.modalInsertHosting();
+                });
+            }
+        });
+    }
+    modalInsertHosting() {
+        let modal = document.getElementById('modal');
+        /*In caso fai clic fuori del modal, si chiudera */
+        modal === null || modal === void 0 ? void 0 : modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                modal.innerHTML = ``;
+            }
+        });
+        if (!modal)
+            return;
+        modal.style.display = "flex";
+        modal.innerHTML = ``;
+        let contenuto = `
+                <div class="card-modal">
+                    <div class="container-bigTittle">
+                        <p>Nuovo Hosting</p>
+                    </div>
+                    <div class="items">
+                        <div class="item">
+                            <label for="">nome</label>
+                            <input name="nome" type="text">
+                        </div>
+                    </div>
+                    <div class="items">
+                        <div class="item">
+                            <label for="">proveedor</label>
+                            <input name="proveedor" type="text">
+                        </div>
+                        <div class="item">
+                            <label for="">url</label>
+                            <input name="url" type="text">
+                        </div>
+                    </div>
+                    <div class="items">
+                        <div class="item">
+                            <label for="">username</label>
+                            <input name="username" type="text">
+                        </div>
+                        <div class="item"> 
+                            <label for="">password</label>
+                            <input name="password" type="text">
+                        </div>
+                    </div>
+                    <div class="button-container mg-y-1">
+                        <button class="button bt-green" name="inserire" type="button">Inserire</button>
+                    </div>
+                </div>
+            `;
+        modal.innerHTML = contenuto;
     }
     reloadUIs() {
-        const websiteCard = document.getElementById("website-card");
-        if (websiteCard)
-            websiteCard.style.display = `none`;
-        const websiteSegment = document.getElementById("website-segment");
-        if (websiteSegment)
-            websiteSegment.style.display = "none";
-        this.webSiteUI.reloadUIs();
+        var _a, _b, _c;
+        (_a = document.getElementById('hosting-card')) === null || _a === void 0 ? void 0 : _a.remove();
+        (_b = document.getElementById('website-card')) === null || _b === void 0 ? void 0 : _b.remove();
+        (_c = document.getElementById('activity-card')) === null || _c === void 0 ? void 0 : _c.remove();
+        this.renderHostings();
     }
 }

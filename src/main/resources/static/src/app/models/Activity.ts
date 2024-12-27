@@ -1,10 +1,10 @@
 import { WebSite } from "./WebSite.js";
 
-enum EnumCategoria{
+export enum EnumCategoria{
     Pago ="PAGO",
     Gratis ="GRATIS"
 }
-enum EnumStatus{
+export enum EnumStatus{
     Attivo="ATTIVO",
     Inattivo="INATTIVO",
     Concluso="CONCLUSO",

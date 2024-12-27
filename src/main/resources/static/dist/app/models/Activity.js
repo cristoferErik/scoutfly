@@ -1,9 +1,9 @@
-var EnumCategoria;
+export var EnumCategoria;
 (function (EnumCategoria) {
     EnumCategoria["Pago"] = "PAGO";
     EnumCategoria["Gratis"] = "GRATIS";
 })(EnumCategoria || (EnumCategoria = {}));
-var EnumStatus;
+export var EnumStatus;
 (function (EnumStatus) {
     EnumStatus["Attivo"] = "ATTIVO";
     EnumStatus["Inattivo"] = "INATTIVO";

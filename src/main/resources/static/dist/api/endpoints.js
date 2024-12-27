@@ -82,11 +82,11 @@ export function fetchAllWebSiteByHosting(hostingId) {
         return data;
     });
 }
-export function fetchAllActivitiesByWebSite(activityFilters) {
+export function fetchAllActivitiesByWebSite(webSiteId, activityFilters) {
     return __awaiter(this, void 0, void 0, function* () {
         let data = null;
         try {
-            const response = yield fetch(`${GET_ACTIVITIES_BY_WEBSITE}`, {
+            const response = yield fetch(`${GET_ACTIVITIES_BY_WEBSITE}/${webSiteId}`, {
                 method: 'POST', // Método de la solicitud
                 headers: {
                     'Content-Type': 'application/json', // Cabecera

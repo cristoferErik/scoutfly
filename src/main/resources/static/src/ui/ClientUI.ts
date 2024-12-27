@@ -5,16 +5,29 @@ import { HostingUI } from "./HostingUI.js";
 
 export class ClientUI {
     private clientService: ClientService;
-    private hostingUI: HostingUI;
     constructor() {
         this.clientService = new ClientService();
-        this.hostingUI = new HostingUI();
     }
     async renderClients() {
-        this.openUI();
-        const clientContainer = document.getElementById("client-container");
-        if (!clientContainer) return;
-        const tableContainer = clientContainer.querySelector(".table-container");
+        const body = document.getElementById("body");
+        if(!body) return;
+        const clientCard= document.createElement("div");
+        clientCard.id="client-card";
+        clientCard.className="card";
+        clientCard.innerHTML=
+        `
+            <div id="client-container">
+                <div class="container-bigTittle">
+                    <p>Clients</p>
+                </div>
+                <div class="table-container"></div>
+                <div class="button-container mg-y-1">
+                    <button class="button bt-green" name="inserire" type="button">Inserire</button>
+                </div>
+            </div>
+        `;
+        body.appendChild(clientCard);
+        const tableContainer = clientCard.querySelector(".table-container");
         if (!tableContainer) return;
 
         //Se aggiungiamo await aspettara che finisca per poter continuare
@@ -59,7 +72,7 @@ export class ClientUI {
                                 <td>${client.createAt}</td>
                                 <td>
                                     <div class="button-container">
-                                        <button type="button" name="vedi" class="button bt-green">vedi</button>
+                                        <button type="button" name="vedi" class="button bt-green" value="${client.id}">vedi</button>
                                         <button type="button" name="elimina" class="button bt-red">elimina</button>
                                         <button type="button" name="seleziona" class="button bt-light-blue" value="${client.id}">
                                             <img class="icon" src="../../assets/images/check.svg" alt="">
@@ -94,9 +107,10 @@ export class ClientUI {
                 const target = event?.target as HTMLElement;
                 const button = target?.closest("button");
                 if (!button) return;
-
                 switch (button.name) {
                     case "vedi":
+                        this.modalInsertClient();
+                        this.updateModalClient(parseInt(button.value));
                         break;
                     case "elimina":
                         console.log("elimina");
@@ -111,13 +125,12 @@ export class ClientUI {
                             );
                             if (client) {
                                 try {
-                                    const clientContainer =
-                                        document.getElementById("client-container");
-                                    if (clientContainer) clientContainer.style.display = "none"; //Sparirà la tabella
+                                    const clientCard =document.getElementById("client-card");
+                                    clientCard?.remove();
                                     //Qui si vedrà la tabella di hosting e il segmento di cliente!
                                     this.segmentClient(client);
-
-                                    this.hostingUI.renderHostings(client.id);
+                                    let hostingUI:HostingUI=new HostingUI(client.id);
+                                    hostingUI.renderHostings();
                                 } catch (error) {
                                     console.error("Error parsing JSON:", error);
                                 }
@@ -133,33 +146,39 @@ export class ClientUI {
     }
     /*La riga che si mostra quando si clica dentro del bottone seleziona */
     segmentClient(client: Client): void {
-        const clientSegment = document.getElementById("client-segment");
-        if (!clientSegment) return;
-        clientSegment.style.display = "block";
-        clientSegment.innerHTML = `
-            <div class="container-data">
-                <div class="title">
-                    <div>Cliente</div>
-                    <div class="button-container">
-                        <button class="button" name="back"  type="button"><-Back</button>
+        const body = document.getElementById("body");
+        if(!body) return;
+        const clientCard= document.createElement("div");
+        clientCard.id="client-card";
+        clientCard.className="card";
+        clientCard.innerHTML=
+        `
+            <div id="client-segment" class="segment">
+                <div class="container-data">
+                    <div class="title">
+                        <div>Cliente</div>
+                        <div class="button-container">
+                            <button class="button" name="back"  type="button"><-Back</button>
+                        </div>
                     </div>
-                </div>
-                <div class="container-detail">
-                    <div class="item">
-                        <div class="subtitle">Id</div>
-                        <div >${client.id}</div>
-                    </div>
-                    <div class="item">
-                        <div class="subtitle">Nome</div>
-                        <div >${client.nome}  ${client.cognome}</div>
-                    </div>
-                    <div class="item">
-                        <div class="subtitle">Email</div>
-                        <div>${client.email}</div>
+                    <div class="container-detail">
+                        <div class="item">
+                            <div class="subtitle">Id</div>
+                            <div >${client.id}</div>
+                        </div>
+                        <div class="item">
+                            <div class="subtitle">Nome</div>
+                            <div >${client.nome}  ${client.cognome}</div>
+                        </div>
+                        <div class="item">
+                            <div class="subtitle">Email</div>
+                            <div>${client.email}</div>
+                        </div>
                     </div>
                 </div>
             </div>
         `;
+        body.appendChild(clientCard);
         this.addEventListenerClientSegment();
     }
 
@@ -174,9 +193,6 @@ export class ClientUI {
                     if (!button) return;
                     switch (button.name) {
                         case "back":
-                            const clientContainer =
-                                document.getElementById("client-container");
-                            if (clientContainer) clientContainer.style.display = "block"; //Sparirà la tabella
                             this.reloadUIs();
                             break;
                         default:
@@ -215,17 +231,18 @@ export class ClientUI {
         modal.style.display="flex";
         modal.innerHTML=``;
         let contenuto=`
-            <div class="card-modal">
+            <form class="card-modal" id="clienteForm">
                 <div class="container-bigTittle">
                     <p>Nuovo Cliente</p>
+                    <input type="hidden" name="Id">
                 </div>
                 <div class="items">
                     <div class="item">
-                        <label for="">Nome</label>
+                        <label for="Nome">Nome</label>
                         <input name="Nome" type="text">
                     </div>
                     <div class="item"> 
-                        <label for="">Cognome</label>
+                        <label for="Cognome">Cognome</label>
                         <input name="Cognome" type="text">
                     </div>
                 </div>
@@ -246,28 +263,56 @@ export class ClientUI {
                     </div>
                 </div>
                 <div class="button-container mg-y-1">
-                    <button class="button bt-green" name="inserire" type="button">Inserire</button>
+                    <button class="button bt-green" name="inserire" type="button">salva</button>
                 </div>
-            </div>
+            </form>
         `;
         modal.innerHTML=contenuto;
     }
+    updateModalClient(id:number){
+        let client: Client | undefined = this.clientService.clients.find(
+            (client) => client.id === id
+        );
+        if(!client) return;
+        let form=document.getElementById("clienteForm") as HTMLFormElement;
+        if(!form) return;
+        let inputs = form.querySelectorAll("[name]");
+        if(!inputs || inputs.length==0) return;
 
-
-    openUI(){
-        const clientCard=document.getElementById(`client-card`);
-        if(clientCard)clientCard.style.display=`block`;
+        inputs.forEach(function(input){
+            if(input instanceof HTMLInputElement){
+                switch(input.name){
+                    case 'Id':
+                        input.value=client.id.toString();
+                        break;
+                    case 'Nome':
+                        input.value=client.nome;
+                        break;
+                    case 'Cognome':
+                        input.value=client.cognome;
+                        break;
+                    case 'Indirizzo':
+                        input.value=client.indirizzo;
+                        break;
+                    case 'Telefono':
+                        input.value=client.telefono;
+                        break;
+                    case 'Email':
+                        input.value=client.email;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
+        });
     }
-    reloadUIs(){
-        const clientSegment=document.getElementById("client-segment");
-        if(clientSegment)clientSegment.style.display=`none`;
-        
-        const hostingCard = document.getElementById("hosting-card");
-        if(hostingCard)hostingCard.style.display=`none`;
-        
-        const hostingSegment=document.getElementById("hosting-segment");
-        if(hostingSegment) hostingSegment.style.display="none";
 
-        this.hostingUI.reloadUIs();
+    reloadUIs(){
+        document.getElementById('client-card')?.remove();
+        document.getElementById('hosting-card')?.remove();
+        document.getElementById('website-card')?.remove();
+        document.getElementById('activity-card')?.remove();
+        this.renderClients();
     }
 }

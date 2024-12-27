@@ -12,9 +12,9 @@ export class ActivityService {
     constructor() {
         this.activities = [];
     }
-    getAllActivities(activityFilters) {
+    getAllActivities(webSiteId, activityFilters) {
         return __awaiter(this, void 0, void 0, function* () {
-            const fetchActivities = yield fetchAllActivitiesByWebSite(activityFilters);
+            const fetchActivities = yield fetchAllActivitiesByWebSite(webSiteId, activityFilters);
             if (fetchActivities) {
                 this.activities = [...fetchActivities];
                 //console.log(this.clients);

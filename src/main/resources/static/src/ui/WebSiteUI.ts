@@ -5,22 +5,36 @@ import { ActivityUI } from "./ActivityUI.js";
 
 export class WebSiteUI {
     private webSiteService: WebSiteService;
-    private activityUI: ActivityUI;
-    constructor() {
+    private hostingId:number;
+    constructor(hostingId: number) {
         this.webSiteService = new WebSiteService();
-        this.activityUI = new ActivityUI();
+        this.hostingId=hostingId;
     }
-    async renderWebSites(hostingId: number) {
-        this.openUI();
-        const hostingContainer = document.getElementById("website-container");
-        if (!hostingContainer) return;
-        hostingContainer.style.display=`block`;
-        const tableContainer = hostingContainer.querySelector(".table-container");
+    async renderWebSites() {
+        const body = document.getElementById("body");
+        if(!body) return;
+        const websiteCard= document.createElement("div");
+        websiteCard.id="website-card";
+        websiteCard.className="card";
+        websiteCard.innerHTML=
+        `
+            <div id="website-container">
+                <div class="container-bigTittle">
+                    <p>Web Site</p>
+                </div>
+                <div class="table-container"></div>
+                <div class="button-container mg-y-1">
+                    <button class="button bt-green" name="inserire" type="button">Inserire</button>
+                </div>
+            </div>
+        `;
+        body.appendChild(websiteCard);
+        const tableContainer = websiteCard.querySelector(".table-container");
         if (!tableContainer) return;
         tableContainer.innerHTML=``;
 
         //Se aggiungiamo await aspettara che finisca per poter continuare
-        const websites = await this.webSiteService.getAllWebSitesByHosting(hostingId);
+        const websites = await this.webSiteService.getAllWebSitesByHosting(this.hostingId);
         if (websites.length > 0) {
             console.log(websites.length);
             /*------------------------TABLE------------------------------- */
@@ -85,12 +99,15 @@ export class WebSiteUI {
             tableContainer.appendChild(table);
         }
         this.addEventListenerWebSiteButton(this.webSiteService);
+        this.addModalInsertWebSite();
     }
     //Aggiunge un'evento click ai buttoni che sono dentro della tabella renderClients
     addEventListenerWebSiteButton(webSiteService: WebSiteService): void {
         const element = document.getElementById("website-container");
         if (!element) return;
-        const buttonContainers = element.querySelectorAll(".button-container");
+        const tableContainer = element.querySelector(".table-container");
+        if(!tableContainer) return;
+        const buttonContainers = tableContainer.querySelectorAll(".button-container");
         buttonContainers.forEach((buttonContainer) => {
             buttonContainer?.addEventListener("click", (event) => {
                 const target = event?.target as HTMLElement;
@@ -112,14 +129,14 @@ export class WebSiteUI {
                             );
                             if (website) {
                                 try {
-                                    const websiteContainer =document.getElementById("website-container");
-                                    
-                                    if (websiteContainer) websiteContainer.style.display = "none"; //Sparirà la tabella
+                                    const websiteCard =document.getElementById("website-card");
+                                    websiteCard?.remove();
+
                                     this.segmentWebSite(website);
                                     
-                                    let activityFilters=new ActivityFilters();
-                                    activityFilters.webSiteId=website.id;
-                                    this.activityUI.renderActivities(activityFilters);
+                                    let activity:ActivityUI=new ActivityUI(website.id);
+                                    activity.renderActivities();
+                                    
                                 } catch (error) {
                                     console.error("Error parsing JSON:", error);
                                 }
@@ -135,33 +152,39 @@ export class WebSiteUI {
     }
     /*La riga che si mostra quando si clica dentro del bottone seleziona */
     segmentWebSite(website: WebSite): void {
-        const websiteSegment = document.getElementById("website-segment");
-        if (!websiteSegment) return;
-        websiteSegment.style.display = "block";
-        websiteSegment.innerHTML = `
-            <div class="container-data">
-                <div class="title">
-                    <div>WebSite</div>
-                    <div class="button-container">
-                        <button class="button" name="back"  type="button"><-Back</button>
+        const body = document.getElementById("body");
+        if(!body) return;
+        const websiteCard= document.createElement("div");
+        websiteCard.id="website-card";
+        websiteCard.className="card";
+        websiteCard.innerHTML=
+        `
+            <div id="website-segment" class="segment">
+                <div class="container-data">
+                    <div class="title">
+                        <div>WebSite</div>
+                        <div class="button-container">
+                            <button class="button" name="back"  type="button"><-Back</button>
+                        </div>
                     </div>
-                </div>
-                <div class="container-detail">
-                    <div class="item">
-                        <div class="subtitle">Id</div>
-                        <div >${website.id}</div>
-                    </div>
-                    <div class="item">
-                        <div class="subtitle">Nome</div>
-                        <div >${website.nome}</div>
-                    </div>
-                    <div class="item">
-                        <div class="subtitle">Url</div>
-                        <div>${website.url}</div>
+                    <div class="container-detail">
+                        <div class="item">
+                            <div class="subtitle">Id</div>
+                            <div >${website.id}</div>
+                        </div>
+                        <div class="item">
+                            <div class="subtitle">Nome</div>
+                            <div >${website.nome}</div>
+                        </div>
+                        <div class="item">
+                            <div class="subtitle">Url</div>
+                            <div>${website.url}</div>
+                        </div>
                     </div>
                 </div>
             </div>
         `;
+        body.appendChild(websiteCard);
         this.addEventListenerWebSiteSegment();
     }
 
@@ -177,9 +200,6 @@ export class WebSiteUI {
 
                     switch (button.name) {
                         case 'back':
-                            const websiteContainer = document.getElementById('website-container');
-                            if (websiteContainer) websiteContainer.style.display = "block";//Sparirà la tabella
-                            websiteSegment.style.display = "none";
                             this.reloadUIs();
                             break;
                         default:
@@ -193,14 +213,73 @@ export class WebSiteUI {
         }
 
     }
-    openUI(){
-        const websiteCard=document.getElementById("website-card");
-        if(websiteCard) websiteCard.style.display="block";
+    /*Questo buttone ti permette aprire il modale per inserire un nuovo Cliente! */
+    addModalInsertWebSite(){
+        let hostingCard=document.getElementById("website-card");
+        let buttons=hostingCard?.querySelectorAll('[name]');
+        buttons?.forEach((button) => {
+            let btn = button as HTMLInputElement;
+            if(btn.name=='inserire'){
+                btn.addEventListener('click',() => {
+                    this.modalInsertWebSite();
+                });
+            }
+        });
     }
+    modalInsertWebSite(){
+        let modal=document.getElementById('modal');
+        /*In caso fai clic fuori del modal, si chiudera */
+        modal?.addEventListener('click',(event)=>{
+            if(event.target === modal){
+                modal.style.display="none";
+                modal.innerHTML=``;
+            }
+        });
+        if(!modal) return;
+        modal.style.display="flex";
+        modal.innerHTML=``;
+        let contenuto=`
+            <div class="card-modal">
+                <div class="container-bigTittle">
+                    <p>Nuovo WebSite</p>
+                </div>
+                <div class="items">
+                    <div class="item">
+                        <label for="">nome</label>
+                        <input name="nome" type="text">
+                    </div>
+                </div>
+                <div class="items">
+                    <div class="item">
+                        <label for="url">url</label>
+                        <input name="url" type="text">
+                    </div>
+                </div>
+                <div class="items">
+                    <div class="item">
+                        <label for="dataAggiornamento">dataAggiornamento</label>
+                        <input name="dataAggiornamento" type="date">
+                    </div>
+                    <div class="item">
+                        <label for="dataBackup">dataBackup</label>
+                        <input name="dataBackup" type="Date">
+                    </div>
+                </div>
+                <div class="text-container">
+                    <label for="descrizione">descrizione</label>
+                    <textarea name="descrizione" type="text" id="descrizione"></textarea>
+                </div>
+                <div class="button-container mg-y-1">
+                    <button class="button bt-green" name="inserire" type="button">Inserire</button>
+                </div>
+            </div>
+        `;
+        modal.innerHTML=contenuto;
+    }
+
     reloadUIs(){
-        const activityCard = document.getElementById("activity-card");
-        if(activityCard)activityCard.style.display=`none`;
-        const activitySegment=document.getElementById("activity-segment");
-        if(activitySegment) activitySegment.style.display="none";
+        document.getElementById('website-card')?.remove();
+        document.getElementById('activity-card')?.remove();
+        this.renderWebSites();
     }
 }

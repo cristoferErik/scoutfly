@@ -20,6 +20,7 @@ public class ActivityServices {
     public Page<Activity>findAllPageActivities
     (
         Pageable pageable,
+        Long webSiteId,
         ActivityInt.ActivityFilters activityFilters
     ){
         
@@ -28,7 +29,7 @@ public class ActivityServices {
         activityFilters.getStatus(),
         activityFilters.getDataIniziale(),
         activityFilters.getDataFinale(),
-        activityFilters.getWebSiteId()
+        webSiteId
         );
     }
 }

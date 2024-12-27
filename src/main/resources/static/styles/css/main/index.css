@@ -313,7 +313,7 @@ template {
 /*Color of fields*/
 /**/
 .card {
-  display: none;
+  display: block;
   background: #1b2e50;
   padding: 1rem;
   margin: 2rem;
@@ -395,15 +395,18 @@ template {
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
 }
 .modal .card-modal {
   position: fixed;
-  margin-top: 20rem;
+  margin-top: 10rem;
   width: 90rem;
   z-index: 1000;
   background: #1b2e50;
   padding: 1rem;
+  height: auto;
+  overflow: auto;
 }
 .modal .card-modal .items {
   display: flex;
@@ -414,20 +417,24 @@ template {
   display: flex;
   width: 100%;
   align-items: center;
-  background-color: #3b4853;
 }
 .modal .card-modal .items .item label {
   width: auto;
   padding: 1rem 1rem;
   background-color: #517b74;
 }
-.modal .card-modal .items .item input[type=text] {
+.modal .card-modal .items .item input {
   flex: 1;
   width: 100%;
   padding: 1rem 0.5rem;
   color: #e8ebf0;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: #3b4853;
   border: none;
+  outline: none;
+}
+.modal .card-modal .items .item input:-webkit-autofill {
+  background-color: #3b4853;
+  color: #e8ebf0;
   outline: none;
 }
 @media (max-width: 650px) {
@@ -440,10 +447,52 @@ template {
     margin: 1rem 0rem;
   }
 }
+.modal .card-modal .text-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.modal .card-modal .text-container label {
+  width: auto;
+  padding: 1rem 1rem;
+  background-color: #517b74;
+  width: 100%;
+}
+.modal .card-modal .text-container textarea {
+  width: 100%;
+  margin-top: 0.5rem;
+  min-height: 8rem;
+  resize: vertical;
+  min-height: 10rem;
+  max-height: 30rem;
+  min-width: 100%;
+  max-width: 100%;
+  padding: 1rem 0.5rem;
+  color: #e8ebf0;
+  background-color: #3b4853;
+  border: none;
+  outline: none;
+}
+.modal .card-modal .text-container textarea:-webkit-autofill {
+  background-color: #3b4853;
+  color: #e8ebf0;
+  outline: none;
+}
 @media (max-width: 920px) {
   .modal .card-modal {
     width: 100%;
   }
+}
+
+.dropdown {
+  flex: 1;
+  width: 100%;
+  padding: 1rem 0.5rem;
+  color: #e8ebf0;
+  background-color: #3b4853;
+  border: none;
+  outline: none;
 }
 
 /* roboto-regular - latin */
@@ -583,7 +632,6 @@ li {
 }
 
 .segment {
-  display: none;
   width: 100%;
   min-width: 90rem;
   justify-content: center;
@@ -593,6 +641,20 @@ li {
   .segment {
     min-width: 0rem;
   }
+}
+
+label {
+  letter-spacing: 0.05rem;
+  text-align: center;
+}
+
+.first-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 100%;
 }
 
 .card-email {

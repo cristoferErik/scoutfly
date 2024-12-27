@@ -7,24 +7,44 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { ActivityFilters, EnumCategoria, EnumStatus } from "../app/models/Activity.js";
 import { ActivityService } from "../app/services/ActivityService.js";
 export class ActivityUI {
-    constructor() {
+    constructor(webSiteId) {
+        this.webSiteId = webSiteId;
         this.activityService = new ActivityService();
     }
-    renderActivities(activityFilters) {
+    renderActivities() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.openUI();
-            const activityContainer = document.getElementById("activity-container");
-            if (!activityContainer)
+            let activityFilters = new ActivityFilters();
+            const body = document.getElementById("body");
+            if (!body)
                 return;
-            activityContainer.style.display = `block`;
-            const tableContainer = activityContainer.querySelector(".table-container");
+            const activityCard = document.createElement("div");
+            activityCard.id = "activity-card";
+            activityCard.className = "card";
+            activityCard.innerHTML =
+                `
+                <div id="activity-container">
+                    <div class="container-bigTittle">
+                        <p>Attivita</p>
+                    </div>
+                    <div class="container-parameters">
+                        <p>Parametri di ricerca</p>
+                    </div>
+                    <div class="table-container"></div>
+                    <div class="button-container mg-y-1">
+                        <button class="button bt-green" name="inserire" type="button">Inserire</button>
+                    </div>
+                </div>
+            `;
+            body.appendChild(activityCard);
+            const tableContainer = activityCard.querySelector(".table-container");
             if (!tableContainer)
                 return;
             tableContainer.innerHTML = ``;
             //Se aggiungiamo await aspettara che finisca per poter continuare
-            const activities = yield this.activityService.getAllActivities(activityFilters);
+            const activities = yield this.activityService.getAllActivities(this.webSiteId, activityFilters);
             if (activities.length > 0) {
                 console.log(activities.length);
                 /*------------------------TABLE------------------------------- */
@@ -92,6 +112,7 @@ export class ActivityUI {
                 tableContainer.appendChild(table);
             }
             this.addEventListenerActivityButton();
+            this.addModalInsertActivity();
         });
     }
     //Aggiunge un'evento click ai buttoni che sono dentro della tabella renderClients
@@ -99,7 +120,10 @@ export class ActivityUI {
         const element = document.getElementById("activity-container");
         if (!element)
             return;
-        const buttonContainers = element.querySelectorAll(".button-container");
+        const tableContainer = element.querySelector(".table-container");
+        if (!tableContainer)
+            return;
+        const buttonContainers = tableContainer.querySelectorAll(".button-container");
         buttonContainers.forEach((buttonContainer) => {
             buttonContainer === null || buttonContainer === void 0 ? void 0 : buttonContainer.addEventListener("click", (event) => {
                 const target = event === null || event === void 0 ? void 0 : event.target;
@@ -119,9 +143,107 @@ export class ActivityUI {
             });
         });
     }
-    openUI() {
-        const websiteCard = document.getElementById("activity-card");
-        if (websiteCard)
-            websiteCard.style.display = "block";
+    /*Questo buttone ti permette aprire il modale per inserire un nuovo Cliente! */
+    addModalInsertActivity() {
+        let activityCard = document.getElementById("activity-card");
+        let buttons = activityCard === null || activityCard === void 0 ? void 0 : activityCard.querySelectorAll('[name]');
+        buttons === null || buttons === void 0 ? void 0 : buttons.forEach((button) => {
+            let btn = button;
+            if (btn.name == 'inserire') {
+                btn.addEventListener('click', () => {
+                    this.modalInsertActivity();
+                });
+            }
+        });
+    }
+    modalInsertActivity() {
+        let modal = document.getElementById('modal');
+        /*In caso fai clic fuori del modal, si chiudera */
+        modal === null || modal === void 0 ? void 0 : modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                modal.innerHTML = ``;
+            }
+        });
+        if (!modal)
+            return;
+        modal.style.display = "flex";
+        modal.innerHTML = ``;
+        let contenuto = `
+            <div class="card-modal">
+                <div class="container-bigTittle">
+                    <p>Nuova Attività</p>
+                </div>
+                <div class="items">
+                    <div class="item">
+                        <label for="">Nome</label>
+                        <input name="Nome" type="text">
+                    </div>
+                    <div class="item"> 
+                        <label for="descrizione">Descrizione</label>
+                        <input name="descrizione" type="text">
+                    </div>
+                </div>
+                <div class="items">
+                    <div class="item">
+                        <label for="categoria">categoria</label>
+                        <select class="dropdown" name="categoria" id="categoria">
+                           
+                        </select>
+                    </div>
+                    <div class="item">
+                        <label for="status">status</label>
+                        <select class="dropdown" name="status" id="status">
+                        </select>
+                    </div>
+                </div>
+                <div class="items">
+                    <div class="item">
+                        <label for="dataLimite">dataLimite</label>
+                        <input name="dataLimite" type="Date">
+                    </div>
+                    <div class="item">
+                        <label for="durataOre">durataOre</label>
+                        <input name="durataOre" type="number">
+                    </div>
+                    <div class="item">
+                        <label for="prezzo">prezzo</label>
+                        <input name="prezzo" type="number">
+                    </div>
+                </div>
+                <div class="button-container mg-y-1">
+                    <button class="button bt-green" name="inserire" type="button">Inserire</button>
+                </div>
+            </div>
+        `;
+        modal.innerHTML = contenuto;
+        this.filldropdownActivity();
+    }
+    filldropdownActivity() {
+        let categoria = document.getElementById("categoria");
+        let status = document.getElementById("status");
+        if (!categoria)
+            return;
+        if (!status)
+            return;
+        const enumCategoria = Object.keys(EnumCategoria);
+        const enumStatus = Object.keys(EnumStatus);
+        enumCategoria.forEach((value) => {
+            categoria.innerHTML +=
+                `
+                <option value="${value}">${value}</option>
+            `;
+        });
+        enumStatus.forEach((value) => {
+            status.innerHTML +=
+                `
+                <option value="${value}">${value}</option>
+            `;
+        });
+    }
+    reloadUIs() {
+        var _a;
+        (_a = document.getElementById('activity-card')) === null || _a === void 0 ? void 0 : _a.remove();
+        this.renderActivities();
     }
 }

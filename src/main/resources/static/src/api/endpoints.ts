@@ -72,10 +72,10 @@ export async function fetchAllWebSiteByHosting<T>(hostingId:number): Promise<T| 
     }
     return data;
 }
-export async function fetchAllActivitiesByWebSite<T>(activityFilters:ActivityFilters): Promise<T| null>{
+export async function fetchAllActivitiesByWebSite<T>(webSiteId:number,activityFilters:ActivityFilters): Promise<T| null>{
     let data:T|null=null;
     try {
-        const response = await fetch(`${GET_ACTIVITIES_BY_WEBSITE}`, {
+        const response = await fetch(`${GET_ACTIVITIES_BY_WEBSITE}/${webSiteId}`, {
             method: 'POST', // Método de la solicitud
             headers: {
                 'Content-Type': 'application/json', // Cabecera
