@@ -9,10 +9,13 @@
         align-items: center;
         font-size: 2rem;
         text-align: center;
-        margin: 1rem;
+        margin: 0.25rem;
         padding: 1rem;
-        width: 4rem;
-        height: 4rem;
+        width: auto;
+        max-width: 4rem;
+        min-width: 2rem;
+        max-height: 4rem;
+        min-height: 2rem;
         color:#d8dde4;
         background-color: #24375b;
         border-color: #8e9195;
@@ -22,7 +25,8 @@
         .icon{
             display: flex;
             justify-content: center;
-            width:100%;
+            max-width:3rem;
+            min-width:1rem;
             object-fit: contain; 
         }
     }
