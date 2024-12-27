@@ -2,13 +2,14 @@
 import { ClientService } from "../app/services/ClientService.js";
 import { Client } from "../app/models/Client.js";
 import { HostingUI } from "./HostingUI.js";
+import { Pagination } from "../modules/Pagination.js";
 
 export class ClientUI {
     private clientService: ClientService;
     constructor() {
         this.clientService = new ClientService();
     }
-    async renderClients() {
+    async renderClients(parameters:string | null) {
         const body = document.getElementById("body");
         if(!body) return;
         const clientCard= document.createElement("div");
@@ -21,6 +22,7 @@ export class ClientUI {
                     <p>Clients</p>
                 </div>
                 <div class="table-container"></div>
+                <div class="pagination"></div>
                 <div class="button-container mg-y-1">
                     <button class="button bt-green" name="inserire" type="button">Inserire</button>
                 </div>
@@ -31,7 +33,7 @@ export class ClientUI {
         if (!tableContainer) return;
 
         //Se aggiungiamo await aspettara che finisca per poter continuare
-        const clients = await this.clientService.getAllClients();
+        const clients = await this.clientService.getAllClients(parameters);
         if (clients.length > 0) {
             /*------------------------TABLE------------------------------- */
             const table = document.createElement("table");
@@ -94,6 +96,27 @@ export class ClientUI {
 
         this.addEventListenerClientButton(this.clientService);
         this.addModalInsertClient();
+        this.addPagination();
+    }
+    //Qui aggiungiamo la impagionazione
+    addPagination(){
+        let linkPages=this.clientService.pageLinks;
+        if(!linkPages) return;
+        let clientContainer = document.getElementById("client-container");
+        if (!clientContainer) return;
+        Pagination(linkPages,clientContainer);
+        this.addEventListenerToPagination(clientContainer);
+    }
+    //Inseriamo un'evento alla paginazione
+    addEventListenerToPagination(clientContainer:HTMLElement){
+        let activeLinks=clientContainer.querySelectorAll(".active");
+        activeLinks.forEach(link=>{
+            link.addEventListener("click",()=>{
+                const value=link.getAttribute("value");
+                this.removeUIs();
+                this.renderClients(value);
+            })
+        });
     }
     //Aggiunge un'evento click ai buttoni che sono dentro della tabella renderClients
     addEventListenerClientButton(clientService: ClientService): void {
@@ -193,6 +216,7 @@ export class ClientUI {
                     if (!button) return;
                     switch (button.name) {
                         case "back":
+                            this.removeUIs();
                             this.reloadUIs();
                             break;
                         default:
@@ -308,11 +332,13 @@ export class ClientUI {
         });
     }
 
-    reloadUIs(){
+    removeUIs(){
         document.getElementById('client-card')?.remove();
         document.getElementById('hosting-card')?.remove();
         document.getElementById('website-card')?.remove();
         document.getElementById('activity-card')?.remove();
-        this.renderClients();
+    }
+    reloadUIs(){
+        this.renderClients(null);
     }
 }

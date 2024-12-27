@@ -13,11 +13,14 @@ export const GET_HOSTINGS_BY_CLIENT = API_BASE_URL + '/hostings';
 export const GET_WEBSITES_BY_HOSTING = API_BASE_URL + '/websites';
 export const GET_ACTIVITIES_BY_WEBSITE = API_BASE_URL + '/activities';
 //Con questo ottengo i dati che vengo del backend
-export function fetchAllClients() {
+export function fetchAllClients(parameters) {
     return __awaiter(this, void 0, void 0, function* () {
-        let data = null;
+        let clientResponse = null;
         try {
-            const response = yield fetch(GET_USERS, {
+            if (!parameters) {
+                parameters = GET_USERS;
+            }
+            const response = yield fetch(parameters, {
                 method: 'GET', // Método de la solicitud
                 headers: {
                     'Content-Type': 'application/json', // Cabecera
@@ -28,12 +31,12 @@ export function fetchAllClients() {
                 throw new Error('HTTP Error: ' + response.statusText);
             }
             const responseData = yield response.json();
-            data = responseData.body;
+            clientResponse = responseData;
         }
         catch (error) {
             console.error('Fetch Error:', error);
         }
-        return data;
+        return clientResponse;
     });
 }
 export function fetchAllHostingsByClient(clientId) {

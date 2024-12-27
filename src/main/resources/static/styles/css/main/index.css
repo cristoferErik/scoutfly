@@ -495,6 +495,44 @@ template {
   outline: none;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+}
+.pagination .page-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  text-align: center;
+  margin: 1rem;
+  padding: 1rem;
+  width: 4rem;
+  height: 4rem;
+  color: #d8dde4;
+  background-color: #24375b;
+  border-color: #8e9195;
+  border-style: solid;
+  border-width: 2px;
+  cursor: pointer;
+}
+.pagination .page-link .icon {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  object-fit: contain;
+}
+.pagination .actual {
+  background: #324c60;
+  cursor: default;
+}
+.pagination .opaque {
+  background: #0d161d;
+  cursor: default;
+}
+
 /* roboto-regular - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */

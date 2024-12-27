@@ -1,3 +1,4 @@
+import { ClientResponse } from "../app/interfaces/ClientInt";
 import { Activity, ActivityFilters } from "../app/models/Activity";
 import { Client } from "../app/models/Client";
 
@@ -9,10 +10,13 @@ export const GET_WEBSITES_BY_HOSTING=API_BASE_URL + '/websites';
 export const GET_ACTIVITIES_BY_WEBSITE=API_BASE_URL + '/activities';
 
 //Con questo ottengo i dati che vengo del backend
-export async function fetchAllClients<T>(): Promise<T | null> {
-    let data:T|null=null;
+export async function fetchAllClients(parameters:string |null): Promise<ClientResponse | null> {
+    let clientResponse:ClientResponse | null=null;
     try {
-        const response = await fetch(GET_USERS, {
+        if(!parameters){
+            parameters=GET_USERS;
+        }
+        const response = await fetch(parameters, {
             method: 'GET', // Método de la solicitud
             headers: {
                 'Content-Type': 'application/json', // Cabecera
@@ -24,11 +28,11 @@ export async function fetchAllClients<T>(): Promise<T | null> {
             throw new Error('HTTP Error: ' + response.statusText);
         } 
         const responseData= await response.json();
-        data = responseData.body;
+        clientResponse = responseData;
     } catch (error) {
         console.error('Fetch Error:', error);
     }
-    return data;
+    return clientResponse;
 }
 export async function fetchAllHostingsByClient<T>(clientId:number): Promise<T | null> {
     let data:T|null=null;

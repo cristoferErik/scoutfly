@@ -10,11 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 /*Questo script serve per caricare i dati quando si apra una finestra! */
 import { ClientService } from "../app/services/ClientService.js";
 import { HostingUI } from "./HostingUI.js";
+import { Pagination } from "../modules/Pagination.js";
 export class ClientUI {
     constructor() {
         this.clientService = new ClientService();
     }
-    renderClients() {
+    renderClients(parameters) {
         return __awaiter(this, void 0, void 0, function* () {
             const body = document.getElementById("body");
             if (!body)
@@ -29,6 +30,7 @@ export class ClientUI {
                     <p>Clients</p>
                 </div>
                 <div class="table-container"></div>
+                <div class="pagination"></div>
                 <div class="button-container mg-y-1">
                     <button class="button bt-green" name="inserire" type="button">Inserire</button>
                 </div>
@@ -39,7 +41,7 @@ export class ClientUI {
             if (!tableContainer)
                 return;
             //Se aggiungiamo await aspettara che finisca per poter continuare
-            const clients = yield this.clientService.getAllClients();
+            const clients = yield this.clientService.getAllClients(parameters);
             if (clients.length > 0) {
                 /*------------------------TABLE------------------------------- */
                 const table = document.createElement("table");
@@ -101,6 +103,29 @@ export class ClientUI {
             }
             this.addEventListenerClientButton(this.clientService);
             this.addModalInsertClient();
+            this.addPagination();
+        });
+    }
+    //Qui aggiungiamo la impagionazione
+    addPagination() {
+        let linkPages = this.clientService.pageLinks;
+        if (!linkPages)
+            return;
+        let clientContainer = document.getElementById("client-container");
+        if (!clientContainer)
+            return;
+        Pagination(linkPages, clientContainer);
+        this.addEventListenerToPagination(clientContainer);
+    }
+    //Inseriamo un'evento alla paginazione
+    addEventListenerToPagination(clientContainer) {
+        let activeLinks = clientContainer.querySelectorAll(".active");
+        activeLinks.forEach(link => {
+            link.addEventListener("click", () => {
+                const value = link.getAttribute("value");
+                this.removeUIs();
+                this.renderClients(value);
+            });
         });
     }
     //Aggiunge un'evento click ai buttoni che sono dentro della tabella renderClients
@@ -204,6 +229,7 @@ export class ClientUI {
                         return;
                     switch (button.name) {
                         case "back":
+                            this.removeUIs();
                             this.reloadUIs();
                             break;
                         default:
@@ -319,12 +345,14 @@ export class ClientUI {
             }
         });
     }
-    reloadUIs() {
+    removeUIs() {
         var _a, _b, _c, _d;
         (_a = document.getElementById('client-card')) === null || _a === void 0 ? void 0 : _a.remove();
         (_b = document.getElementById('hosting-card')) === null || _b === void 0 ? void 0 : _b.remove();
         (_c = document.getElementById('website-card')) === null || _c === void 0 ? void 0 : _c.remove();
         (_d = document.getElementById('activity-card')) === null || _d === void 0 ? void 0 : _d.remove();
-        this.renderClients();
+    }
+    reloadUIs() {
+        this.renderClients(null);
     }
 }

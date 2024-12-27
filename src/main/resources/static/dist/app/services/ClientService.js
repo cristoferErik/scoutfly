@@ -12,12 +12,12 @@ export class ClientService {
     constructor() {
         this.clients = [];
     }
-    getAllClients() {
+    getAllClients(parameters) {
         return __awaiter(this, void 0, void 0, function* () {
-            const fetchClients = yield fetchAllClients();
+            const fetchClients = yield fetchAllClients(parameters);
             if (fetchClients) {
-                this.clients = [...fetchClients];
-                //console.log(this.clients);
+                this.clients = [...fetchClients.body];
+                this.pageLinks = Object.assign({}, fetchClients.pageLinks);
             }
             else {
                 console.log('Error al cargar los usuarios.');

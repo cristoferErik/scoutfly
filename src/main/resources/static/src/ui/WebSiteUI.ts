@@ -101,6 +101,9 @@ export class WebSiteUI {
         this.addEventListenerWebSiteButton(this.webSiteService);
         this.addModalInsertWebSite();
     }
+    addPagination(){
+        
+    }
     //Aggiunge un'evento click ai buttoni che sono dentro della tabella renderClients
     addEventListenerWebSiteButton(webSiteService: WebSiteService): void {
         const element = document.getElementById("website-container");
