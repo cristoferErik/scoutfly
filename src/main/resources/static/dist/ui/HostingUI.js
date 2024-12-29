@@ -206,6 +206,7 @@ export class HostingUI {
                     switch (button.name) {
                         case 'back':
                             this.reloadUIs();
+                            this.reloadUIs();
                             break;
                         default:
                             console.log("Azione sconosciuta");
@@ -282,11 +283,12 @@ export class HostingUI {
             `;
         modal.innerHTML = contenuto;
     }
-    reloadUIs() {
-        var _a, _b, _c;
+    removeUIs() {
+        var _a, _b;
         (_a = document.getElementById('hosting-card')) === null || _a === void 0 ? void 0 : _a.remove();
         (_b = document.getElementById('website-card')) === null || _b === void 0 ? void 0 : _b.remove();
-        (_c = document.getElementById('activity-card')) === null || _c === void 0 ? void 0 : _c.remove();
+    }
+    reloadUIs() {
         this.renderHostings();
     }
 }

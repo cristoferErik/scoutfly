@@ -175,3 +175,29 @@
     border: none;
     outline: none; 
 }
+/*Parameters di ricerca*/
+.parameters{
+    .container{
+        display: flex;
+        .item{
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-content: center;
+            padding: 1rem 0rem;
+            label{
+                padding: 1rem 2rem;
+            }
+            input{
+                flex:1;
+            }
+            
+        }
+        .button-container{
+            padding: 0 1rem;
+            .button{
+                width: 10rem;
+            }
+        }
+    }
+}

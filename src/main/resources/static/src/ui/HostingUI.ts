@@ -199,6 +199,7 @@ export class HostingUI {
                     switch (button.name) {
                         case 'back':
                             this.reloadUIs();
+                            this.reloadUIs();
                             break;
                         default:
                             console.log("Azione sconosciuta");
@@ -275,10 +276,11 @@ export class HostingUI {
             modal.innerHTML=contenuto;
         }
 
-    reloadUIs(){
+    removeUIs(){
         document.getElementById('hosting-card')?.remove();
         document.getElementById('website-card')?.remove();
-        document.getElementById('activity-card')?.remove();
+    }
+    reloadUIs(){
         this.renderHostings();
     }
 }

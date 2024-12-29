@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 public class PageRender {
     private Integer currentPage;
     private Integer totalPages;
@@ -35,13 +33,13 @@ public class PageRender {
         //System.out.println("total_page--->"+totalPages);
         return pageNumbers;
     }
-    public Map<String,Object> generatePageLink(String basePath,List<Integer> listNumbers){
+    public Map<String,Object> generatePageLink(String url,List<Integer> listNumbers){
         List<Map<String,Object>> response=new ArrayList<>();
 
         for (Integer pageNumber : listNumbers) {
             Map<String,Object> pageLink = new HashMap<>();
             pageLink.put("page", pageNumber+1);
-            pageLink.put("link", this.generatePageLink(basePath,pageNumber, size));
+            pageLink.put("link", this.generatePath(url,pageNumber, size));
             if(Objects.equals(pageNumber, currentPage)){
                 pageLink.put("actual",true);
             }
@@ -51,20 +49,24 @@ public class PageRender {
         Map<String,Object> page = new HashMap<>();
         
         if(currentPage!=0){
-            page.put("first",this.generatePageLink(basePath,0,this.size));
-            page.put("prev",this.generatePageLink(basePath,this.currentPage-1,this.size));
+            page.put("first",this.generatePath(url,0,this.size));
+            page.put("prev",this.generatePath(url,this.currentPage-1,this.size));
         }
         if(!Objects.equals(currentPage, totalPages)){
-            page.put("next",this.generatePageLink(basePath,this.currentPage+1,this.size));
-            page.put("last",this.generatePageLink(basePath,this.totalPages,this.size));
+            page.put("next",this.generatePath(url,this.currentPage+1,this.size));
+            page.put("last",this.generatePath(url,this.totalPages,this.size));
         }
         page.put("numbers",response);
         return page;
     }
-    public String generatePageLink(String basePath,Integer pageNumber, Integer size) {
-        return ServletUriComponentsBuilder.fromPath(basePath)
-                .replaceQueryParam("page", pageNumber)
-                .replaceQueryParam("size", size)
-                .toUriString();
+    public String generatePath(String url,Integer pageNumber, Integer size) {
+        StringBuilder sb=new StringBuilder(url);
+        sb.append("&");
+        sb.append("page=");
+        sb.append(pageNumber);
+        sb.append("&");
+        sb.append("size=");
+        sb.append(size);
+        return sb.toString();
     }
 }

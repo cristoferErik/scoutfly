@@ -16,7 +16,7 @@ public class ClientServices {
     private ClientRepository clientRepository;
 
     @Transactional(readOnly=true)
-    public Page<Client>findAllPageClients(Pageable pageable){
-        return this.clientRepository.findAll(pageable);
+    public Page<Client>findAllPageClients(String name,String email,Pageable pageable){
+        return this.clientRepository.findAllByParameters(name,email,pageable);
     }
 }

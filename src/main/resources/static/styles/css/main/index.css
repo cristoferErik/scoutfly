@@ -495,6 +495,30 @@ template {
   outline: none;
 }
 
+/*Parameters di ricerca*/
+.parameters .container {
+  display: flex;
+}
+.parameters .container .item {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-content: center;
+  padding: 1rem 0rem;
+}
+.parameters .container .item label {
+  padding: 1rem 2rem;
+}
+.parameters .container .item input {
+  flex: 1;
+}
+.parameters .container .button-container {
+  padding: 0 1rem;
+}
+.parameters .container .button-container .button {
+  width: 10rem;
+}
+
 .pagination {
   display: flex;
   justify-content: center;

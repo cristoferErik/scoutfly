@@ -30,17 +30,33 @@ public class ClientRestController {
     @GetMapping("/clients")
     public ResponseEntity<?> findAllPageClients(       
         @RequestParam (value= "page",defaultValue="0") Integer page,
-        @RequestParam (value="size",defaultValue="10") Integer size){
+        @RequestParam (value="size",defaultValue="10") Integer size,
+        @RequestParam(value="email",defaultValue="") String email,
+        @RequestParam(value="nome",defaultValue="") String nome){
         Map<String,Object> response= new HashMap<>();
         Pageable pageable = PageRequest.of(page,size);
-        Page<Client> clientsPage=this.clientService.findAllPageClients(pageable);
+        Page<Client> clientsPage=this.clientService.findAllPageClients(nome,email,pageable);
         PageRender pageRender = new PageRender(page,clientsPage.getTotalPages(),size);
         List<Integer> listNumbers=pageRender.getPageNumbers();
-        Map<String,Object> pageLinks = pageRender.generatePageLink(Variables.baseUrl+"/clients",listNumbers);
+        System.out.println("nome"+nome);
+        System.out.println("email"+email);
+        String paramPath=buildParams(Variables.baseUrl+"/clients", email, nome);
+        Map<String,Object> pageLinks = pageRender.generatePageLink(paramPath,listNumbers);
         response.put("status","success");
         response.put("body",clientsPage.getContent());
         response.put("pageLinks",pageLinks);
         //response.put("pageLinks", pageLinks);
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    public String buildParams(String baseUrl,String email,String nome){
+        StringBuilder sb=new StringBuilder(baseUrl);
+        sb.append("?");
+        sb.append("email=");
+        sb.append(email);
+        sb.append("&");
+        sb.append("nome=");
+        sb.append(nome);
+        return sb.toString();
     }
 }

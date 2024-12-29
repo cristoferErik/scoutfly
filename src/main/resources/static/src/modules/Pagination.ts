@@ -5,7 +5,7 @@ let imageUrl: string = "/assets/images/pagination";
 export function Pagination(pagesLinks:pageLinks,container:HTMLElement) {
     let pagination = container.querySelector(".pagination");
     if (!pagination) return;
-
+    pagination.innerHTML=``;
     if (pagesLinks.first) {
         const first = document.createElement("button");
         first.className = "page-link active";

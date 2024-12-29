@@ -4,7 +4,7 @@ import { Client } from "../app/models/Client";
 
 export const API_BASE_URL = '/scoutfly/api';
 
-export const GET_USERS= API_BASE_URL +'/clients';
+export const GET_CLIENTS= API_BASE_URL +'/clients';
 export const GET_HOSTINGS_BY_CLIENT=API_BASE_URL + '/hostings';
 export const GET_WEBSITES_BY_HOSTING=API_BASE_URL + '/websites';
 export const GET_ACTIVITIES_BY_WEBSITE=API_BASE_URL + '/activities';
@@ -14,7 +14,7 @@ export async function fetchAllClients(parameters:string |null): Promise<ClientRe
     let clientResponse:ClientResponse | null=null;
     try {
         if(!parameters){
-            parameters=GET_USERS;
+            parameters=GET_CLIENTS;
         }
         const response = await fetch(parameters, {
             method: 'GET', // Método de la solicitud

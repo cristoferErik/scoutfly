@@ -132,14 +132,8 @@ export class WebSiteUI {
                             );
                             if (website) {
                                 try {
-                                    const websiteCard =document.getElementById("website-card");
-                                    websiteCard?.remove();
-
+                                    document.getElementById("website-card")?.remove();
                                     this.segmentWebSite(website);
-                                    
-                                    let activity:ActivityUI=new ActivityUI(website.id);
-                                    activity.renderActivities();
-                                    
                                 } catch (error) {
                                     console.error("Error parsing JSON:", error);
                                 }
@@ -282,7 +276,6 @@ export class WebSiteUI {
 
     reloadUIs(){
         document.getElementById('website-card')?.remove();
-        document.getElementById('activity-card')?.remove();
         this.renderWebSites();
     }
 }

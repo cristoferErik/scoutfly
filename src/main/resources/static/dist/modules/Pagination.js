@@ -3,6 +3,7 @@ export function Pagination(pagesLinks, container) {
     let pagination = container.querySelector(".pagination");
     if (!pagination)
         return;
+    pagination.innerHTML = ``;
     if (pagesLinks.first) {
         const first = document.createElement("button");
         first.className = "page-link active";

@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { WebSiteService } from "../app/services/WebSiteService.js";
-import { ActivityUI } from "./ActivityUI.js";
 export class WebSiteUI {
     constructor(hostingId) {
         this.webSiteService = new WebSiteService();
@@ -121,6 +120,7 @@ export class WebSiteUI {
         const buttonContainers = tableContainer.querySelectorAll(".button-container");
         buttonContainers.forEach((buttonContainer) => {
             buttonContainer === null || buttonContainer === void 0 ? void 0 : buttonContainer.addEventListener("click", (event) => {
+                var _a;
                 const target = event === null || event === void 0 ? void 0 : event.target;
                 const button = target === null || target === void 0 ? void 0 : target.closest("button");
                 if (!button)
@@ -139,11 +139,8 @@ export class WebSiteUI {
                             let website = webSiteService.websites.find((website) => website.id === websiteId);
                             if (website) {
                                 try {
-                                    const websiteCard = document.getElementById("website-card");
-                                    websiteCard === null || websiteCard === void 0 ? void 0 : websiteCard.remove();
+                                    (_a = document.getElementById("website-card")) === null || _a === void 0 ? void 0 : _a.remove();
                                     this.segmentWebSite(website);
-                                    let activity = new ActivityUI(website.id);
-                                    activity.renderActivities();
                                 }
                                 catch (error) {
                                     console.error("Error parsing JSON:", error);
@@ -286,9 +283,8 @@ export class WebSiteUI {
         modal.innerHTML = contenuto;
     }
     reloadUIs() {
-        var _a, _b;
+        var _a;
         (_a = document.getElementById('website-card')) === null || _a === void 0 ? void 0 : _a.remove();
-        (_b = document.getElementById('activity-card')) === null || _b === void 0 ? void 0 : _b.remove();
         this.renderWebSites();
     }
 }

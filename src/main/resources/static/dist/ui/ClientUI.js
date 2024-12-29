@@ -11,11 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { ClientService } from "../app/services/ClientService.js";
 import { HostingUI } from "./HostingUI.js";
 import { Pagination } from "../modules/Pagination.js";
+import { GET_CLIENTS } from "../api/endpoints.js";
 export class ClientUI {
     constructor() {
         this.clientService = new ClientService();
     }
-    renderClients(parameters) {
+    renderClients() {
         return __awaiter(this, void 0, void 0, function* () {
             const body = document.getElementById("body");
             if (!body)
@@ -29,6 +30,7 @@ export class ClientUI {
                 <div class="container-bigTittle">
                     <p>Clients</p>
                 </div>
+                <div class="parameters"></div>
                 <div class="table-container"></div>
                 <div class="pagination"></div>
                 <div class="button-container mg-y-1">
@@ -37,9 +39,20 @@ export class ClientUI {
             </div>
         `;
             body.appendChild(clientCard);
+            this.addFieldParameters();
+            yield this.renderTableClients(null);
+            this.addModalInsertClient();
+        });
+    }
+    renderTableClients(parameters) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const clientCard = document.getElementById("client-card");
+            if (!clientCard)
+                return;
             const tableContainer = clientCard.querySelector(".table-container");
             if (!tableContainer)
                 return;
+            tableContainer.innerHTML = ``;
             //Se aggiungiamo await aspettara che finisca per poter continuare
             const clients = yield this.clientService.getAllClients(parameters);
             if (clients.length > 0) {
@@ -102,8 +115,66 @@ export class ClientUI {
                 tableContainer.appendChild(table);
             }
             this.addEventListenerClientButton(this.clientService);
-            this.addModalInsertClient();
             this.addPagination();
+        });
+    }
+    addFieldParameters() {
+        let clientCard = document.getElementById("client-card");
+        if (!clientCard)
+            return;
+        let parameters = clientCard.querySelector(".parameters");
+        if (!parameters)
+            return;
+        parameters.innerHTML =
+            `
+                <div class="container">
+                    <div class="item">
+                        <label for="nome">Nome</label>
+                        <input type="text" name="nome" id="">
+                    </div>
+                    <div class="item">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="">
+                    </div>
+                    <div class="button-container">
+                        <button class="button" type="button">Cerca</button>
+                    </div>
+                </div>
+            `;
+        this.addEventListenerToParameter();
+    }
+    addEventListenerToParameter() {
+        var _a;
+        let clientCard = document.getElementById("client-card");
+        if (!clientCard)
+            return;
+        let parameters = clientCard.querySelector(".parameters");
+        if (!parameters)
+            return;
+        let buttonContainer = parameters.querySelector(".button-container");
+        if (!buttonContainer)
+            return;
+        (_a = buttonContainer.querySelector(".button")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
+            let inputs = parameters.querySelectorAll("[name]");
+            let url = GET_CLIENTS + "?";
+            let name = "";
+            let email = "";
+            inputs.forEach(input => {
+                let element = input;
+                switch (element.name) {
+                    case 'nome':
+                        name = "nome=" + element.value.trim();
+                        break;
+                    case 'email':
+                        email = "email=" + element.value.trim();
+                        break;
+                    default:
+                        break;
+                }
+            });
+            url += name + "&" + email;
+            console.log(url);
+            this.renderTableClients(url);
         });
     }
     //Qui aggiungiamo la impagionazione
@@ -123,8 +194,8 @@ export class ClientUI {
         activeLinks.forEach(link => {
             link.addEventListener("click", () => {
                 const value = link.getAttribute("value");
-                this.removeUIs();
-                this.renderClients(value);
+                console.log(value);
+                this.renderTableClients(value);
             });
         });
     }
@@ -139,6 +210,7 @@ export class ClientUI {
         const buttonContainers = tableContainer.querySelectorAll(".button-container");
         buttonContainers.forEach((buttonContainer) => {
             buttonContainer === null || buttonContainer === void 0 ? void 0 : buttonContainer.addEventListener("click", (event) => {
+                var _a;
                 const target = event === null || event === void 0 ? void 0 : event.target;
                 const button = target === null || target === void 0 ? void 0 : target.closest("button");
                 if (!button)
@@ -154,21 +226,13 @@ export class ClientUI {
                     case "seleziona":
                         console.log("seleziona");
                         let clientId;
-                        if (button === null || button === void 0 ? void 0 : button.value) {
+                        if (button.value) {
                             clientId = parseInt(button === null || button === void 0 ? void 0 : button.value);
                             let client = clientService.clients.find((client) => client.id === clientId);
                             if (client) {
-                                try {
-                                    const clientCard = document.getElementById("client-card");
-                                    clientCard === null || clientCard === void 0 ? void 0 : clientCard.remove();
-                                    //Qui si vedrà la tabella di hosting e il segmento di cliente!
-                                    this.segmentClient(client);
-                                    let hostingUI = new HostingUI(client.id);
-                                    hostingUI.renderHostings();
-                                }
-                                catch (error) {
-                                    console.error("Error parsing JSON:", error);
-                                }
+                                (_a = document.getElementById("client-card")) === null || _a === void 0 ? void 0 : _a.remove();
+                                //Qui si vedrà la tabella di hosting e il segmento di cliente!
+                                this.segmentClient(client);
                             }
                         }
                         break;
@@ -195,12 +259,15 @@ export class ClientUI {
                         <div>Cliente</div>
                         <div class="button-container">
                             <button class="button" name="back"  type="button"><-Back</button>
+                            <button class="button" name="activities" type="button">Activities</button>
+                            <button class="button" name="hosting" type="button">Hosting</button>
                         </div>
                     </div>
                     <div class="container-detail">
                         <div class="item">
+                            <input type="hidden" id="clientId" value="${client.id}">
                             <div class="subtitle">Id</div>
-                            <div >${client.id}</div>
+                            <div>${client.id}</div>
                         </div>
                         <div class="item">
                             <div class="subtitle">Nome</div>
@@ -231,6 +298,20 @@ export class ClientUI {
                         case "back":
                             this.removeUIs();
                             this.reloadUIs();
+                            break;
+                        case "hosting":
+                            let input = document.getElementById("clientId");
+                            if (!input)
+                                return;
+                            let hostingCard = document.getElementById('hosting-card');
+                            let clientId = parseInt(input.value);
+                            let hostingUI = new HostingUI(clientId);
+                            if (!hostingCard) {
+                                hostingUI.renderHostings();
+                            }
+                            else {
+                                hostingUI.removeUIs();
+                            }
                             break;
                         default:
                             console.log("Azione sconosciuta");
@@ -346,13 +427,12 @@ export class ClientUI {
         });
     }
     removeUIs() {
-        var _a, _b, _c, _d;
+        var _a, _b, _c;
         (_a = document.getElementById('client-card')) === null || _a === void 0 ? void 0 : _a.remove();
         (_b = document.getElementById('hosting-card')) === null || _b === void 0 ? void 0 : _b.remove();
         (_c = document.getElementById('website-card')) === null || _c === void 0 ? void 0 : _c.remove();
-        (_d = document.getElementById('activity-card')) === null || _d === void 0 ? void 0 : _d.remove();
     }
     reloadUIs() {
-        this.renderClients(null);
+        this.renderClients();
     }
 }
