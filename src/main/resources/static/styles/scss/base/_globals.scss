@@ -39,16 +39,22 @@ ul{
 li{
     list-style-type: none;
 }
+p{
+    margin-block-start: 0rem;
+    margin-block-end: 0rem;
+    padding: 0rem 1rem;
+    text-align: center;
+}
 .container-bigTittle{
     display: flex;
     justify-content: center;
     align-items: center;
     text-transform: uppercase;
     border: 1px solid black;
-    margin-bottom: 1rem;
     background-color: #294865;
     font-weight: bold;
     font-size: 1.8rem;
+    padding: 1rem 0rem;
 }
 
 /*Table container*/

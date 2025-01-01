@@ -1,3 +1,4 @@
+import { Activity } from "../models/Activity.js";
 import { Client } from "../models/Client.js";
 
 export interface Numbers{
@@ -15,5 +16,11 @@ export interface pageLinks{
 export interface ClientResponse{
     status:string,
     body:Client[];
+    pageLinks:pageLinks;
+}
+
+export interface ActivityResponse{
+    status:string,
+    body:Activity[];
     pageLinks:pageLinks;
 }

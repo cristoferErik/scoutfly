@@ -41,10 +41,7 @@
         }
     }
 }
-.mg-y-1{
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
+
 .bt-red{
     background-color: v.$dark-button-red-color;
     color: v.$light-font-color;
@@ -98,7 +95,7 @@
                 display: flex;
                 width: 100%;
                 align-items: center;
-                label{
+                label,p{
                     width: auto;
                     padding: 1rem 1rem;
                     background-color: #517b74;;
@@ -111,11 +108,6 @@
                     background-color: #3b4853;
                     border: none;
                     outline: none;
-                    &:-webkit-autofill {
-                        background-color: #3b4853 ;  // Mantén el mismo fondo al enfocar
-                        color: v.$light-font-color;
-                        outline: none;
-                    }
                 }
                 
             }
@@ -177,27 +169,52 @@
 }
 /*Parameters di ricerca*/
 .parameters{
+    margin: 1rem 0rem;
     .container{
         display: flex;
-        .item{
+        background-color: #294865;
+        border: 1px solid black;
+        padding: 1rem 0rem;
+        margin: 1rem 0rem;
+        .items{
             display: flex;
             width: 100%;
-            justify-content: center;
+            justify-content: space-between;
             align-content: center;
-            padding: 1rem 0rem;
-            label{
-                padding: 1rem 2rem;
+            padding: 0rem 1rem;
+            .item{
+                display: flex;
+                width: 100%;
+                justify-content:  center;
+                align-items: center;
+                input,select{
+                    flex: 1;
+                    padding: 1rem 0.5rem;
+                    color:v.$light-font-color;
+                    background-color: #3b4853;
+                    border: solid;
+                    border-width: 1px;
+                    border-color: black;
+                    outline: none;
+                }
+                input[type="date"]{
+                    text-align: center;
+                }
+                
             }
-            input{
-                flex:1;
-            }
-            
         }
         .button-container{
             padding: 0 1rem;
             .button{
-                width: 10rem;
+                width: 15rem;
+                white-space: nowrap;
             }
         }
     }
+}
+.dropdowns{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-content: center;     
 }

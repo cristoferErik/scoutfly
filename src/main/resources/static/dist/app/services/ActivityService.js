@@ -7,16 +7,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchAllActivitiesByWebSite } from "../../api/endpoints.js";
+import { fetchAllActivities, fetchAllActivitiesByClient } from "../../api/endpoints.js";
 export class ActivityService {
     constructor() {
         this.activities = [];
     }
-    getAllActivities(webSiteId, activityFilters) {
+    getAllActivitiesByClient(clienteId, parameters) {
         return __awaiter(this, void 0, void 0, function* () {
-            const fetchActivities = yield fetchAllActivitiesByWebSite(webSiteId, activityFilters);
+            const fetchActivities = yield fetchAllActivitiesByClient(clienteId, parameters);
             if (fetchActivities) {
-                this.activities = [...fetchActivities];
+                this.activities = [...fetchActivities.body];
+                this.pageLinks = Object.assign({}, fetchActivities.pageLinks);
+                //console.log(this.clients);
+            }
+            else {
+                console.log('Error al cargar los usuarios.');
+            }
+            return this.activities;
+        });
+    }
+    getAllActivities(parameters) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const fetchActivities = yield fetchAllActivities(parameters);
+            if (fetchActivities) {
+                this.activities = [...fetchActivities.body];
+                this.pageLinks = Object.assign({}, fetchActivities.pageLinks);
                 //console.log(this.clients);
             }
             else {

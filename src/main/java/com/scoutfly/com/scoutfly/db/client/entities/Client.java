@@ -1,10 +1,11 @@
 package com.scoutfly.com.scoutfly.db.client.entities;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.scoutfly.com.scoutfly.db.activity.entities.Activity;
 import com.scoutfly.com.scoutfly.db.hosting.entities.Hosting;
 
 import jakarta.persistence.CascadeType;
@@ -22,6 +23,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="clients")
 public class Client {
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -32,19 +34,24 @@ public class Client {
     private String email;
 
     @Column(name="create_at")
-    private LocalDateTime createAt;
+    private LocalDate createAt;
 
     @JsonIgnore
     @OneToMany(mappedBy="client",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private List<Hosting> listHosting;
 
+    @JsonIgnore
+    @OneToMany(mappedBy="client",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<Activity> listActivity;
+    
     public Client() {
        this.listHosting=new ArrayList<>();
+       this.listActivity=new ArrayList<>();
     }
 
     @PrePersist
     public void prePersist() {
-        this.createAt = LocalDateTime.now();
+        this.createAt = LocalDate.now();
     }
 
     public Long getId() {
@@ -83,17 +90,28 @@ public class Client {
     public void setEmail(String email) {
         this.email = email;
     }
-    public LocalDateTime getCreateAt() {
-        return createAt;
-    }
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
-    }
+    
     public List<Hosting> getListHosting() {
         return listHosting;
     }
     public void setListHosting(List<Hosting> listHosting) {
         this.listHosting = listHosting;
+    }
+
+    public List<Activity> getListActivity() {
+        return listActivity;
+    }
+
+    public void setListActivity(List<Activity> listActivity) {
+        this.listActivity = listActivity;
+    }
+
+    public LocalDate getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(LocalDate createAt) {
+        this.createAt = createAt;
     }
 
 

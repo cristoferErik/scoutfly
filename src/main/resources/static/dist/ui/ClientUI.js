@@ -12,6 +12,7 @@ import { ClientService } from "../app/services/ClientService.js";
 import { HostingUI } from "./HostingUI.js";
 import { Pagination } from "../modules/Pagination.js";
 import { GET_CLIENTS } from "../api/endpoints.js";
+import { ActivityUI } from "./ActivityUI.js";
 export class ClientUI {
     constructor() {
         this.clientService = new ClientService();
@@ -128,13 +129,15 @@ export class ClientUI {
         parameters.innerHTML =
             `
                 <div class="container">
-                    <div class="item">
-                        <label for="nome">Nome</label>
-                        <input type="text" name="nome" id="">
-                    </div>
-                    <div class="item">
-                        <label for="email">Email</label>
-                        <input type="text" name="email" id="">
+                    <div class="items">
+                        <div class="item">
+                            <p>Nome</p>
+                            <input type="text" name="nome">
+                        </div>
+                        <div class="item">
+                            <p>Email</p>
+                            <input type="text" name="email">
+                        </div>
                     </div>
                     <div class="button-container">
                         <button class="button" type="button">Cerca</button>
@@ -173,7 +176,7 @@ export class ClientUI {
                 }
             });
             url += name + "&" + email;
-            console.log(url);
+            //console.log(url);
             this.renderTableClients(url);
         });
     }
@@ -194,7 +197,7 @@ export class ClientUI {
         activeLinks.forEach(link => {
             link.addEventListener("click", () => {
                 const value = link.getAttribute("value");
-                console.log(value);
+                //console.log(value);
                 this.renderTableClients(value);
             });
         });
@@ -224,7 +227,7 @@ export class ClientUI {
                         console.log("elimina");
                         break;
                     case "seleziona":
-                        console.log("seleziona");
+                        //console.log("seleziona");
                         let clientId;
                         if (button.value) {
                             clientId = parseInt(button === null || button === void 0 ? void 0 : button.value);
@@ -294,23 +297,39 @@ export class ClientUI {
                     const button = target === null || target === void 0 ? void 0 : target.closest("button");
                     if (!button)
                         return;
+                    let input;
+                    let clientId;
                     switch (button.name) {
                         case "back":
                             this.removeUIs();
-                            this.reloadUIs();
+                            this.renderClients();
                             break;
                         case "hosting":
-                            let input = document.getElementById("clientId");
+                            input = document.getElementById("clientId");
                             if (!input)
-                                return;
+                                break;
                             let hostingCard = document.getElementById('hosting-card');
-                            let clientId = parseInt(input.value);
+                            clientId = parseInt(input.value);
                             let hostingUI = new HostingUI(clientId);
                             if (!hostingCard) {
                                 hostingUI.renderHostings();
                             }
                             else {
                                 hostingUI.removeUIs();
+                            }
+                            break;
+                        case "activities":
+                            input = document.getElementById("clientId");
+                            if (!input)
+                                break;
+                            let activityCard = document.getElementById('activity-card');
+                            clientId = parseInt(input.value);
+                            let activityUI = new ActivityUI(clientId);
+                            if (!activityCard) {
+                                activityUI.renderActivitiesByClient();
+                            }
+                            else {
+                                activityUI.removeUIs();
                             }
                             break;
                         default:
@@ -427,12 +446,10 @@ export class ClientUI {
         });
     }
     removeUIs() {
-        var _a, _b, _c;
+        var _a, _b, _c, _d;
         (_a = document.getElementById('client-card')) === null || _a === void 0 ? void 0 : _a.remove();
         (_b = document.getElementById('hosting-card')) === null || _b === void 0 ? void 0 : _b.remove();
         (_c = document.getElementById('website-card')) === null || _c === void 0 ? void 0 : _c.remove();
-    }
-    reloadUIs() {
-        this.renderClients();
+        (_d = document.getElementById('activity-card')) === null || _d === void 0 ? void 0 : _d.remove();
     }
 }

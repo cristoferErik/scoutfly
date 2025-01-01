@@ -1,10 +1,12 @@
-import { WebSite } from "./WebSite.js";
+import { Client } from "./Client.js";
 
 export enum EnumCategoria{
+    Select="SELECT",
     Pago ="PAGO",
     Gratis ="GRATIS"
 }
 export enum EnumStatus{
+    Select="SELECT",
     Attivo="ATTIVO",
     Inattivo="INATTIVO",
     Concluso="CONCLUSO",
@@ -24,13 +26,5 @@ export class Activity{
     prezzoTotale?:number;
     createAt:Date=new Date();
     updateAt:Date=new Date();
-    webSite?:WebSite;
-}
-export class ActivityFilters{
-    webSiteId:number=0;
-    categoria?: EnumCategoria;
-    status?:EnumStatus;
-    dataIniziale?:Date;
-    dataFinale?:Date;
-    constructor(){}
+    client?:Client;
 }

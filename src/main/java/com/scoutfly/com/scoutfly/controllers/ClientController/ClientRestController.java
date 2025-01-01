@@ -38,9 +38,8 @@ public class ClientRestController {
         Page<Client> clientsPage=this.clientService.findAllPageClients(nome,email,pageable);
         PageRender pageRender = new PageRender(page,clientsPage.getTotalPages(),size);
         List<Integer> listNumbers=pageRender.getPageNumbers();
-        System.out.println("nome"+nome);
-        System.out.println("email"+email);
-        String paramPath=buildParams(Variables.baseUrl+"/clients", email, nome);
+        String url=Variables.baseUrl+"/clients";
+        String paramPath=buildParams(url, email, nome);
         Map<String,Object> pageLinks = pageRender.generatePageLink(paramPath,listNumbers);
         response.put("status","success");
         response.put("body",clientsPage.getContent());

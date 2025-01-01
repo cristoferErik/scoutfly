@@ -34,14 +34,23 @@ export class WebSiteUI {
             </div>
         `;
             body.appendChild(websiteCard);
-            const tableContainer = websiteCard.querySelector(".table-container");
+            yield this.renderTableWebSites();
+            this.addModalInsertWebSite();
+        });
+    }
+    renderTableWebSites() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const webSiteCard = document.getElementById("website-card");
+            if (!webSiteCard)
+                return;
+            const tableContainer = webSiteCard.querySelector(".table-container");
             if (!tableContainer)
                 return;
             tableContainer.innerHTML = ``;
             //Se aggiungiamo await aspettara che finisca per poter continuare
             const websites = yield this.webSiteService.getAllWebSitesByHosting(this.hostingId);
             if (websites.length > 0) {
-                console.log(websites.length);
+                //console.log(websites.length);
                 /*------------------------TABLE------------------------------- */
                 const table = document.createElement('table');
                 table.classList.add('table');
@@ -84,7 +93,7 @@ export class WebSiteUI {
                                 <td>${website.dataModifica}</td>
                                 <td>
                                     <div class="button-container">
-                                        <button type="button" name="vedi" class="button bt-green">vedi</button>
+                                        <button type="button" name="vedi" class="button bt-green" value="${website.id}">vedi</button>
                                         <button type="button" name="elimina" class="button bt-red">elimina</button>
                                         <button type="button" name="seleziona" class="button bt-light-blue" value="${website.id}">
                                             <img class="icon" src="../../assets/images/check.svg" alt="">
@@ -103,14 +112,13 @@ export class WebSiteUI {
                 /*------------------------TABLE------------------------------- */
                 tableContainer.appendChild(table);
             }
-            this.addEventListenerWebSiteButton(this.webSiteService);
-            this.addModalInsertWebSite();
+            this.addEventListenerWebSiteButton();
         });
     }
     addPagination() {
     }
     //Aggiunge un'evento click ai buttoni che sono dentro della tabella renderClients
-    addEventListenerWebSiteButton(webSiteService) {
+    addEventListenerWebSiteButton() {
         const element = document.getElementById("website-container");
         if (!element)
             return;
@@ -127,6 +135,8 @@ export class WebSiteUI {
                     return;
                 switch (button.name) {
                     case "vedi":
+                        this.modalInsertWebSite();
+                        this.updateModalWebSite(parseInt(button.value));
                         break;
                     case "elimina":
                         console.log("elimina");
@@ -136,15 +146,10 @@ export class WebSiteUI {
                         let websiteId;
                         if (button === null || button === void 0 ? void 0 : button.value) {
                             websiteId = parseInt(button === null || button === void 0 ? void 0 : button.value);
-                            let website = webSiteService.websites.find((website) => website.id === websiteId);
+                            let website = this.webSiteService.websites.find((website) => website.id === websiteId);
                             if (website) {
-                                try {
-                                    (_a = document.getElementById("website-card")) === null || _a === void 0 ? void 0 : _a.remove();
-                                    this.segmentWebSite(website);
-                                }
-                                catch (error) {
-                                    console.error("Error parsing JSON:", error);
-                                }
+                                (_a = document.getElementById("website-card")) === null || _a === void 0 ? void 0 : _a.remove();
+                                this.segmentWebSite(website);
                             }
                         }
                         break;
@@ -176,6 +181,7 @@ export class WebSiteUI {
                     <div class="container-detail">
                         <div class="item">
                             <div class="subtitle">Id</div>
+                            <input type="hidden" id="websiteId" value="${website.id}">
                             <div >${website.id}</div>
                         </div>
                         <div class="item">
@@ -205,7 +211,8 @@ export class WebSiteUI {
                         return;
                     switch (button.name) {
                         case 'back':
-                            this.reloadUIs();
+                            this.removeUIs();
+                            this.renderWebSites();
                             break;
                         default:
                             console.log("Azione sconosciuta");
@@ -245,13 +252,14 @@ export class WebSiteUI {
         modal.style.display = "flex";
         modal.innerHTML = ``;
         let contenuto = `
-            <div class="card-modal">
+            <div class="card-modal" id="websiteForm">
                 <div class="container-bigTittle">
                     <p>Nuovo WebSite</p>
+                    <input type="hidden" name="Id">
                 </div>
                 <div class="items">
                     <div class="item">
-                        <label for="">nome</label>
+                        <label for="nome">nome</label>
                         <input name="nome" type="text">
                     </div>
                 </div>
@@ -282,9 +290,45 @@ export class WebSiteUI {
         `;
         modal.innerHTML = contenuto;
     }
-    reloadUIs() {
+    updateModalWebSite(id) {
+        let website = this.webSiteService.websites.find((website) => website.id === id);
+        if (!website)
+            return;
+        let form = document.getElementById("websiteForm");
+        if (!form)
+            return;
+        let inputs = form.querySelectorAll("[name]");
+        if (!inputs || inputs.length == 0)
+            return;
+        inputs.forEach(function (input) {
+            if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) {
+                switch (input.name) {
+                    case 'Id':
+                        input.value = website.id.toString();
+                        break;
+                    case 'nome':
+                        input.value = website.nome;
+                        break;
+                    case 'url':
+                        input.value = website.url;
+                        break;
+                    case 'descrizione':
+                        input.value = website.descrizione;
+                        break;
+                    case 'dataAggiornamento':
+                        input.value = website.dataAggiornamento.toString();
+                        break;
+                    case 'dataBackup':
+                        input.value = website.dataBackup.toString();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    }
+    removeUIs() {
         var _a;
         (_a = document.getElementById('website-card')) === null || _a === void 0 ? void 0 : _a.remove();
-        this.renderWebSites();
     }
 }

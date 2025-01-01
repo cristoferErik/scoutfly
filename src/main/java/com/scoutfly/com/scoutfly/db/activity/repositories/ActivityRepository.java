@@ -20,14 +20,35 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>{
                 (:status is NULL OR a.status= :status) AND
                 (:dataIniziale is NULL OR a.createAt>= :dataIniziale) AND
                 (:dataFinale is NULL OR a.createAt<= :dataFinale) AND
-                (a.webSite.id= :webSiteId)
+                (a.client.id= :clientId)
+                ORDER BY a.createAt DESC
             """)
-    Page<Activity> findActivitiesByFilters(Pageable pageable,
+    Page<Activity> findActivitiesByClient(Pageable pageable,
                                             EnumActivity.EnumCategoria categoria,
                                             EnumActivity.EnumStatus status,
                                             LocalDate dataIniziale,
                                             LocalDate dataFinale,
-                                            Long webSiteId
+                                            Long clientId
                                             );
 
+    @Query("""
+            SELECT a
+            FROM Activity a 
+            JOIN FETCH a.client c    
+            WHERE 
+                (:categoria is NULL OR a.categoria =: categoria)AND
+                (:status is NULL OR a.status= :status) AND
+                (:dataIniziale is NULL OR a.createAt>= :dataIniziale) AND
+                (:dataFinale is NULL OR a.createAt<= :dataFinale) AND
+                (:nomeCliente is NULL OR c.nome LIKE CONCAT('%',:nomeCliente,'%')) AND
+                (:cognomeCliente is NULL OR c.cognome LIKE CONCAT('%',:cognomeCliente,'%'))
+                ORDER BY a.createAt DESC
+            """)
+    Page<Activity> findAllActivities(Pageable pageable,
+                                        EnumActivity.EnumCategoria categoria,
+                                        EnumActivity.EnumStatus status,
+                                        LocalDate dataIniziale,
+                                        LocalDate dataFinale,
+                                        String nomeCliente,
+                                        String cognomeCliente);
 }

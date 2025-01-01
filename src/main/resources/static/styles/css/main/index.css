@@ -356,11 +356,6 @@ template {
   width: 2.5rem;
 }
 
-.mg-y-1 {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
 .bt-red {
   background-color: #8d2b2b;
   color: #e8ebf0;
@@ -418,7 +413,7 @@ template {
   width: 100%;
   align-items: center;
 }
-.modal .card-modal .items .item label {
+.modal .card-modal .items .item label, .modal .card-modal .items .item p {
   width: auto;
   padding: 1rem 1rem;
   background-color: #517b74;
@@ -430,11 +425,6 @@ template {
   color: #e8ebf0;
   background-color: #3b4853;
   border: none;
-  outline: none;
-}
-.modal .card-modal .items .item input:-webkit-autofill {
-  background-color: #3b4853;
-  color: #e8ebf0;
   outline: none;
 }
 @media (max-width: 650px) {
@@ -496,27 +486,55 @@ template {
 }
 
 /*Parameters di ricerca*/
+.parameters {
+  margin: 1rem 0rem;
+}
 .parameters .container {
   display: flex;
+  background-color: #294865;
+  border: 1px solid black;
+  padding: 1rem 0rem;
+  margin: 1rem 0rem;
 }
-.parameters .container .item {
+.parameters .container .items {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-content: center;
+  padding: 0rem 1rem;
+}
+.parameters .container .items .item {
   display: flex;
   width: 100%;
   justify-content: center;
-  align-content: center;
-  padding: 1rem 0rem;
+  align-items: center;
 }
-.parameters .container .item label {
-  padding: 1rem 2rem;
-}
-.parameters .container .item input {
+.parameters .container .items .item input, .parameters .container .items .item select {
   flex: 1;
+  padding: 1rem 0.5rem;
+  color: #e8ebf0;
+  background-color: #3b4853;
+  border: solid;
+  border-width: 1px;
+  border-color: black;
+  outline: none;
+}
+.parameters .container .items .item input[type=date] {
+  text-align: center;
 }
 .parameters .container .button-container {
   padding: 0 1rem;
 }
 .parameters .container .button-container .button {
-  width: 10rem;
+  width: 15rem;
+  white-space: nowrap;
+}
+
+.dropdowns {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-content: center;
 }
 
 .pagination {
@@ -603,16 +621,23 @@ li {
   list-style-type: none;
 }
 
+p {
+  margin-block-start: 0rem;
+  margin-block-end: 0rem;
+  padding: 0rem 1rem;
+  text-align: center;
+}
+
 .container-bigTittle {
   display: flex;
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
   border: 1px solid black;
-  margin-bottom: 1rem;
   background-color: #294865;
   font-weight: bold;
   font-size: 1.8rem;
+  padding: 1rem 0rem;
 }
 
 /*Table container*/

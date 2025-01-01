@@ -1,10 +1,12 @@
 export var EnumCategoria;
 (function (EnumCategoria) {
+    EnumCategoria["Select"] = "SELECT";
     EnumCategoria["Pago"] = "PAGO";
     EnumCategoria["Gratis"] = "GRATIS";
 })(EnumCategoria || (EnumCategoria = {}));
 export var EnumStatus;
 (function (EnumStatus) {
+    EnumStatus["Select"] = "SELECT";
     EnumStatus["Attivo"] = "ATTIVO";
     EnumStatus["Inattivo"] = "INATTIVO";
     EnumStatus["Concluso"] = "CONCLUSO";
@@ -16,10 +18,5 @@ export class Activity {
         this.id = 0;
         this.createAt = new Date();
         this.updateAt = new Date();
-    }
-}
-export class ActivityFilters {
-    constructor() {
-        this.webSiteId = 0;
     }
 }

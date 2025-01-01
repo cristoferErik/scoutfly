@@ -11,4 +11,9 @@ public class RedirectController {
     public String index(){
         return "index";
     }
+
+    @GetMapping("/activities")
+    public String activities(){
+        return "pages/activities";
+    }
 }

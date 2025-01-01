@@ -1,17 +1,16 @@
 package com.scoutfly.com.scoutfly.db.activity.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.scoutfly.com.scoutfly.db.activity.enumerator.EnumActivity.EnumCategoria;
 import com.scoutfly.com.scoutfly.db.activity.enumerator.EnumActivity.EnumStatus;
-import com.scoutfly.com.scoutfly.db.website.entities.WebSite;
+import com.scoutfly.com.scoutfly.db.client.entities.Client;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,7 +21,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="activities")
 public class Activity {
-    
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY )
     private Long id;
@@ -37,7 +35,7 @@ public class Activity {
     private EnumStatus status;
     
     @Column(name="data_limite")
-    private LocalDateTime dataLimite;
+    private LocalDate dataLimite;
     
     @Column(name="durata_ore")
     private Integer durataOre;
@@ -46,15 +44,15 @@ public class Activity {
     private Double prezzoTotale;
 
     @Column(name="create_at")
-    private LocalDateTime createAt;
+    private LocalDate createAt;
 
     @Column(name="update_at")
     private LocalDateTime updateAt;
 
-    @JsonIgnore
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="website_id")
-    private WebSite webSite;
+    
+    @ManyToOne()
+    @JoinColumn(name="client_id")
+    private Client client;
 
     public Long getId() {
         return id;
@@ -95,20 +93,19 @@ public class Activity {
     public void setStatus(EnumStatus status) {
         this.status = status;
     }
-
-    public LocalDateTime getDataLimite() {
+    public LocalDate getDataLimite() {
         return dataLimite;
     }
 
-    public void setDataLimite(LocalDateTime dataLimite) {
+    public void setDataLimite(LocalDate dataLimite) {
         this.dataLimite = dataLimite;
     }
 
-    public LocalDateTime getCreateAt() {
+    public LocalDate getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(LocalDateTime createAt) {
+    public void setCreateAt(LocalDate createAt) {
         this.createAt = createAt;
     }
 
@@ -118,14 +115,6 @@ public class Activity {
 
     public void setUpdateAt(LocalDateTime updateAt) {
         this.updateAt = updateAt;
-    }
-
-    public WebSite getWebSite() {
-        return webSite;
-    }
-
-    public void setWebSite(WebSite webSite) {
-        this.webSite = webSite;
     }
 
     public Double getPrezzo() {
@@ -150,6 +139,14 @@ public class Activity {
 
     public void setPrezzoTotale(Double prezzoTotale) {
         this.prezzoTotale = prezzoTotale;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
     
 }
