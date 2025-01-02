@@ -19,4 +19,9 @@ public class HostingServices {
     public Page<Hosting>findAllPageHostings(Pageable pageable,Long clientId){
         return this.hostingRepository.findAllByClient(pageable,clientId);
     }
+    
+    @Transactional
+    public void saveHosting(Hosting hosting){
+        hostingRepository.save(hosting);
+    }
 }

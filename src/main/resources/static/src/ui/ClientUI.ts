@@ -349,40 +349,41 @@ export class ClientUI {
             <form class="card-modal" id="clienteForm">
                 <div class="container-bigTittle">
                     <p>Nuovo Cliente</p>
-                    <input type="hidden" name="Id">
+                    <input type="hidden" name="id">
                 </div>
                 <div class="items">
                     <div class="item">
                         <label for="Nome">Nome</label>
-                        <input name="Nome" type="text">
+                        <input name="nome" type="text">
                     </div>
                     <div class="item"> 
                         <label for="Cognome">Cognome</label>
-                        <input name="Cognome" type="text">
+                        <input name="cognome" type="text">
                     </div>
                 </div>
                 <div class="items">
                     <div class="item">
                         <label for="">Indirizzo</label>
-                        <input name="Indirizzo" type="text">
+                        <input name="indirizzo" type="text">
                     </div>
                     <div class="item">
                         <label for="">Telefono</label>
-                        <input name="Telefono" type="text">
+                        <input name="telefono" type="text">
                     </div>
                 </div>
                 <div class="items">
                     <div class="item">
                         <label for="">Email</label>
-                        <input name="Email" type="text">
+                        <input name="email" type="text">
                     </div>
                 </div>
                 <div class="button-container mg-y-1">
-                    <button class="button bt-green" name="inserire" type="button">salva</button>
+                    <button class="button bt-green" name="salva" type="button">salva</button>
                 </div>
             </form>
         `;
         modal.innerHTML=contenuto;
+        this.eventoSalvaClient();
     }
     updateModalClient(id:number){
         let client: Client | undefined = this.clientService.clients.find(
@@ -397,22 +398,24 @@ export class ClientUI {
         inputs.forEach(function(input){
             if(input instanceof HTMLInputElement){
                 switch(input.name){
-                    case 'Id':
-                        input.value=client.id.toString();
+                    case 'id':
+                        if(client.id!==undefined){
+                            input.value=client.id.toString();
+                        }
                         break;
-                    case 'Nome':
+                    case 'nome':
                         input.value=client.nome;
                         break;
-                    case 'Cognome':
+                    case 'cognome':
                         input.value=client.cognome;
                         break;
-                    case 'Indirizzo':
+                    case 'indirizzo':
                         input.value=client.indirizzo;
                         break;
-                    case 'Telefono':
+                    case 'telefono':
                         input.value=client.telefono;
                         break;
-                    case 'Email':
+                    case 'email':
                         input.value=client.email;
                         break;
                     default:
@@ -422,7 +425,38 @@ export class ClientUI {
             
         });
     }
+    eventoSalvaClient(){
+        let clientForm=document.getElementById("clienteForm") as HTMLFormElement;
+        let buttonContainer= clientForm.querySelector(".button-container");
+        if(!buttonContainer) return;
+        let buttons=buttonContainer.querySelectorAll(".button");
+        buttons.forEach(button=>{
+            let btn =button as HTMLButtonElement;
+            btn.addEventListener('click',()=>{
+                switch(btn.name){
+                    case 'salva':
+                        console.log(this.salvaCliente());
+                        break;
+                    default:
+                        break; 
+                }
+            });
+        });
 
+    }
+    salvaCliente(){
+        let clientForm=document.getElementById("clienteForm") as HTMLFormElement;
+        let client:Client= new Client();
+        const formData = new FormData(clientForm);
+        const id=Number(formData.get('id'));
+        client.id = id==0?undefined:id;
+        client.nome=formData.get('nome') as string;
+        client.cognome=formData.get('cognome') as string;
+        client.indirizzo=formData.get('indirizzo') as string;
+        client.telefono=formData.get('telefono') as string;
+        client.email=formData.get('email') as string;
+        return this.clientService.fetchSaveClientService(client);
+    }
     removeUIs(){
         document.getElementById('client-card')?.remove();
         document.getElementById('hosting-card')?.remove();

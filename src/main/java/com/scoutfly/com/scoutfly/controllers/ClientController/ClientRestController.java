@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -48,6 +50,18 @@ public class ClientRestController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @PostMapping("/client")
+    public ResponseEntity<?> saveClient
+    (
+        @RequestParam (value= "page",defaultValue="0") Integer page,
+        @RequestParam (value="size",defaultValue="10") Integer size,
+        @RequestBody  Client client
+    ){  
+        
+        Map<String,Object> body= clientService.saveClient(client);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+    
     public String buildParams(String baseUrl,String email,String nome){
         StringBuilder sb=new StringBuilder(baseUrl);
         sb.append("?");
@@ -58,4 +72,6 @@ public class ClientRestController {
         sb.append(nome);
         return sb.toString();
     }
+
+
 }

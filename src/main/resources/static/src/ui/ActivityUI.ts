@@ -31,7 +31,7 @@ export class ActivityUI {
             `;
     body.appendChild(activityCard);
     this.addFieldParameters();
-    this.renderTableActivityByClient(null);
+    await this.renderTableActivityByClient(null);
     this.addModalInsertActivity();
   }
 
@@ -95,7 +95,7 @@ export class ActivityUI {
                                 <td>${activity.updateAt}</td>
                                 <td>
                                     <div class="button-container">
-                                        <button type="button" name="vedi" class="button bt-green">vedi</button>
+                                        <button type="button" name="vedi" class="button bt-green" value="${activity.id}">vedi</button>
                                         <button type="button" name="elimina" class="button bt-red">elimina</button>
                                     </div>
                                 </td>
@@ -232,6 +232,8 @@ export class ActivityUI {
         if (!button) return;
         switch (button.name) {
           case "vedi":
+            this.modalInsertActivity();
+            this.updateModalActivity(parseInt(button.value));
             break;
           case "elimina":
             console.log("elimina");
@@ -269,29 +271,26 @@ export class ActivityUI {
     modal.style.display = "flex";
     modal.innerHTML = ``;
     let contenuto = `
-            <div class="card-modal">
+            <form class="card-modal" id="activityForm">
                 <div class="container-bigTittle">
                     <p>Nuova Attività</p>
+                    <input type="hidden" name="activityId">
                 </div>
                 <div class="items">
                     <div class="item">
-                        <label for="">Nome</label>
-                        <input name="Nome" type="text">
-                    </div>
-                    <div class="item"> 
-                        <label for="descrizione">Descrizione</label>
-                        <input name="descrizione" type="text">
+                        <p>Nome</p>
+                        <input name="nome" type="text">
                     </div>
                 </div>
                 <div class="items">
                     <div class="dropdowns">
                         <div class="item">
-                            <p for="categoria">categoria</p>
+                            <p>categoria</p>
                             <select class="dropdown" name="categoria">  
                             </select>
                         </div>
                         <div class="item">
-                            <p for="status">status</p>
+                            <p>status</p>
                             <select class="dropdown" name="status">
                             </select>
                         </div>
@@ -311,13 +310,65 @@ export class ActivityUI {
                         <input name="prezzo" type="number">
                     </div>
                 </div>
-                <div class="button-container">
-                    <button class="button bt-green" name="inserire" type="button">Inserire</button>
+                <div class="items">
+                  <div class="text-container">
+                    <label>descrizione</label>
+                    <textarea name="descrizione" type="text"></textarea>
+                  </div>
                 </div>
-            </div>
+                <div class="button-container">
+                    <button class="button bt-green" name="inserire" type="button">salva</button>
+                </div>
+            </form>
         `;
     modal.innerHTML = contenuto;
     this.filldropdownActivity();
+  }
+  updateModalActivity(id:number){
+    
+    let activity: Activity | undefined = this.activityService.activities.find(
+      (activity)=>activity.id===id
+    );
+    if(!activity) return;
+    let form=document.getElementById("activityForm") as HTMLFormElement;
+    let inputs=form.querySelectorAll("[name]");
+    if(!inputs || inputs.length==0) return;
+    inputs.forEach(function(input){
+      if(
+        input instanceof HTMLInputElement || 
+        input instanceof HTMLTextAreaElement ||  
+        input instanceof HTMLSelectElement
+      ){
+        switch(input.name){
+          case 'activityId':
+            input.value=activity.id.toString();
+            break;
+          case 'nome':
+            input.value=activity.nome;
+            break;
+          case 'categoria':
+            input.value=activity.categoria;
+            break;
+          case 'status':
+            input.value=activity.status;
+            break;
+          case 'dataLimite':
+            input.value=activity.dataLimite.toString();
+            break;
+          case 'durataOre':
+            input.value=activity.durataOre.toString();
+            break;
+          case 'prezzo':
+            input.value=activity.prezzo.toString();
+            break;
+          case 'descrizione':
+            input.value=activity.descrizione;
+            break;
+          default:
+            break;
+        }
+      }
+    });
   }
   filldropdownActivity() {
     let dropdowns = document.querySelectorAll(".dropdown");
@@ -424,12 +475,12 @@ export class ActivityUI {
                                 <td>${activity.prezzo}</td>
                                 <td>${activity.prezzoTotale}</td>
                                 <td>${activity.dataLimite}</td>
-                                <td>${activity.client?.nome} ${activity.client?.cognome}</td>
+                                <td>${activity.client.nome} ${activity.client.cognome}</td>
                                 <td>${activity.createAt}</td>
                                 <td>${activity.updateAt}</td>
                                 <td>
                                     <div class="button-container">
-                                        <button type="button" name="vedi" class="button bt-green">vedi</button>
+                                        <button type="button" name="vedi" class="button bt-green" value="${activity.id}">vedi</button>
                                         <button type="button" name="elimina" class="button bt-red">elimina</button>
                                     </div>
                                 </td>

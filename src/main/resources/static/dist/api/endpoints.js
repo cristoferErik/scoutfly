@@ -9,9 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 export const API_BASE_URL = '/scoutfly/api';
 export const GET_CLIENTS = API_BASE_URL + '/clients';
+export const POST_CLIENT = API_BASE_URL + '/client';
 export const GET_HOSTINGS_BY_CLIENT = API_BASE_URL + '/hostings';
 export const GET_WEBSITES_BY_HOSTING = API_BASE_URL + '/websites';
 export const GET_ACTIVITIES = API_BASE_URL + '/activities';
+/*Client Risorsa */
 //Con questo ottengo i dati che vengo del backend
 export function fetchAllClients(parameters) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -39,6 +41,29 @@ export function fetchAllClients(parameters) {
         return clientResponse;
     });
 }
+export function fetchSaveClient(client) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch(POST_CLIENT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(client),
+            });
+            if (!response.ok) {
+                const errorData = yield response.json();
+                throw new Error(errorData.message || 'Error al salvare il cliente');
+            }
+            return yield response.json(); // Devuelve la respuesta completa
+        }
+        catch (error) {
+            console.error('Error en fetchSaveClient:', error);
+            throw error;
+        }
+    });
+}
+/*Hosting*/
 export function fetchAllHostingsByClient(clientId) {
     return __awaiter(this, void 0, void 0, function* () {
         let data = null;
@@ -62,6 +87,7 @@ export function fetchAllHostingsByClient(clientId) {
         return data;
     });
 }
+/*WebSites risorsa */
 export function fetchAllWebSiteByHosting(hostingId) {
     return __awaiter(this, void 0, void 0, function* () {
         let data = null;
@@ -85,6 +111,7 @@ export function fetchAllWebSiteByHosting(hostingId) {
         return data;
     });
 }
+/*Activities  risorsa*/
 export function fetchAllActivitiesByClient(clientId, parameters) {
     return __awaiter(this, void 0, void 0, function* () {
         let activityResponse = null;

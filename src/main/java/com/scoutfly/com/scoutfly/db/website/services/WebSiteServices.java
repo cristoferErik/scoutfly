@@ -19,4 +19,9 @@ public class WebSiteServices {
     public Page<WebSite>findAllPageWebSites(Pageable pageable,Long HostingId){
         return this.webSiteRepository.findAllPageWebSitesByHosting(pageable,HostingId);
     }
+    
+    @Transactional
+    public void saveWebSite(WebSite webSite){
+        webSiteRepository.save(webSite);
+    }
 }
