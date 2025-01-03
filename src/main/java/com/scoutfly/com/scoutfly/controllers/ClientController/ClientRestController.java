@@ -57,7 +57,6 @@ public class ClientRestController {
         @RequestParam (value="size",defaultValue="10") Integer size,
         @RequestBody  Client client
     ){  
-        
         Map<String,Object> body= clientService.saveClient(client);
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }

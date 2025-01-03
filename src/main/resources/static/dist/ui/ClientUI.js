@@ -12,8 +12,8 @@ import { ClientService } from "../app/services/ClientService.js";
 import { Client } from "../app/models/Client.js";
 import { HostingUI } from "./HostingUI.js";
 import { Pagination } from "../modules/Pagination.js";
-import { GET_CLIENTS } from "../api/endpoints.js";
-import { ActivityUI } from "./ActivityUI.js";
+import { GET_ACTIVITIES_CLIENT } from "../api/endpoints.js";
+import { ActivityByClientUI } from "./ActivityByClientUI.js";
 export class ClientUI {
     constructor() {
         this.clientService = new ClientService();
@@ -160,7 +160,7 @@ export class ClientUI {
             return;
         (_a = buttonContainer.querySelector(".button")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
             let inputs = parameters.querySelectorAll("[name]");
-            let url = GET_CLIENTS + "?";
+            let url = GET_ACTIVITIES_CLIENT + "?";
             let name = "";
             let email = "";
             inputs.forEach(input => {
@@ -325,7 +325,7 @@ export class ClientUI {
                                 break;
                             let activityCard = document.getElementById('activity-card');
                             clientId = parseInt(input.value);
-                            let activityUI = new ActivityUI(clientId);
+                            let activityUI = new ActivityByClientUI(clientId);
                             if (!activityCard) {
                                 activityUI.renderActivitiesByClient();
                             }
@@ -457,29 +457,34 @@ export class ClientUI {
         let buttons = buttonContainer.querySelectorAll(".button");
         buttons.forEach(button => {
             let btn = button;
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
                 switch (btn.name) {
                     case 'salva':
-                        console.log(this.salvaCliente());
+                        yield this.salvaCliente();
+                        this.closeModal();
+                        this.renderTableClients(null);
                         break;
                     default:
                         break;
                 }
-            });
+            }));
         });
     }
     salvaCliente() {
-        let clientForm = document.getElementById("clienteForm");
-        let client = new Client();
-        const formData = new FormData(clientForm);
-        const id = Number(formData.get('id'));
-        client.id = id == 0 ? undefined : id;
-        client.nome = formData.get('nome');
-        client.cognome = formData.get('cognome');
-        client.indirizzo = formData.get('indirizzo');
-        client.telefono = formData.get('telefono');
-        client.email = formData.get('email');
-        return this.clientService.fetchSaveClientService(client);
+        return __awaiter(this, void 0, void 0, function* () {
+            let clientForm = document.getElementById("clienteForm");
+            let client = new Client();
+            const formData = new FormData(clientForm);
+            const id = Number(formData.get('id'));
+            client.id = id == 0 ? undefined : id;
+            client.nome = formData.get('nome');
+            client.cognome = formData.get('cognome');
+            client.indirizzo = formData.get('indirizzo');
+            client.telefono = formData.get('telefono');
+            client.email = formData.get('email');
+            let message = yield this.clientService.fetchSaveClientService(client);
+            return message;
+        });
     }
     removeUIs() {
         var _a, _b, _c, _d;
@@ -487,5 +492,12 @@ export class ClientUI {
         (_b = document.getElementById('hosting-card')) === null || _b === void 0 ? void 0 : _b.remove();
         (_c = document.getElementById('website-card')) === null || _c === void 0 ? void 0 : _c.remove();
         (_d = document.getElementById('activity-card')) === null || _d === void 0 ? void 0 : _d.remove();
+    }
+    closeModal() {
+        let modal = document.getElementById('modal');
+        if (!modal)
+            return;
+        modal.style.display = "none";
+        modal.innerHTML = ``;
     }
 }

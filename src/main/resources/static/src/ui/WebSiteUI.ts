@@ -1,7 +1,5 @@
 import { WebSite } from "../app/models/WebSite.js";
 import { WebSiteService } from "../app/services/WebSiteService.js";
-import { Activity } from "../app/models/Activity.js";
-import { ActivityUI } from "./ActivityUI.js";
 
 export class WebSiteUI {
     private webSiteService: WebSiteService;

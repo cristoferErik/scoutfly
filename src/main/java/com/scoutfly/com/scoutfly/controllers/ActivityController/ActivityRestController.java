@@ -56,7 +56,7 @@ public class ActivityRestController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/activities")
+    @GetMapping("/activities-client")
     public ResponseEntity<?>findAllPageActivities
     (
         @RequestParam (value= "page",defaultValue="0") Integer page,
@@ -70,7 +70,7 @@ public class ActivityRestController {
         PageRender pageRender = new PageRender(page,activitysPage.getTotalPages(),size);
         List<Integer> listNumbers=pageRender.getPageNumbers();
 
-        String url=Variables.baseUrl+"/activities";
+        String url=Variables.baseUrl+"/activities-client";
         String paramPath=buildParamPageActivities(url,params);
         Map<String,Object> pageLinks = pageRender.generatePageLink(paramPath,listNumbers);
         response.put("status","success");

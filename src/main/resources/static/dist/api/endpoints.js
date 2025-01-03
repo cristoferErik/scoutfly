@@ -13,6 +13,7 @@ export const POST_CLIENT = API_BASE_URL + '/client';
 export const GET_HOSTINGS_BY_CLIENT = API_BASE_URL + '/hostings';
 export const GET_WEBSITES_BY_HOSTING = API_BASE_URL + '/websites';
 export const GET_ACTIVITIES = API_BASE_URL + '/activities';
+export const GET_ACTIVITIES_CLIENT = API_BASE_URL + '/activities-client';
 /*Client Risorsa */
 //Con questo ottengo i dati che vengo del backend
 export function fetchAllClients(parameters) {
@@ -142,7 +143,7 @@ export function fetchAllActivitiesByClient(clientId, parameters) {
 export function fetchAllActivities(parameters) {
     return __awaiter(this, void 0, void 0, function* () {
         let activityResponse = null;
-        let url = `${GET_ACTIVITIES}`;
+        let url = `${GET_ACTIVITIES_CLIENT}`;
         try {
             if (parameters) {
                 url = parameters;

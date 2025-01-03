@@ -37,6 +37,7 @@ public class ClientServices {
             Optional<Client> clientOPT = this.clientRepository.findById(client.getId());
             if(clientOPT.isPresent()){
                 client.setCreateAt(clientOPT.get().getCreateAt());
+                clientRepository.save(client);
                 response.put("status","success");
                 response.put("message","Cliente aggiornato con successo!");
             }else{

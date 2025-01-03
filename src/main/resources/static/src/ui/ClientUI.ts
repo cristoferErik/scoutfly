@@ -3,8 +3,8 @@ import { ClientService } from "../app/services/ClientService.js";
 import { Client } from "../app/models/Client.js";
 import { HostingUI } from "./HostingUI.js";
 import { Pagination } from "../modules/Pagination.js";
-import { GET_CLIENTS } from "../api/endpoints.js";
-import { ActivityUI } from "./ActivityUI.js";
+import { GET_ACTIVITIES_CLIENT } from "../api/endpoints.js";
+import { ActivityByClientUI } from "./ActivityByClientUI.js";
 
 export class ClientUI {
     private clientService: ClientService;
@@ -143,7 +143,7 @@ export class ClientUI {
         buttonContainer.querySelector(".button")?.addEventListener("click",()=>{
             let inputs=parameters.querySelectorAll("[name]");
     
-            let url=GET_CLIENTS+"?";
+            let url=GET_ACTIVITIES_CLIENT+"?";
             let name="";
             let email="";
             inputs.forEach(input=>{
@@ -302,7 +302,7 @@ export class ClientUI {
                             if(!input) break;
                             let activityCard=document.getElementById('activity-card');
                             clientId=parseInt(input.value);
-                            let activityUI:ActivityUI=new ActivityUI(clientId);
+                            let activityUI:ActivityByClientUI=new ActivityByClientUI(clientId);
                             if(!activityCard){
                                 activityUI.renderActivitiesByClient();
                             }else{
@@ -432,10 +432,12 @@ export class ClientUI {
         let buttons=buttonContainer.querySelectorAll(".button");
         buttons.forEach(button=>{
             let btn =button as HTMLButtonElement;
-            btn.addEventListener('click',()=>{
+            btn.addEventListener('click',async()=>{
                 switch(btn.name){
                     case 'salva':
-                        console.log(this.salvaCliente());
+                        await this.salvaCliente();
+                        this.closeModal();
+                        this.renderTableClients(null);
                         break;
                     default:
                         break; 
@@ -444,7 +446,7 @@ export class ClientUI {
         });
 
     }
-    salvaCliente(){
+    async salvaCliente(){
         let clientForm=document.getElementById("clienteForm") as HTMLFormElement;
         let client:Client= new Client();
         const formData = new FormData(clientForm);
@@ -455,13 +457,20 @@ export class ClientUI {
         client.indirizzo=formData.get('indirizzo') as string;
         client.telefono=formData.get('telefono') as string;
         client.email=formData.get('email') as string;
-        return this.clientService.fetchSaveClientService(client);
+        let message:string=await this.clientService.fetchSaveClientService(client)
+        return message;
     }
     removeUIs(){
         document.getElementById('client-card')?.remove();
         document.getElementById('hosting-card')?.remove();
         document.getElementById('website-card')?.remove();
         document.getElementById('activity-card')?.remove();
+    }
+    closeModal(){
+        let modal=document.getElementById('modal');
+        if(!modal) return;
+        modal.style.display="none";
+        modal.innerHTML=``;
     }
 
 }

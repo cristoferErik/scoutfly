@@ -1,5 +1,5 @@
 import { EmailModule } from "../modules/EmailModule.js";
-import { ActivityUI } from "../ui/ActivityUI.js";
+import { ActivityUI } from "../ui/Activity.js";
 export class Activities {
     constructor() {
         let activityUI = new ActivityUI();
