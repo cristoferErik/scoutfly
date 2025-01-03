@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchAllActivities, fetchAllActivitiesByClient } from "../../api/endpoints.js";
+import { fetchAllActivities, fetchAllActivitiesByClient, fetchSaveActivity } from "../../api/endpoints.js";
 export class ActivityService {
     constructor() {
         this.activities = [];
@@ -38,6 +38,16 @@ export class ActivityService {
                 console.log('Error al cargar los usuarios.');
             }
             return this.activities;
+        });
+    }
+    fetchSaveActivityService(activity) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let message = "";
+            const fetchClient = yield fetchSaveActivity(activity);
+            if (fetchClient) {
+                message = fetchClient.message;
+            }
+            return message;
         });
     }
 }

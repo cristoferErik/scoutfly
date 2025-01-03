@@ -13,3 +13,5 @@ export var EnumStatus;
     EnumStatus["PENDENTE"] = "PENDENTE";
     EnumStatus["ANNULLATO"] = "ANNULLATO";
 })(EnumStatus || (EnumStatus = {}));
+export class Activity {
+}

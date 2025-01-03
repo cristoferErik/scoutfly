@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -78,12 +80,20 @@ public class ActivityRestController {
         response.put("pageLinks", pageLinks);
         return ResponseEntity.status(HttpStatus.OK).body(response);    
     }
+    @PostMapping("/activity")
+    public ResponseEntity<?> saveActivity(@RequestBody Activity activity){
+        Map<String,Object> body= this.activityServices.saveActivity(activity);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+
     public String buildParamPageActivities(String baseUrl,Map<String, String> params){
         EnumCategoria categoria=convertToEnum(EnumCategoria.class, params.get("categoria"));
         EnumStatus status=convertToEnum(EnumStatus.class,params.get("status"));
         LocalDate dataIniziale=convertToLocalDate(params.get("dataIniziale"));
         LocalDate dataFinale=convertToLocalDate(params.get("dataFinale"));
         String nomeCliente=params.get("nome");
+        String nomeAttivita=params.get("nomeAttivita");
 
         StringBuilder sb=new StringBuilder(baseUrl);
         sb.append("?");
@@ -101,6 +111,9 @@ public class ActivityRestController {
         sb.append("&");
         sb.append("nomeCliente=");
         sb.append(valueToStringIsEmpty(nomeCliente));
+        sb.append("&");
+        sb.append("nomeAttivita=");
+        sb.append(valueToStringIsEmpty(nomeAttivita));
         return sb.toString();
     }
     public String buildParamPageActivitiesByClient(String baseUrl,Map<String, String> params){

@@ -1,5 +1,5 @@
 
-import { fetchAllActivities, fetchAllActivitiesByClient } from "../../api/endpoints.js";
+import { fetchAllActivities, fetchAllActivitiesByClient, fetchSaveActivity } from "../../api/endpoints.js";
 import { pageLinks } from "../interfaces/ClientInt.js";
 import { Activity } from "../models/Activity.js";
 
@@ -27,5 +27,13 @@ export class ActivityService{
             console.log('Error al cargar los usuarios.');
         }
         return this.activities;
+    }
+    async fetchSaveActivityService(activity:Activity):Promise<string>{
+        let message:string="";
+        const fetchClient= await fetchSaveActivity(activity);
+        if(fetchClient){
+            message=fetchClient.message;
+        }
+        return message;
     }
 }

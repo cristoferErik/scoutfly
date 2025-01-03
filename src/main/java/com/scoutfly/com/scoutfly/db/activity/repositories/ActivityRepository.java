@@ -41,7 +41,8 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>{
                 (:dataIniziale is NULL OR a.createAt>= :dataIniziale) AND
                 (:dataFinale is NULL OR a.createAt<= :dataFinale) AND
                 (:nomeCliente is NULL OR c.nome LIKE CONCAT('%',:nomeCliente,'%')) AND
-                (:cognomeCliente is NULL OR c.cognome LIKE CONCAT('%',:cognomeCliente,'%'))
+                (:cognomeCliente is NULL OR c.cognome LIKE CONCAT('%',:cognomeCliente,'%'))AND
+                (:nomeAttivita is NULL OR a.nome LIKE CONCAT('%',:nomeAttivita,'%'))
                 ORDER BY a.createAt DESC
             """)
     Page<Activity> findAllActivities(Pageable pageable,
@@ -50,5 +51,6 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>{
                                         LocalDate dataIniziale,
                                         LocalDate dataFinale,
                                         String nomeCliente,
-                                        String cognomeCliente);
+                                        String cognomeCliente,
+                                        String nomeAttivita);
 }

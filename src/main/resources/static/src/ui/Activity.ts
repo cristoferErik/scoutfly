@@ -24,9 +24,6 @@ export class ActivityUI {
                     <div class="parameters"></div>
                     <div class="table-container"></div>
                     <div class="pagination"></div>
-                    <div class="button-container mg-y-1">
-                        <button class="button bt-green" name="inserire" type="button">Inserire</button>
-                    </div>
                 </div>
             `;
     body.appendChild(activityCard);
@@ -89,7 +86,7 @@ export class ActivityUI {
                                 <td>${activity.prezzo}</td>
                                 <td>${activity.prezzoTotale}</td>
                                 <td>${activity.dataLimite}</td>
-                                <td>${activity.client.nome} ${activity.client.cognome}</td>
+                                <td>${activity.client?.nome} ${activity.client?.cognome}</td>
                                 <td>${activity.createAt}</td>
                                 <td>${activity.updateAt}</td>
                                 <td>
@@ -195,6 +192,10 @@ export class ActivityUI {
             <div class="container">
                 <div class="items">
                         <div class="item">
+                            <p>Nome Attività</p>
+                            <input type="text" name="nomeAttivita">
+                        </div>
+                        <div class="item">
                             <p>Nome Cliente</p>
                             <input type="text" name="nomeCliente">
                         </div>
@@ -243,6 +244,9 @@ export class ActivityUI {
             break;
           case "cognomeCliente":
             params["cognomeCliente"] = element.value.trim();
+            break;
+          case "nomeAttivita":
+            params["nomeAttivita"] = element.value.trim();
             break;
           default:
             break;
@@ -335,12 +339,13 @@ export class ActivityUI {
                     </div>
                   </div>
                   <div class="button-container">
-                      <button class="button bt-green" name="inserire" type="button">salva</button>
+                      <button class="button bt-green" name="salva" type="button">salva</button>
                   </div>
               </form>
           `;
       modal.innerHTML = contenuto;
       this.filldropdownActivity();
+      this.eventoSalvaActivity();
     }
     updateModalActivity(id:number){
       
@@ -359,7 +364,9 @@ export class ActivityUI {
         ){
           switch(input.name){
             case 'activityId':
-              input.value=activity.id.toString();
+              if(activity.id!==undefined){
+                input.value=activity.id.toString();
+              }
               break;
             case 'nome':
               input.value=activity.nome;
@@ -388,6 +395,43 @@ export class ActivityUI {
         }
       });
     }
+    async salvaActivity(){
+      let activityForm=document.getElementById("activityForm") as HTMLFormElement;
+      let activity:Activity= new Activity();
+      const formData = new FormData(activityForm);
+      const id=Number(formData.get('activityId'));
+      activity.id=id==0?undefined:id;
+      activity.nome=formData.get('nome') as string;
+      activity.prezzo=Number(formData.get('prezzo') as string);
+      activity.categoria=formData.get('categoria') as EnumCategoria;
+      activity.status=formData.get('status') as EnumStatus;
+      activity.dataLimite=new Date(formData.get('dataLimite') as string);
+      activity.durataOre=Number(formData.get('durataOre') as string);
+      activity.descrizione=formData.get('descrizione') as string;
+
+      let message:string= await this.activityService.fetchSaveActivityService(activity);
+      return message;
+    }
+    eventoSalvaActivity(){
+      let activityForm=document.getElementById("activityForm") as HTMLFormElement;
+      let buttonContainer= activityForm.querySelector(".button-container");
+        if(!buttonContainer) return;
+        let buttons=buttonContainer.querySelectorAll(".button");
+        buttons.forEach(button=>{
+            let btn =button as HTMLButtonElement;
+            btn.addEventListener('click',async()=>{
+                switch(btn.name){
+                    case 'salva':
+                        await this.salvaActivity();
+                        this.closeModal();
+                        this.renderTableActivities(null);
+                        break;
+                    default:
+                        break; 
+                }
+            });
+        });
+    }
     filldropdownActivity() {
       let dropdowns = document.querySelectorAll(".dropdown");
       dropdowns.forEach((dropdown) => {
@@ -413,4 +457,10 @@ export class ActivityUI {
         }
       });
     }
+    closeModal(){
+      let modal=document.getElementById('modal');
+      if(!modal) return;
+      modal.style.display="none";
+      modal.innerHTML=``;
+  }
 }

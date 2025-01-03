@@ -14,17 +14,17 @@ export enum EnumStatus{
     ANNULLATO="ANNULLATO"
 }
 
-export interface Activity{
-    id: number;
-    nome: string;
-    descrizione: string;
-    prezzo: number;
-    categoria: EnumCategoria;
-    status:EnumStatus;
-    dataLimite: Date;
-    durataOre:number;
+export class Activity{
+    id?: number;
+    nome!: string;
+    descrizione!: string;
+    prezzo!: number;
+    categoria!: EnumCategoria;
+    status!:EnumStatus;
+    dataLimite!: Date;
+    durataOre!:number;
     prezzoTotale?:number;
-    createAt:Date;
-    updateAt:Date;
-    client:Client;
+    createAt?:Date;
+    updateAt?:Date;
+    client?:Client;
 }

@@ -14,6 +14,7 @@ export const GET_HOSTINGS_BY_CLIENT = API_BASE_URL + '/hostings';
 export const GET_WEBSITES_BY_HOSTING = API_BASE_URL + '/websites';
 export const GET_ACTIVITIES = API_BASE_URL + '/activities';
 export const GET_ACTIVITIES_CLIENT = API_BASE_URL + '/activities-client';
+export const POST_ACTIVITY = API_BASE_URL + '/activity';
 /*Client Risorsa */
 //Con questo ottengo i dati che vengo del backend
 export function fetchAllClients(parameters) {
@@ -165,5 +166,27 @@ export function fetchAllActivities(parameters) {
             console.error('Fetch Error:', error);
         }
         return activityResponse;
+    });
+}
+export function fetchSaveActivity(activity) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch(POST_ACTIVITY, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(activity),
+            });
+            if (!response.ok) {
+                const errorData = yield response.json();
+                throw new Error(errorData.message || 'Error al salvare il cliente');
+            }
+            return yield response.json(); // Devuelve la respuesta completa
+        }
+        catch (error) {
+            console.error('Error en fetchSaveClient:', error);
+            throw error;
+        }
     });
 }

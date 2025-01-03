@@ -1,5 +1,6 @@
 import { GET_ACTIVITIES } from "../api/endpoints.js";
 import { Activity, EnumCategoria, EnumStatus } from "../app/models/Activity.js";
+import { Client } from "../app/models/Client.js";
 import { ActivityService } from "../app/services/ActivityService.js";
 import { Pagination } from "../modules/Pagination.js";
 import { addSelectRowOfTable } from "../utils/Tools.js";
@@ -319,15 +320,15 @@ export class ActivityByClientUI {
                   </div>
                 </div>
                 <div class="button-container">
-                    <button class="button bt-green" name="inserire" type="button">salva</button>
+                    <button class="button bt-green" name="salva" type="button">salva</button>
                 </div>
             </form>
         `;
     modal.innerHTML = contenuto;
     this.filldropdownActivity();
+    this.eventoSalvaActivity();
   }
   updateModalActivity(id: number) {
-
     let activity: Activity | undefined = this.activityService.activities.find(
       (activity) => activity.id === id
     );
@@ -342,28 +343,30 @@ export class ActivityByClientUI {
         input instanceof HTMLSelectElement
       ) {
         switch (input.name) {
-          case 'activityId':
-            input.value = activity.id.toString();
+          case "activityId":
+            if (activity.id !== undefined) {
+              input.value = activity.id.toString();
+            }
             break;
-          case 'nome':
+          case "nome":
             input.value = activity.nome;
             break;
-          case 'categoria':
+          case "categoria":
             input.value = activity.categoria;
             break;
-          case 'status':
+          case "status":
             input.value = activity.status;
             break;
-          case 'dataLimite':
+          case "dataLimite":
             input.value = activity.dataLimite.toString();
             break;
-          case 'durataOre':
+          case "durataOre":
             input.value = activity.durataOre.toString();
             break;
-          case 'prezzo':
+          case "prezzo":
             input.value = activity.prezzo.toString();
             break;
-          case 'descrizione':
+          case "descrizione":
             input.value = activity.descrizione;
             break;
           default:
@@ -372,6 +375,53 @@ export class ActivityByClientUI {
       }
     });
   }
+  eventoSalvaActivity() {
+    let activityForm = document.getElementById(
+      "activityForm"
+    ) as HTMLFormElement;
+    let buttonContainer = activityForm.querySelector(".button-container");
+    if (!buttonContainer) return;
+    let buttons = buttonContainer.querySelectorAll(".button");
+    buttons.forEach((button) => {
+      let btn = button as HTMLButtonElement;
+      btn.addEventListener("click", async () => {
+        switch (btn.name) {
+          case "salva":
+            await this.salvaActivity();
+            this.closeModal();
+            this.renderTableActivityByClient(null);
+            break;
+          default:
+            break;
+        }
+      });
+    });
+  }
+  async salvaActivity() {
+    let activityForm = document.getElementById(
+      "activityForm"
+    ) as HTMLFormElement;
+    let activity: Activity = new Activity();
+    const formData = new FormData(activityForm);
+    const id = Number(formData.get("activityId"));
+    activity.id = id == 0 ? undefined : id;
+    activity.nome = formData.get("nome") as string;
+    activity.prezzo = Number(formData.get("prezzo") as string);
+    activity.categoria = formData.get("categoria") as EnumCategoria;
+    activity.status = formData.get("status") as EnumStatus;
+    activity.dataLimite = new Date(formData.get("dataLimite") as string);
+    activity.durataOre = Number(formData.get("durataOre") as string);
+    activity.descrizione = formData.get("descrizione") as string;
+    let client=new Client();
+    client.id=this.clientId;
+    activity.client = client;
+
+    let message: string = await this.activityService.fetchSaveActivityService(
+      activity
+    );
+    return message;
+  }
+
   filldropdownActivity() {
     let dropdowns = document.querySelectorAll(".dropdown");
     dropdowns.forEach((dropdown) => {
@@ -382,7 +432,7 @@ export class ActivityByClientUI {
           const enumCategoria = Object.keys(EnumCategoria);
           enumCategoria.forEach((value) => {
             element.innerHTML += `
-                            <option value="${value}">${value}</option>
+              <option value="${value}">${value}</option>
                         `;
           });
           break;
@@ -401,5 +451,11 @@ export class ActivityByClientUI {
 
   removeUIs() {
     document.getElementById("activity-card")?.remove();
+  }
+  closeModal() {
+    let modal = document.getElementById("modal");
+    if (!modal) return;
+    modal.style.display = "none";
+    modal.innerHTML = ``;
   }
 }

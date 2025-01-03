@@ -1,7 +1,10 @@
 package com.scoutfly.com.scoutfly.db.activity.services;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -50,7 +53,43 @@ public class ActivityServices {
         LocalDate dataFinale=convertToLocalDate(params.get("dataFinale"));
         String nomeCliente=params.get("nomeCliente");
         String cognomeCliente=params.get("cognomeCliente");
+        String nomeAttivita=params.get("nomeAttivita");
 
-        return this.activityRepository.findAllActivities(pageable, categoria, status, dataIniziale, dataFinale, nomeCliente,cognomeCliente);
+        return this.activityRepository.findAllActivities(
+        pageable, 
+        categoria, 
+        status, 
+        dataIniziale, 
+        dataFinale, 
+        nomeCliente,
+        cognomeCliente,
+        nomeAttivita);
+    }
+
+    @Transactional
+    public Map<String,Object> saveActivity(Activity activity){
+        Map<String,Object> response = new HashMap<>();
+        if(activity.getId() ==null){
+            activity.setCreateAt(LocalDate.now());
+            activity.setPrezzoTotale(activity.getPrezzo()*activity.getDurataOre());
+            activityRepository.save(activity);
+            response.put("status","success");
+            response.put("message","Activity salvato con successo!");
+        }else{
+            Optional<Activity> activityOPT = this.activityRepository.findById(activity.getId());
+            if(activityOPT.isPresent()){
+                activity.setCreateAt(activityOPT.get().getCreateAt());
+                activity.setClient(activityOPT.get().getClient());
+                activity.setPrezzoTotale(activity.getPrezzo()*activity.getDurataOre());
+                activity.setUpdateAt(LocalDateTime.now());
+                activityRepository.save(activity);
+                response.put("status","success");
+                response.put("message","Activity aggiornato con successo!");
+            }else{
+                response.put("status","bad request");
+                response.put("message","Activity non essiste!");
+            }
+        }
+        return response;
     }
 }

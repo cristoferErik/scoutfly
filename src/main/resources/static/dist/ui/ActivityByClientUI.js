@@ -8,7 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { GET_ACTIVITIES } from "../api/endpoints.js";
-import { EnumCategoria, EnumStatus } from "../app/models/Activity.js";
+import { Activity, EnumCategoria, EnumStatus } from "../app/models/Activity.js";
+import { Client } from "../app/models/Client.js";
 import { ActivityService } from "../app/services/ActivityService.js";
 import { Pagination } from "../modules/Pagination.js";
 import { addSelectRowOfTable } from "../utils/Tools.js";
@@ -331,12 +332,13 @@ export class ActivityByClientUI {
                   </div>
                 </div>
                 <div class="button-container">
-                    <button class="button bt-green" name="inserire" type="button">salva</button>
+                    <button class="button bt-green" name="salva" type="button">salva</button>
                 </div>
             </form>
         `;
         modal.innerHTML = contenuto;
         this.filldropdownActivity();
+        this.eventoSalvaActivity();
     }
     updateModalActivity(id) {
         let activity = this.activityService.activities.find((activity) => activity.id === id);
@@ -351,34 +353,78 @@ export class ActivityByClientUI {
                 input instanceof HTMLTextAreaElement ||
                 input instanceof HTMLSelectElement) {
                 switch (input.name) {
-                    case 'activityId':
-                        input.value = activity.id.toString();
+                    case "activityId":
+                        if (activity.id !== undefined) {
+                            input.value = activity.id.toString();
+                        }
                         break;
-                    case 'nome':
+                    case "nome":
                         input.value = activity.nome;
                         break;
-                    case 'categoria':
+                    case "categoria":
                         input.value = activity.categoria;
                         break;
-                    case 'status':
+                    case "status":
                         input.value = activity.status;
                         break;
-                    case 'dataLimite':
+                    case "dataLimite":
                         input.value = activity.dataLimite.toString();
                         break;
-                    case 'durataOre':
+                    case "durataOre":
                         input.value = activity.durataOre.toString();
                         break;
-                    case 'prezzo':
+                    case "prezzo":
                         input.value = activity.prezzo.toString();
                         break;
-                    case 'descrizione':
+                    case "descrizione":
                         input.value = activity.descrizione;
                         break;
                     default:
                         break;
                 }
             }
+        });
+    }
+    eventoSalvaActivity() {
+        let activityForm = document.getElementById("activityForm");
+        let buttonContainer = activityForm.querySelector(".button-container");
+        if (!buttonContainer)
+            return;
+        let buttons = buttonContainer.querySelectorAll(".button");
+        buttons.forEach((button) => {
+            let btn = button;
+            btn.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+                switch (btn.name) {
+                    case "salva":
+                        yield this.salvaActivity();
+                        this.closeModal();
+                        this.renderTableActivityByClient(null);
+                        break;
+                    default:
+                        break;
+                }
+            }));
+        });
+    }
+    salvaActivity() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let activityForm = document.getElementById("activityForm");
+            let activity = new Activity();
+            const formData = new FormData(activityForm);
+            const id = Number(formData.get("activityId"));
+            activity.id = id == 0 ? undefined : id;
+            activity.nome = formData.get("nome");
+            activity.prezzo = Number(formData.get("prezzo"));
+            activity.categoria = formData.get("categoria");
+            activity.status = formData.get("status");
+            activity.dataLimite = new Date(formData.get("dataLimite"));
+            activity.durataOre = Number(formData.get("durataOre"));
+            activity.descrizione = formData.get("descrizione");
+            let client = new Client();
+            client.id = this.clientId;
+            activity.client = client;
+            let message = yield this.activityService.fetchSaveActivityService(activity);
+            return message;
         });
     }
     filldropdownActivity() {
@@ -391,7 +437,7 @@ export class ActivityByClientUI {
                     const enumCategoria = Object.keys(EnumCategoria);
                     enumCategoria.forEach((value) => {
                         element.innerHTML += `
-                            <option value="${value}">${value}</option>
+              <option value="${value}">${value}</option>
                         `;
                     });
                     break;
@@ -410,5 +456,12 @@ export class ActivityByClientUI {
     removeUIs() {
         var _a;
         (_a = document.getElementById("activity-card")) === null || _a === void 0 ? void 0 : _a.remove();
+    }
+    closeModal() {
+        let modal = document.getElementById("modal");
+        if (!modal)
+            return;
+        modal.style.display = "none";
+        modal.innerHTML = ``;
     }
 }
