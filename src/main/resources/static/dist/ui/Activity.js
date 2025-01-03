@@ -11,6 +11,7 @@ import { GET_ACTIVITIES_CLIENT } from "../api/endpoints.js";
 import { EnumCategoria, EnumStatus } from "../app/models/Activity.js";
 import { ActivityService } from "../app/services/ActivityService.js";
 import { Pagination } from "../modules/Pagination.js";
+import { addSelectRowOfTable } from "../utils/Tools.js";
 export class ActivityUI {
     constructor() {
         this.activityService = new ActivityService();
@@ -121,6 +122,7 @@ export class ActivityUI {
             }
             this.addEventListenerActivityButton();
             this.addPagination();
+            addSelectRowOfTable();
         });
     }
     addPagination() {

@@ -2,6 +2,7 @@ import { GET_ACTIVITIES_CLIENT } from "../api/endpoints.js";
 import { Activity, EnumCategoria, EnumStatus } from "../app/models/Activity.js";
 import { ActivityService } from "../app/services/ActivityService.js";
 import { Pagination } from "../modules/Pagination.js";
+import { addSelectRowOfTable } from "../utils/Tools.js";
 
 export class ActivityUI {
   private activityService: ActivityService;
@@ -111,6 +112,7 @@ export class ActivityUI {
     }
     this.addEventListenerActivityButton();
     this.addPagination();
+    addSelectRowOfTable();
   }
   addPagination() {
     let linkPages = this.activityService.pageLinks;

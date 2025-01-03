@@ -3,8 +3,9 @@ import { ClientService } from "../app/services/ClientService.js";
 import { Client } from "../app/models/Client.js";
 import { HostingUI } from "./HostingUI.js";
 import { Pagination } from "../modules/Pagination.js";
-import { GET_ACTIVITIES_CLIENT } from "../api/endpoints.js";
+import {  GET_CLIENTS } from "../api/endpoints.js";
 import { ActivityByClientUI } from "./ActivityByClientUI.js";
+import { addSelectRowOfTable } from "../utils/Tools.js";
 
 export class ClientUI {
     private clientService: ClientService;
@@ -107,6 +108,7 @@ export class ClientUI {
         }
         this.addEventListenerClientButton(this.clientService);
         this.addPagination();
+        addSelectRowOfTable();
     }
     addFieldParameters(){
         let clientCard=document.getElementById("client-card");
@@ -143,7 +145,7 @@ export class ClientUI {
         buttonContainer.querySelector(".button")?.addEventListener("click",()=>{
             let inputs=parameters.querySelectorAll("[name]");
     
-            let url=GET_ACTIVITIES_CLIENT+"?";
+            let url=GET_CLIENTS+"?";
             let name="";
             let email="";
             inputs.forEach(input=>{

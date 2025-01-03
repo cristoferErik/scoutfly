@@ -11,6 +11,7 @@ import { GET_ACTIVITIES } from "../api/endpoints.js";
 import { EnumCategoria, EnumStatus } from "../app/models/Activity.js";
 import { ActivityService } from "../app/services/ActivityService.js";
 import { Pagination } from "../modules/Pagination.js";
+import { addSelectRowOfTable } from "../utils/Tools.js";
 export class ActivityByClientUI {
     constructor(clientId) {
         this.clientId = clientId !== null && clientId !== void 0 ? clientId : 0; //Si client è undefined assegniamo 0
@@ -120,6 +121,7 @@ export class ActivityByClientUI {
             }
             this.addEventListenerActivityButton();
             this.addPagination();
+            addSelectRowOfTable();
         });
     }
     addFieldParameters() {

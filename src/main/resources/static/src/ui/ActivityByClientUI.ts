@@ -2,6 +2,7 @@ import { GET_ACTIVITIES } from "../api/endpoints.js";
 import { Activity, EnumCategoria, EnumStatus } from "../app/models/Activity.js";
 import { ActivityService } from "../app/services/ActivityService.js";
 import { Pagination } from "../modules/Pagination.js";
+import { addSelectRowOfTable } from "../utils/Tools.js";
 
 export class ActivityByClientUI {
   private activityService: ActivityService;
@@ -113,6 +114,7 @@ export class ActivityByClientUI {
     }
     this.addEventListenerActivityButton();
     this.addPagination();
+    addSelectRowOfTable();
   }
   addFieldParameters() {
     let clientCard = document.getElementById("activity-card");
@@ -324,45 +326,45 @@ export class ActivityByClientUI {
     modal.innerHTML = contenuto;
     this.filldropdownActivity();
   }
-  updateModalActivity(id:number){
-    
+  updateModalActivity(id: number) {
+
     let activity: Activity | undefined = this.activityService.activities.find(
-      (activity)=>activity.id===id
+      (activity) => activity.id === id
     );
-    if(!activity) return;
-    let form=document.getElementById("activityForm") as HTMLFormElement;
-    let inputs=form.querySelectorAll("[name]");
-    if(!inputs || inputs.length==0) return;
-    inputs.forEach(function(input){
-      if(
-        input instanceof HTMLInputElement || 
-        input instanceof HTMLTextAreaElement ||  
+    if (!activity) return;
+    let form = document.getElementById("activityForm") as HTMLFormElement;
+    let inputs = form.querySelectorAll("[name]");
+    if (!inputs || inputs.length == 0) return;
+    inputs.forEach(function (input) {
+      if (
+        input instanceof HTMLInputElement ||
+        input instanceof HTMLTextAreaElement ||
         input instanceof HTMLSelectElement
-      ){
-        switch(input.name){
+      ) {
+        switch (input.name) {
           case 'activityId':
-            input.value=activity.id.toString();
+            input.value = activity.id.toString();
             break;
           case 'nome':
-            input.value=activity.nome;
+            input.value = activity.nome;
             break;
           case 'categoria':
-            input.value=activity.categoria;
+            input.value = activity.categoria;
             break;
           case 'status':
-            input.value=activity.status;
+            input.value = activity.status;
             break;
           case 'dataLimite':
-            input.value=activity.dataLimite.toString();
+            input.value = activity.dataLimite.toString();
             break;
           case 'durataOre':
-            input.value=activity.durataOre.toString();
+            input.value = activity.durataOre.toString();
             break;
           case 'prezzo':
-            input.value=activity.prezzo.toString();
+            input.value = activity.prezzo.toString();
             break;
           case 'descrizione':
-            input.value=activity.descrizione;
+            input.value = activity.descrizione;
             break;
           default:
             break;
@@ -396,7 +398,7 @@ export class ActivityByClientUI {
     });
   }
   /*Questi funzione vengono utilizati nella finestra activities! */
-  
+
   removeUIs() {
     document.getElementById("activity-card")?.remove();
   }

@@ -748,6 +748,10 @@ label {
   width: 100%;
 }
 
+.selected {
+  background-color: #536a67;
+}
+
 .card-email {
   display: block;
   background: #1b2e50;
