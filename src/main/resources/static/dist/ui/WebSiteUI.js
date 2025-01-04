@@ -7,6 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { Hosting } from "../app/models/Hosting.js";
+import { WebSite } from "../app/models/WebSite.js";
 import { WebSiteService } from "../app/services/WebSiteService.js";
 export class WebSiteUI {
     constructor(hostingId) {
@@ -252,10 +254,10 @@ export class WebSiteUI {
         modal.style.display = "flex";
         modal.innerHTML = ``;
         let contenuto = `
-            <div class="card-modal" id="websiteForm">
+            <form class="card-modal" id="webSiteForm">
                 <div class="container-bigTittle">
                     <p>Nuovo WebSite</p>
-                    <input type="hidden" name="Id">
+                    <input type="hidden" name="webSiteId">
                 </div>
                 <div class="items">
                     <div class="item">
@@ -284,17 +286,18 @@ export class WebSiteUI {
                     <textarea name="descrizione" type="text" id="descrizione"></textarea>
                 </div>
                 <div class="button-container mg-y-1">
-                    <button class="button bt-green" name="inserire" type="button">Inserire</button>
+                    <button class="button bt-green" name="salva" type="button">Inserire</button>
                 </div>
-            </div>
+            </form>
         `;
         modal.innerHTML = contenuto;
+        this.eventoSalvaWebSite();
     }
     updateModalWebSite(id) {
         let website = this.webSiteService.websites.find((website) => website.id === id);
         if (!website)
             return;
-        let form = document.getElementById("websiteForm");
+        let form = document.getElementById("webSiteForm");
         if (!form)
             return;
         let inputs = form.querySelectorAll("[name]");
@@ -303,8 +306,10 @@ export class WebSiteUI {
         inputs.forEach(function (input) {
             if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) {
                 switch (input.name) {
-                    case 'Id':
-                        input.value = website.id.toString();
+                    case 'webSiteId':
+                        if (website.id !== undefined) {
+                            input.value = website.id.toString();
+                        }
                         break;
                     case 'nome':
                         input.value = website.nome;
@@ -327,8 +332,53 @@ export class WebSiteUI {
             }
         });
     }
+    eventoSalvaWebSite() {
+        let webSiteForm = document.getElementById("webSiteForm");
+        let buttonContainer = webSiteForm.querySelector(".button-container");
+        if (!buttonContainer)
+            return;
+        let buttons = buttonContainer.querySelectorAll(".button");
+        buttons.forEach(button => {
+            let btn = button;
+            btn.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+                switch (btn.name) {
+                    case 'salva':
+                        yield this.salvaWebSite();
+                        this.closeModal();
+                        this.renderTableWebSites();
+                        break;
+                }
+            }));
+        });
+    }
+    salvaWebSite() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let webSiteForm = document.getElementById("webSiteForm");
+            let webSite = new WebSite();
+            const formData = new FormData(webSiteForm);
+            const id = Number(formData.get('webSiteId'));
+            webSite.id = id == 0 ? undefined : id;
+            webSite.nome = formData.get('nome');
+            webSite.url = formData.get('url');
+            webSite.dataAggiornamento = new Date(formData.get('dataAggiornamento'));
+            webSite.dataBackup = new Date(formData.get('dataBackup'));
+            webSite.descrizione = formData.get('descrizione');
+            let hosting = new Hosting();
+            hosting.id = this.hostingId;
+            webSite.hosting = hosting;
+            let message = yield this.webSiteService.saveWebSite(webSite);
+            return message;
+        });
+    }
     removeUIs() {
         var _a;
         (_a = document.getElementById('website-card')) === null || _a === void 0 ? void 0 : _a.remove();
+    }
+    closeModal() {
+        let modal = document.getElementById('modal');
+        if (!modal)
+            return;
+        modal.style.display = "none";
+        modal.innerHTML = ``;
     }
 }

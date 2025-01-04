@@ -7,7 +7,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { Client } from "../app/models/Client.js";
+import { Hosting } from "../app/models/Hosting.js";
 import { HostingService } from "../app/services/HostingService.js";
+import { addSelectRowOfTable } from "../utils/Tools.js";
 import { WebSiteUI } from "./WebSiteUI.js";
 export class HostingUI {
     constructor(clienteId) {
@@ -46,6 +49,7 @@ export class HostingUI {
             const tableContainer = hostingCard.querySelector(".table-container");
             if (!tableContainer)
                 return;
+            tableContainer.innerHTML = ``;
             //Se aggiungiamo await aspettara che finisca per poter continuare
             const hostings = yield this.hostingService.getAllHostingsByClient(this.clienteId);
             if (hostings.length > 0) {
@@ -110,6 +114,7 @@ export class HostingUI {
                 tableContainer.appendChild(table);
             }
             this.addEventListenerHostingButton();
+            addSelectRowOfTable();
         });
     }
     //Aggiunge un'evento click ai buttoni che sono dentro della tabella renderClients
@@ -265,9 +270,9 @@ export class HostingUI {
         modal.style.display = "flex";
         modal.innerHTML = ``;
         let contenuto = `
-                <div class="card-modal" id="hostingForm">
+                <form class="card-modal" id="hostingForm">
                     <div class="container-bigTittle">
-                        <input type="hidden" name="Id">
+                        <input type="hidden" name="hostingId">
                         <p>Nuovo Hosting</p>
                     </div>
                     <div class="items">
@@ -297,11 +302,12 @@ export class HostingUI {
                         </div>
                     </div>
                     <div class="button-container mg-y-1">
-                        <button class="button bt-green" name="inserire" type="button">Inserire</button>
+                        <button class="button bt-green" name="salva" type="button">Inserire</button>
                     </div>
-                </div>
+                </form>
             `;
         modal.innerHTML = contenuto;
+        this.eventoSalvaHosting();
     }
     updateModalHosting(id) {
         let hosting = this.hostingService.hostings.find((hosting) => hosting.id === id);
@@ -316,8 +322,10 @@ export class HostingUI {
         inputs.forEach(function (input) {
             if (input instanceof HTMLInputElement) {
                 switch (input.name) {
-                    case 'Id':
-                        input.value = hosting.id.toString();
+                    case 'hostingId':
+                        if (hosting.id !== undefined) {
+                            input.value = hosting.id.toString();
+                        }
                         break;
                     case 'nome':
                         input.value = hosting.nome;
@@ -340,9 +348,54 @@ export class HostingUI {
             }
         });
     }
+    eventoSalvaHosting() {
+        let hostingForm = document.getElementById("hostingForm");
+        let buttonContainer = hostingForm.querySelector(".button-container");
+        if (!buttonContainer)
+            return;
+        let buttons = buttonContainer.querySelectorAll(".button");
+        buttons.forEach(button => {
+            let btn = button;
+            btn.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+                switch (btn.name) {
+                    case 'salva':
+                        yield this.salvaHosting();
+                        this.closeModal();
+                        this.renderTableHosting();
+                        break;
+                }
+            }));
+        });
+    }
+    salvaHosting() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let hostingForm = document.getElementById("hostingForm");
+            let hosting = new Hosting();
+            const formData = new FormData(hostingForm);
+            const id = Number(formData.get('hostingId'));
+            hosting.id = id == 0 ? undefined : id;
+            hosting.nome = formData.get('nome');
+            hosting.proveedor = formData.get('proveedor');
+            hosting.url = formData.get('url');
+            hosting.usernameHosting = formData.get('username');
+            hosting.passwordHosting = formData.get('password');
+            let client = new Client();
+            client.id = this.clienteId;
+            hosting.client = client;
+            let message = yield this.hostingService.saveHostingService(hosting);
+            return message;
+        });
+    }
     removeUIs() {
         var _a, _b;
         (_a = document.getElementById("hosting-card")) === null || _a === void 0 ? void 0 : _a.remove();
         (_b = document.getElementById("website-card")) === null || _b === void 0 ? void 0 : _b.remove();
+    }
+    closeModal() {
+        let modal = document.getElementById('modal');
+        if (!modal)
+            return;
+        modal.style.display = "none";
+        modal.innerHTML = ``;
     }
 }

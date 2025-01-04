@@ -1,4 +1,4 @@
-import { fetchAllWebSiteByHosting } from "../../api/endpoints.js";
+import { fetchAllWebSiteByHosting, fetchSaveWebSite } from "../../api/endpoints.js";
 import { WebSite } from "../models/WebSite.js";
 
 export class WebSiteService{
@@ -12,5 +12,13 @@ export class WebSiteService{
                     console.log('Error al cargar los usuarios.');
                 }
                 return this.websites;
+        }
+        async saveWebSite(webSite:WebSite):Promise<string>{
+            let message="";
+            const fetchWebSite = await fetchSaveWebSite(webSite);
+            if(fetchWebSite){
+                message=fetchWebSite.message;
             }
+            return message;
+        }
 }

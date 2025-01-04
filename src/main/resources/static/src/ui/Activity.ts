@@ -129,34 +129,34 @@ export class ActivityUI {
       });
     });
   }
-    //Aggiunge un'evento click ai buttoni che sono dentro della tabella renderClients
-    addEventListenerActivityButton(): void {
-        const element = document.getElementById("activity-container");
-        if (!element) return;
-        const tableContainer = element.querySelector(".table-container");
-        if (!tableContainer) return;
-        const buttonContainers =
-          tableContainer.querySelectorAll(".button-container");
-        buttonContainers.forEach((buttonContainer) => {
-          buttonContainer?.addEventListener("click", (event) => {
-            const target = event?.target as HTMLElement;
-            const button = target?.closest("button");
-            if (!button) return;
-            switch (button.name) {
-              case "vedi":
-                this.modalInsertActivity();
-                this.updateModalActivity(parseInt(button.value));
-                break;
-              case "elimina":
-                console.log("elimina");
-                break;
-              default:
-                console.log("Azione sconosciuta!");
-                break;
-            }
-          });
-        });
-      }
+  //Aggiunge un'evento click ai buttoni che sono dentro della tabella renderClients
+  addEventListenerActivityButton(): void {
+    const element = document.getElementById("activity-container");
+    if (!element) return;
+    const tableContainer = element.querySelector(".table-container");
+    if (!tableContainer) return;
+    const buttonContainers =
+      tableContainer.querySelectorAll(".button-container");
+    buttonContainers.forEach((buttonContainer) => {
+      buttonContainer?.addEventListener("click", (event) => {
+        const target = event?.target as HTMLElement;
+        const button = target?.closest("button");
+        if (!button) return;
+        switch (button.name) {
+          case "vedi":
+            this.modalInsertActivity();
+            this.updateModalActivity(parseInt(button.value));
+            break;
+          case "elimina":
+            console.log("elimina");
+            break;
+          default:
+            console.log("Azione sconosciuta!");
+            break;
+        }
+      });
+    });
+  }
   addFieldActivitiesParameters() {
     let clientCard = document.getElementById("activity-card");
     if (!clientCard) return;
@@ -267,32 +267,32 @@ export class ActivityUI {
       this.renderTableActivities(url.toString());
     });
   }
-   /*Questo buttone ti permette aprire il modale per inserire un nuovo Cliente! */
-    addModalInsertActivity() {
-      let activityCard = document.getElementById("activity-card");
-      let buttons = activityCard?.querySelectorAll("[name]");
-      buttons?.forEach((button) => {
-        let btn = button as HTMLInputElement;
-        if (btn.name == "inserire") {
-          btn.addEventListener("click", () => {
-            this.modalInsertActivity();
-          });
-        }
-      });
-    }
-    modalInsertActivity() {
-      let modal = document.getElementById("modal");
-      /*In caso fai clic fuori del modal, si chiudera */
-      modal?.addEventListener("click", (event) => {
-        if (event.target === modal) {
-          modal.style.display = "none";
-          modal.innerHTML = ``;
-        }
-      });
-      if (!modal) return;
-      modal.style.display = "flex";
-      modal.innerHTML = ``;
-      let contenuto = `
+  /*Questo buttone ti permette aprire il modale per inserire un nuovo Cliente! */
+  addModalInsertActivity() {
+    let activityCard = document.getElementById("activity-card");
+    let buttons = activityCard?.querySelectorAll("[name]");
+    buttons?.forEach((button) => {
+      let btn = button as HTMLInputElement;
+      if (btn.name == "inserire") {
+        btn.addEventListener("click", () => {
+          this.modalInsertActivity();
+        });
+      }
+    });
+  }
+  modalInsertActivity() {
+    let modal = document.getElementById("modal");
+    /*In caso fai clic fuori del modal, si chiudera */
+    modal?.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+        modal.innerHTML = ``;
+      }
+    });
+    if (!modal) return;
+    modal.style.display = "flex";
+    modal.innerHTML = ``;
+    let contenuto = `
               <form class="card-modal" id="activityForm">
                   <div class="container-bigTittle">
                       <p>Nuova Attività</p>
@@ -343,124 +343,125 @@ export class ActivityUI {
                   </div>
               </form>
           `;
-      modal.innerHTML = contenuto;
-      this.filldropdownActivity();
-      this.eventoSalvaActivity();
-    }
-    updateModalActivity(id:number){
-      
-      let activity: Activity | undefined = this.activityService.activities.find(
-        (activity)=>activity.id===id
-      );
-      if(!activity) return;
-      let form=document.getElementById("activityForm") as HTMLFormElement;
-      let inputs=form.querySelectorAll("[name]");
-      if(!inputs || inputs.length==0) return;
-      inputs.forEach(function(input){
-        if(
-          input instanceof HTMLInputElement || 
-          input instanceof HTMLTextAreaElement ||  
-          input instanceof HTMLSelectElement
-        ){
-          switch(input.name){
-            case 'activityId':
-              if(activity.id!==undefined){
-                input.value=activity.id.toString();
-              }
-              break;
-            case 'nome':
-              input.value=activity.nome;
-              break;
-            case 'categoria':
-              input.value=activity.categoria;
-              break;
-            case 'status':
-              input.value=activity.status;
-              break;
-            case 'dataLimite':
-              input.value=activity.dataLimite.toString();
-              break;
-            case 'durataOre':
-              input.value=activity.durataOre.toString();
-              break;
-            case 'prezzo':
-              input.value=activity.prezzo.toString();
-              break;
-            case 'descrizione':
-              input.value=activity.descrizione;
-              break;
-            default:
-              break;
-          }
-        }
-      });
-    }
-    async salvaActivity(){
-      let activityForm=document.getElementById("activityForm") as HTMLFormElement;
-      let activity:Activity= new Activity();
-      const formData = new FormData(activityForm);
-      const id=Number(formData.get('activityId'));
-      activity.id=id==0?undefined:id;
-      activity.nome=formData.get('nome') as string;
-      activity.prezzo=Number(formData.get('prezzo') as string);
-      activity.categoria=formData.get('categoria') as EnumCategoria;
-      activity.status=formData.get('status') as EnumStatus;
-      activity.dataLimite=new Date(formData.get('dataLimite') as string);
-      activity.durataOre=Number(formData.get('durataOre') as string);
-      activity.descrizione=formData.get('descrizione') as string;
+    modal.innerHTML = contenuto;
+    this.filldropdownActivity();
+    this.eventoSalvaActivity();
+  }
+  updateModalActivity(id: number) {
 
-      let message:string= await this.activityService.fetchSaveActivityService(activity);
-      return message;
-    }
-    eventoSalvaActivity(){
-      let activityForm=document.getElementById("activityForm") as HTMLFormElement;
-      let buttonContainer= activityForm.querySelector(".button-container");
-        if(!buttonContainer) return;
-        let buttons=buttonContainer.querySelectorAll(".button");
-        buttons.forEach(button=>{
-            let btn =button as HTMLButtonElement;
-            btn.addEventListener('click',async()=>{
-                switch(btn.name){
-                    case 'salva':
-                        await this.salvaActivity();
-                        this.closeModal();
-                        this.renderTableActivities(null);
-                        break;
-                    default:
-                        break; 
-                }
-            });
-        });
-    }
-    filldropdownActivity() {
-      let dropdowns = document.querySelectorAll(".dropdown");
-      dropdowns.forEach((dropdown) => {
-        dropdown.innerHTML = ``;
-        let element = dropdown as HTMLSelectElement;
-        switch (element.name) {
-          case "categoria":
-            const enumCategoria = Object.keys(EnumCategoria);
-            enumCategoria.forEach((value) => {
-              element.innerHTML += `
-                              <option value="${value}">${value}</option>
-                          `;
-            });
+    let activity: Activity | undefined = this.activityService.activities.find(
+      (activity) => activity.id === id
+    );
+    if (!activity) return;
+    let form = document.getElementById("activityForm") as HTMLFormElement;
+    let inputs = form.querySelectorAll("[name]");
+    if (!inputs || inputs.length == 0) return;
+    inputs.forEach(function (input) {
+      if (
+        input instanceof HTMLInputElement ||
+        input instanceof HTMLTextAreaElement ||
+        input instanceof HTMLSelectElement
+      ) {
+        switch (input.name) {
+          case 'activityId':
+            if (activity.id !== undefined) {
+              input.value = activity.id.toString();
+            }
             break;
-          case "status":
-            const enumStatus = Object.keys(EnumStatus);
-            enumStatus.forEach((value) => {
-              element.innerHTML += `
-                              <option value="${value}">${value}</option>
-                          `;
-            });
+          case 'nome':
+            input.value = activity.nome;
+            break;
+          case 'categoria':
+            input.value = activity.categoria;
+            break;
+          case 'status':
+            input.value = activity.status;
+            break;
+          case 'dataLimite':
+            input.value = activity.dataLimite.toString();
+            break;
+          case 'durataOre':
+            input.value = activity.durataOre.toString();
+            break;
+          case 'prezzo':
+            input.value = activity.prezzo.toString();
+            break;
+          case 'descrizione':
+            input.value = activity.descrizione;
+            break;
+          default:
+            break;
+        }
+      }
+    });
+  }
+  eventoSalvaActivity() {
+    let activityForm = document.getElementById("activityForm") as HTMLFormElement;
+    let buttonContainer = activityForm.querySelector(".button-container");
+    if (!buttonContainer) return;
+    let buttons = buttonContainer.querySelectorAll(".button");
+    buttons.forEach(button => {
+      let btn = button as HTMLButtonElement;
+      btn.addEventListener('click', async () => {
+        switch (btn.name) {
+          case 'salva':
+              await this.salvaActivity();
+              this.closeModal();
+              this.renderTableActivities(null);
+            break;
+          default:
             break;
         }
       });
-    }
-    closeModal(){
-      let modal=document.getElementById('modal');
-      if(!modal) return;
-      modal.style.display="none";
-      modal.innerHTML=``;
+    });
+  }
+  async salvaActivity() {
+    let activityForm = document.getElementById("activityForm") as HTMLFormElement;
+    let activity: Activity = new Activity();
+    const formData = new FormData(activityForm);
+    const id = Number(formData.get('activityId'));
+    activity.id = id == 0 ? undefined : id;
+    activity.nome = formData.get('nome') as string;
+    activity.prezzo = Number(formData.get('prezzo') as string);
+    activity.categoria = formData.get('categoria') as EnumCategoria;
+    activity.status = formData.get('status') as EnumStatus;
+    activity.dataLimite = new Date(formData.get('dataLimite') as string);
+    activity.durataOre = Number(formData.get('durataOre') as string);
+    activity.descrizione = formData.get('descrizione') as string;
+
+    let message: string = await this.activityService.fetchSaveActivityService(activity);
+    return message;
+  }
+
+  filldropdownActivity() {
+    let dropdowns = document.querySelectorAll(".dropdown");
+    dropdowns.forEach((dropdown) => {
+      dropdown.innerHTML = ``;
+      let element = dropdown as HTMLSelectElement;
+      switch (element.name) {
+        case "categoria":
+          const enumCategoria = Object.keys(EnumCategoria);
+          enumCategoria.forEach((value) => {
+            element.innerHTML += `
+                              <option value="${value}">${value}</option>
+                          `;
+          });
+          break;
+        case "status":
+          const enumStatus = Object.keys(EnumStatus);
+          enumStatus.forEach((value) => {
+            element.innerHTML += `
+                              <option value="${value}">${value}</option>
+                          `;
+          });
+          break;
+      }
+    });
+  }
+  closeModal() {
+    let modal = document.getElementById('modal');
+    if (!modal) return;
+    modal.style.display = "none";
+    modal.innerHTML = ``;
   }
 }

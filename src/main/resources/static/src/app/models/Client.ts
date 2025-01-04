@@ -1,5 +1,3 @@
-
-
 export class Client{
     id?: number;
     nome!: string;

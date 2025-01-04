@@ -10,11 +10,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 export const API_BASE_URL = '/scoutfly/api';
 export const GET_CLIENTS = API_BASE_URL + '/clients';
 export const POST_CLIENT = API_BASE_URL + '/client';
+/*----------------------------------------------------------------------*/
 export const GET_HOSTINGS_BY_CLIENT = API_BASE_URL + '/hostings';
+export const POST_HOSTING = API_BASE_URL + '/hosting';
+/*----------------------------------------------------------------------*/
 export const GET_WEBSITES_BY_HOSTING = API_BASE_URL + '/websites';
+export const POST_WEBSITE = API_BASE_URL + '/website';
+/*----------------------------------------------------------------------*/
 export const GET_ACTIVITIES = API_BASE_URL + '/activities';
 export const GET_ACTIVITIES_CLIENT = API_BASE_URL + '/activities-client';
 export const POST_ACTIVITY = API_BASE_URL + '/activity';
+/*----------------------------------------------------------------------*/
 /*Client Risorsa */
 //Con questo ottengo i dati che vengo del backend
 export function fetchAllClients(parameters) {
@@ -89,6 +95,30 @@ export function fetchAllHostingsByClient(clientId) {
         return data;
     });
 }
+export function fetchSaveHosting(hosting) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            console.table(hosting);
+            const response = yield fetch(POST_HOSTING, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(hosting),
+            });
+            console.log(JSON.stringify(hosting));
+            if (!response.ok) {
+                const errorData = yield response.json();
+                throw new Error(errorData.message || 'Error al salvare il Hosting');
+            }
+            return yield response.json(); // Devuelve la respuesta completa
+        }
+        catch (error) {
+            console.error('Error en fetchSaveClient:', error);
+            throw error;
+        }
+    });
+}
 /*WebSites risorsa */
 export function fetchAllWebSiteByHosting(hostingId) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -111,6 +141,29 @@ export function fetchAllWebSiteByHosting(hostingId) {
             console.error('Fetch Error:', error);
         }
         return data;
+    });
+}
+export function fetchSaveWebSite(webSite) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch(POST_WEBSITE, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(webSite),
+            });
+            console.log(JSON.stringify(webSite));
+            if (!response.ok) {
+                const errorData = yield response.json();
+                throw new Error(errorData.message || 'Error al salvare il Hosting');
+            }
+            return yield response.json(); // Devuelve la respuesta completa
+        }
+        catch (error) {
+            console.error('Error en fetchSaveClient:', error);
+            throw error;
+        }
     });
 }
 /*Activities  risorsa*/

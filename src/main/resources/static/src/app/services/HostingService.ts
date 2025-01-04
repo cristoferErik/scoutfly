@@ -1,4 +1,4 @@
-import { fetchAllHostingsByClient } from "../../api/endpoints.js";
+import { fetchAllHostingsByClient, fetchSaveHosting } from "../../api/endpoints.js";
 import { Hosting } from "../models/Hosting.js";
 
 export class HostingService{
@@ -12,5 +12,14 @@ export class HostingService{
                 console.log('Error al cargar los usuarios.');
             }
             return this.hostings;
+    }
+    
+    async saveHostingService(hosting:Hosting):Promise<string>{
+        let message:string="";
+        const fetchHosting= await fetchSaveHosting(hosting);
+        if(fetchHosting){
+            message=fetchHosting.message;
         }
+        return message;
+    }
 }

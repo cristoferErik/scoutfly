@@ -408,24 +408,6 @@ export class ActivityUI {
             }
         });
     }
-    salvaActivity() {
-        return __awaiter(this, void 0, void 0, function* () {
-            let activityForm = document.getElementById("activityForm");
-            let activity = new Activity();
-            const formData = new FormData(activityForm);
-            const id = Number(formData.get('activityId'));
-            activity.id = id == 0 ? undefined : id;
-            activity.nome = formData.get('nome');
-            activity.prezzo = Number(formData.get('prezzo'));
-            activity.categoria = formData.get('categoria');
-            activity.status = formData.get('status');
-            activity.dataLimite = new Date(formData.get('dataLimite'));
-            activity.durataOre = Number(formData.get('durataOre'));
-            activity.descrizione = formData.get('descrizione');
-            let message = yield this.activityService.fetchSaveActivityService(activity);
-            return message;
-        });
-    }
     eventoSalvaActivity() {
         let activityForm = document.getElementById("activityForm");
         let buttonContainer = activityForm.querySelector(".button-container");
@@ -445,6 +427,24 @@ export class ActivityUI {
                         break;
                 }
             }));
+        });
+    }
+    salvaActivity() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let activityForm = document.getElementById("activityForm");
+            let activity = new Activity();
+            const formData = new FormData(activityForm);
+            const id = Number(formData.get('activityId'));
+            activity.id = id == 0 ? undefined : id;
+            activity.nome = formData.get('nome');
+            activity.prezzo = Number(formData.get('prezzo'));
+            activity.categoria = formData.get('categoria');
+            activity.status = formData.get('status');
+            activity.dataLimite = new Date(formData.get('dataLimite'));
+            activity.durataOre = Number(formData.get('durataOre'));
+            activity.descrizione = formData.get('descrizione');
+            let message = yield this.activityService.fetchSaveActivityService(activity);
+            return message;
         });
     }
     filldropdownActivity() {

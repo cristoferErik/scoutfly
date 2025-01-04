@@ -3,7 +3,7 @@ package com.scoutfly.com.scoutfly.db.website.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.scoutfly.com.scoutfly.db.hosting.entities.Hosting;
 
 import jakarta.persistence.Column;
@@ -40,7 +40,7 @@ public class WebSite {
     @Column(name="data_modifica")
     private LocalDateTime dataModifica;
 
-    @JsonIgnore
+    @JsonBackReference 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="hosting_id",nullable=false)
     private Hosting hosting;

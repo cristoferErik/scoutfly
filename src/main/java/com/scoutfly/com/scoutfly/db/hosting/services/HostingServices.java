@@ -1,5 +1,10 @@
 package com.scoutfly.com.scoutfly.db.hosting.services;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +26,27 @@ public class HostingServices {
     }
     
     @Transactional
-    public void saveHosting(Hosting hosting){
-        hostingRepository.save(hosting);
+    public Map<String,Object> saveHosting(Hosting hosting){
+        Map<String,Object> response= new HashMap<>();
+        if(hosting.getId()==null){
+            hosting.setDataCreazione(LocalDateTime.now());
+            hosting.setDataModifica(LocalDateTime.now());
+            hostingRepository.save(hosting);
+            response.put("status", "success");
+            response.put("message","Hostin salvato con successo!");
+        }else{
+            Optional<Hosting> hostingOPT = this.hostingRepository.findById(hosting.getId());
+            if(hostingOPT.isPresent()){
+                hosting.setDataCreazione(hostingOPT.get().getDataCreazione());
+                hosting.setDataModifica(LocalDateTime.now());
+                hostingRepository.save(hosting);
+                response.put("status", "success");
+                response.put("message","Hosting aggiornato con successo!");
+            }else{
+                response.put("status", "success");
+                response.put("message","Hosting aggiornato con successo!");
+            }
+        }
+        return response;
     }
 }

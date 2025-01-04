@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchAllWebSiteByHosting } from "../../api/endpoints.js";
+import { fetchAllWebSiteByHosting, fetchSaveWebSite } from "../../api/endpoints.js";
 export class WebSiteService {
     constructor() {
         this.websites = [];
@@ -23,6 +23,16 @@ export class WebSiteService {
                 console.log('Error al cargar los usuarios.');
             }
             return this.websites;
+        });
+    }
+    saveWebSite(webSite) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let message = "";
+            const fetchWebSite = yield fetchSaveWebSite(webSite);
+            if (fetchWebSite) {
+                message = fetchWebSite.message;
+            }
+            return message;
         });
     }
 }

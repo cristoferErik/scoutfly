@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchAllHostingsByClient } from "../../api/endpoints.js";
+import { fetchAllHostingsByClient, fetchSaveHosting } from "../../api/endpoints.js";
 export class HostingService {
     constructor() {
         this.hostings = [];
@@ -23,6 +23,16 @@ export class HostingService {
                 console.log('Error al cargar los usuarios.');
             }
             return this.hostings;
+        });
+    }
+    saveHostingService(hosting) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let message = "";
+            const fetchHosting = yield fetchSaveHosting(hosting);
+            if (fetchHosting) {
+                message = fetchHosting.message;
+            }
+            return message;
         });
     }
 }
