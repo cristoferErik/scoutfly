@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchAllClients, fetchSaveClient } from "../../api/endpoints.js";
+import { fetchAllClients, fetchDeleteClient, fetchSaveClient } from "../../api/endpoints.js";
 export class ClientService {
     constructor() {
         this.clients = [];
@@ -29,6 +29,16 @@ export class ClientService {
         return __awaiter(this, void 0, void 0, function* () {
             let message = "";
             const fetchClient = yield fetchSaveClient(client);
+            if (fetchClient) {
+                message = fetchClient.message;
+            }
+            return message;
+        });
+    }
+    deleteClientService(clientId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let message = "";
+            const fetchClient = yield fetchDeleteClient(clientId);
             if (fetchClient) {
                 message = fetchClient.message;
             }

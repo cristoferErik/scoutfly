@@ -9,6 +9,7 @@ export const API_BASE_URL = '/scoutfly/api';
 /*----------------------------------------------------------------------*/
 export const GET_CLIENTS = API_BASE_URL + '/clients';
 export const POST_CLIENT = API_BASE_URL + '/client';
+export const DELETE_CLIENT=API_BASE_URL + '/client';
 /*----------------------------------------------------------------------*/
 export const GET_HOSTINGS_BY_CLIENT = API_BASE_URL + '/hostings';
 export const POST_HOSTING = API_BASE_URL + '/hosting';
@@ -54,6 +55,27 @@ export async function fetchSaveClient(client:Client):Promise<ResponseMessage>{
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(client),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al salvare il cliente');
+        }
+
+        return await response.json();  // Devuelve la respuesta completa
+    } catch (error) {
+        console.error('Error en fetchSaveClient:', error);
+        throw error;
+    }
+}
+export async function fetchDeleteClient(clientId:number):Promise<ResponseMessage>{
+    try {
+        
+        const response = await fetch(`${DELETE_CLIENT}/${clientId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
 
         if (!response.ok) {

@@ -99,7 +99,7 @@ export class ClientUI {
                                 <td>
                                     <div class="button-container">
                                         <button type="button" name="vedi" class="button bt-green" value="${client.id}">vedi</button>
-                                        <button type="button" name="elimina" class="button bt-red">elimina</button>
+                                        <button type="button" name="elimina" class="button bt-red" value="${client.id}">elimina</button>
                                         <button type="button" name="seleziona" class="button bt-light-blue" value="${client.id}">
                                             <img class="icon" src="../../assets/images/check.svg" alt="">
                                         </button>
@@ -227,7 +227,7 @@ export class ClientUI {
                         this.updateModalClient(parseInt(button.value));
                         break;
                     case "elimina":
-                        console.log("elimina");
+                        this.deleteClient(parseInt(button.value));
                         break;
                     case "seleziona":
                         //console.log("seleziona");
@@ -486,6 +486,12 @@ export class ClientUI {
             client.email = formData.get('email');
             let message = yield this.clientService.fetchSaveClientService(client);
             return message;
+        });
+    }
+    deleteClient(clientId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.clientService.deleteClientService(clientId);
+            this.renderTableClients(null);
         });
     }
     removeUIs() {

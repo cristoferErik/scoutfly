@@ -8,8 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 export const API_BASE_URL = '/scoutfly/api';
+/*----------------------------------------------------------------------*/
 export const GET_CLIENTS = API_BASE_URL + '/clients';
 export const POST_CLIENT = API_BASE_URL + '/client';
+export const DELETE_CLIENT = API_BASE_URL + '/client';
 /*----------------------------------------------------------------------*/
 export const GET_HOSTINGS_BY_CLIENT = API_BASE_URL + '/hostings';
 export const POST_HOSTING = API_BASE_URL + '/hosting';
@@ -22,7 +24,7 @@ export const GET_ACTIVITIES_CLIENT = API_BASE_URL + '/activities-client';
 export const POST_ACTIVITY = API_BASE_URL + '/activity';
 /*----------------------------------------------------------------------*/
 /*Client Risorsa */
-//Con questo ottengo i dati che vengo del backend
+//Con questo ottengo i dati che vengono del backend
 export function fetchAllClients(parameters) {
     return __awaiter(this, void 0, void 0, function* () {
         let clientResponse = null;
@@ -58,6 +60,27 @@ export function fetchSaveClient(client) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(client),
+            });
+            if (!response.ok) {
+                const errorData = yield response.json();
+                throw new Error(errorData.message || 'Error al salvare il cliente');
+            }
+            return yield response.json(); // Devuelve la respuesta completa
+        }
+        catch (error) {
+            console.error('Error en fetchSaveClient:', error);
+            throw error;
+        }
+    });
+}
+export function fetchDeleteClient(clientId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch(`${DELETE_CLIENT}/${clientId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
             if (!response.ok) {
                 const errorData = yield response.json();

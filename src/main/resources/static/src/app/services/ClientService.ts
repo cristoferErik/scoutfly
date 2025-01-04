@@ -1,4 +1,4 @@
-import { fetchAllClients, fetchSaveClient } from "../../api/endpoints.js";
+import { fetchAllClients, fetchDeleteClient, fetchSaveClient } from "../../api/endpoints.js";
 import { ClientResponse, pageLinks } from "../interfaces/ClientInt.js";
 import { ResponseMessage } from "../interfaces/Response.js";
 import { Client } from "../models/Client.js";
@@ -20,6 +20,14 @@ export class ClientService{
     async fetchSaveClientService(client:Client):Promise<string>{
         let message:string="";
         const fetchClient= await fetchSaveClient(client);
+        if(fetchClient){
+            message=fetchClient.message;
+        }
+        return message;
+    }
+    async deleteClientService(clientId:number):Promise<string>{
+        let message:string="";
+        const fetchClient=await fetchDeleteClient(clientId);
         if(fetchClient){
             message=fetchClient.message;
         }
