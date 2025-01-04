@@ -47,4 +47,17 @@ public class ClientServices {
         }
         return response;
     }
+    @Transactional
+    public Map<String,Object> deleteClient(Long clientId){
+        Map<String,Object> response= new HashMap<>();
+        try {
+            response.put("status","success");
+            response.put("message","cliente eliminato con successo!");
+            this.clientRepository.deleteById(clientId);    
+        } catch (Exception e) {
+            response.put("status","error");
+            response.put("message","C'è stato un'errore!");
+        }
+        return response;
+    }
 }

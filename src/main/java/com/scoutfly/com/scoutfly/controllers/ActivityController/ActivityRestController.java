@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,7 +87,11 @@ public class ActivityRestController {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-
+    @DeleteMapping("/activity/{activityId}")
+    public ResponseEntity<?> deleteActivity(@PathVariable Long activityId){
+        Map<String,Object> body= this.activityServices.deleteActivity(activityId);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
     public String buildParamPageActivities(String baseUrl,Map<String, String> params){
         EnumCategoria categoria=convertToEnum(EnumCategoria.class, params.get("categoria"));
         EnumStatus status=convertToEnum(EnumStatus.class,params.get("status"));

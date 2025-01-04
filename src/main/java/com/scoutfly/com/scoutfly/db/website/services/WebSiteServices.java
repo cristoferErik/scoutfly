@@ -50,4 +50,18 @@ public class WebSiteServices {
         }
         return response;
     }
+
+    @Transactional
+    public Map<String,Object> deleteWebSite(Long websiteId){
+        Map<String,Object> response= new HashMap<>();
+        try{
+            response.put("status","success");
+            response.put("message","Sito Web eliminato con successo!");
+            this.webSiteRepository.deleteById(websiteId);
+        }catch(Exception e){
+            response.put("status","errore");
+            response.put("message","C'è stato un errore prova di nuovo");
+        }
+        return response;
+    }
 }

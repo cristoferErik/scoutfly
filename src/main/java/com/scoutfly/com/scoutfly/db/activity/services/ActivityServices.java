@@ -92,4 +92,19 @@ public class ActivityServices {
         }
         return response;
     }
+
+    @Transactional
+    public Map<String,Object> deleteActivity(Long activityId){
+        Map<String,Object> response= new HashMap<>();
+        try {
+            response.put("status","success");
+            response.put("message","Utente Eliminato con successo!");
+            this.activityRepository.deleteById(activityId);
+        } catch (Exception e) {
+            response.put("status","success");
+            response.put("message","C'è stato un errore!");
+            System.err.println(e.getMessage());
+        }
+        return response;
+    }
 }

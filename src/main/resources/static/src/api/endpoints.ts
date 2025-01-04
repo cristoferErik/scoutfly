@@ -21,7 +21,7 @@ export const GET_ACTIVITIES_CLIENT=API_BASE_URL + '/activities-client';
 export const POST_ACTIVITY=API_BASE_URL+'/activity';
 /*----------------------------------------------------------------------*/
 /*Client Risorsa */
-//Con questo ottengo i dati che vengo del backend
+//Con questo ottengo i dati che vengono del backend
 export async function fetchAllClients(parameters: string | null): Promise<ClientResponse | null> {
     let clientResponse: ClientResponse | null = null;
     try {

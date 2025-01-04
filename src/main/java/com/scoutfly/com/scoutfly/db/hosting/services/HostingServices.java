@@ -49,4 +49,19 @@ public class HostingServices {
         }
         return response;
     }
+
+    @Transactional
+    public Map<String,Object> deleteHosting(Long hostingId){
+        Map<String,Object> response= new HashMap<>();
+        try {
+            response.put("status","success");
+            response.put("message","Hosting eliminato con successo!");
+            this.hostingRepository.deleteById(hostingId);    
+        } 
+        catch (Exception e) {
+            response.put("status", "errore");
+            response.put("message","C'è stato un'errore");
+        }
+        return response;
+    }
 }
