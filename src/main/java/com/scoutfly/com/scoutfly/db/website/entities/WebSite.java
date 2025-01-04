@@ -45,9 +45,7 @@ public class WebSite {
     @JoinColumn(name="hosting_id",nullable=false)
     private Hosting hosting;
 
-
-    public WebSite() {
-    }
+    public WebSite() {}
 
     public Long getId() {
         return id;

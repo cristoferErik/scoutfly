@@ -1,4 +1,4 @@
-import { ActivityResponse, ClientResponse } from "../app/interfaces/ClientInt";
+import { ActivityResponse, ClientResponse, WebSiteResponse } from "../app/interfaces/ClientInt";
 import { ResponseMessage } from "../app/interfaces/Response";
 import { Activity } from "../app/models/Activity";
 import { Client } from "../app/models/Client";
@@ -6,7 +6,7 @@ import { Hosting } from "../app/models/Hosting";
 import { WebSite } from "../app/models/WebSite";
 
 export const API_BASE_URL = '/scoutfly/api';
-
+/*----------------------------------------------------------------------*/
 export const GET_CLIENTS = API_BASE_URL + '/clients';
 export const POST_CLIENT = API_BASE_URL + '/client';
 /*----------------------------------------------------------------------*/
@@ -91,7 +91,6 @@ export async function fetchAllHostingsByClient<T>(clientId: number): Promise<T |
 }
 export async function fetchSaveHosting(hosting:Hosting):Promise<ResponseMessage>{
     try {
-        console.table(hosting);
         const response = await fetch(POST_HOSTING, {
             method: 'POST',
             headers: {
@@ -99,7 +98,6 @@ export async function fetchSaveHosting(hosting:Hosting):Promise<ResponseMessage>
             },
             body: JSON.stringify(hosting),
         });
-        console.log(JSON.stringify(hosting));
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || 'Error al salvare il Hosting');
@@ -112,10 +110,14 @@ export async function fetchSaveHosting(hosting:Hosting):Promise<ResponseMessage>
     }
 }
 /*WebSites risorsa */
-export async function fetchAllWebSiteByHosting<T>(hostingId: number): Promise<T | null> {
-    let data: T | null = null;
+export async function fetchAllWebSiteByHosting(hostingId: number,parameters: string | null): Promise<WebSiteResponse | null> {
+    let webSiteResponse: WebSiteResponse | null = null;
+    let url = `${GET_WEBSITES_BY_HOSTING}/${hostingId}`;
     try {
-        const response = await fetch(`${GET_WEBSITES_BY_HOSTING}/${hostingId}`, {
+        if (parameters) {
+            url = parameters;
+        }
+        const response = await fetch(url, {
             method: 'GET', // Método de la solicitud
             headers: {
                 'Content-Type': 'application/json', // Cabecera
@@ -127,11 +129,11 @@ export async function fetchAllWebSiteByHosting<T>(hostingId: number): Promise<T 
             throw new Error('HTTP Error: ' + response.statusText);
         }
         const responseData = await response.json();
-        data = responseData.body;
+        webSiteResponse = responseData;
     } catch (error) {
         console.error('Fetch Error:', error);
     }
-    return data;
+    return webSiteResponse;
 }
 export async function fetchSaveWebSite(webSite:WebSite):Promise<ResponseMessage>{
     try {
@@ -142,7 +144,6 @@ export async function fetchSaveWebSite(webSite:WebSite):Promise<ResponseMessage>
             },
             body: JSON.stringify(webSite),
         });
-        console.log(JSON.stringify(webSite));
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || 'Error al salvare il Hosting');

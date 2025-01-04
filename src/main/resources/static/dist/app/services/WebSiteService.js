@@ -7,20 +7,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchAllWebSiteByHosting, fetchSaveWebSite } from "../../api/endpoints.js";
+import { fetchAllWebSiteByHosting, fetchSaveWebSite, } from "../../api/endpoints.js";
 export class WebSiteService {
     constructor() {
         this.websites = [];
     }
-    getAllWebSitesByHosting(clientId) {
+    getAllWebSitesByHosting(clientId, parameters) {
         return __awaiter(this, void 0, void 0, function* () {
-            const fetchHostings = yield fetchAllWebSiteByHosting(clientId);
+            const fetchHostings = yield fetchAllWebSiteByHosting(clientId, parameters);
             if (fetchHostings) {
-                this.websites = [...fetchHostings];
+                this.websites = [...fetchHostings.body];
+                this.pageLinks = Object.assign({}, fetchHostings.pageLinks);
                 //console.log(this.clients);
             }
             else {
-                console.log('Error al cargar los usuarios.');
+                console.log("Error al cargar los usuarios.");
             }
             return this.websites;
         });

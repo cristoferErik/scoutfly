@@ -98,7 +98,6 @@ export function fetchAllHostingsByClient(clientId) {
 export function fetchSaveHosting(hosting) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.table(hosting);
             const response = yield fetch(POST_HOSTING, {
                 method: 'POST',
                 headers: {
@@ -106,7 +105,6 @@ export function fetchSaveHosting(hosting) {
                 },
                 body: JSON.stringify(hosting),
             });
-            console.log(JSON.stringify(hosting));
             if (!response.ok) {
                 const errorData = yield response.json();
                 throw new Error(errorData.message || 'Error al salvare il Hosting');
@@ -120,11 +118,15 @@ export function fetchSaveHosting(hosting) {
     });
 }
 /*WebSites risorsa */
-export function fetchAllWebSiteByHosting(hostingId) {
+export function fetchAllWebSiteByHosting(hostingId, parameters) {
     return __awaiter(this, void 0, void 0, function* () {
-        let data = null;
+        let webSiteResponse = null;
+        let url = `${GET_WEBSITES_BY_HOSTING}/${hostingId}`;
         try {
-            const response = yield fetch(`${GET_WEBSITES_BY_HOSTING}/${hostingId}`, {
+            if (parameters) {
+                url = parameters;
+            }
+            const response = yield fetch(url, {
                 method: 'GET', // Método de la solicitud
                 headers: {
                     'Content-Type': 'application/json', // Cabecera
@@ -135,12 +137,12 @@ export function fetchAllWebSiteByHosting(hostingId) {
                 throw new Error('HTTP Error: ' + response.statusText);
             }
             const responseData = yield response.json();
-            data = responseData.body;
+            webSiteResponse = responseData;
         }
         catch (error) {
             console.error('Fetch Error:', error);
         }
-        return data;
+        return webSiteResponse;
     });
 }
 export function fetchSaveWebSite(webSite) {
@@ -153,7 +155,6 @@ export function fetchSaveWebSite(webSite) {
                 },
                 body: JSON.stringify(webSite),
             });
-            console.log(JSON.stringify(webSite));
             if (!response.ok) {
                 const errorData = yield response.json();
                 throw new Error(errorData.message || 'Error al salvare il Hosting');

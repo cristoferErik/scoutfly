@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Hosting } from "../app/models/Hosting.js";
 import { WebSite } from "../app/models/WebSite.js";
 import { WebSiteService } from "../app/services/WebSiteService.js";
+import { Pagination } from "../modules/Pagination.js";
 export class WebSiteUI {
     constructor(hostingId) {
         this.webSiteService = new WebSiteService();
@@ -30,17 +31,18 @@ export class WebSiteUI {
                     <p>Web Site</p>
                 </div>
                 <div class="table-container"></div>
+                <div class="pagination"></div>
                 <div class="button-container mg-y-1">
                     <button class="button bt-green" name="inserire" type="button">Inserire</button>
                 </div>
             </div>
         `;
             body.appendChild(websiteCard);
-            yield this.renderTableWebSites();
+            yield this.renderTableWebSites(null);
             this.addModalInsertWebSite();
         });
     }
-    renderTableWebSites() {
+    renderTableWebSites(parameters) {
         return __awaiter(this, void 0, void 0, function* () {
             const webSiteCard = document.getElementById("website-card");
             if (!webSiteCard)
@@ -50,7 +52,7 @@ export class WebSiteUI {
                 return;
             tableContainer.innerHTML = ``;
             //Se aggiungiamo await aspettara che finisca per poter continuare
-            const websites = yield this.webSiteService.getAllWebSitesByHosting(this.hostingId);
+            const websites = yield this.webSiteService.getAllWebSitesByHosting(this.hostingId, parameters);
             if (websites.length > 0) {
                 //console.log(websites.length);
                 /*------------------------TABLE------------------------------- */
@@ -69,7 +71,7 @@ export class WebSiteUI {
                                 <th>usernameHosting</th>
                                 <th>passwordHosting</th>
                                 <th>proveedor</th>
-                                <th>data dataCreazione</th>
+                                <th>dataCreazione</th>
                                 <th>dataModifica</th>
                                 <th>action</th>
                             </tr>
@@ -115,9 +117,27 @@ export class WebSiteUI {
                 tableContainer.appendChild(table);
             }
             this.addEventListenerWebSiteButton();
+            this.addPagination();
         });
     }
     addPagination() {
+        let linkPages = this.webSiteService.pageLinks;
+        if (!linkPages)
+            return;
+        let webSiteContainer = document.getElementById("website-container");
+        if (!webSiteContainer)
+            return;
+        Pagination(linkPages, webSiteContainer);
+        this.addEventListenerToPagination(webSiteContainer);
+    }
+    addEventListenerToPagination(activityContainer) {
+        let activeLinks = activityContainer.querySelectorAll(".active");
+        activeLinks.forEach((link) => {
+            link.addEventListener("click", () => {
+                const value = link.getAttribute("value");
+                this.renderTableWebSites(value);
+            });
+        });
     }
     //Aggiunge un'evento click ai buttoni che sono dentro della tabella renderClients
     addEventListenerWebSiteButton() {
@@ -345,7 +365,7 @@ export class WebSiteUI {
                     case 'salva':
                         yield this.salvaWebSite();
                         this.closeModal();
-                        this.renderTableWebSites();
+                        this.renderTableWebSites(null);
                         break;
                 }
             }));
