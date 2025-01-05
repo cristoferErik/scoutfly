@@ -759,88 +759,70 @@ label {
   background-color: #536a67;
 }
 
-.card-email {
-  display: block;
-  background: #1b2e50;
-  padding: 1rem;
-  margin: 2rem;
-  width: 60%;
-  min-width: 60rem;
-  box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.1);
-  transform: translate(0px, 0px); /* Estado inicial */
-  transition: transform 0.3s ease;
+.login-container {
+  justify-self: center;
 }
-.card-email:hover {
-  transform: translate(0px, 10px);
-  transition: transform 0.5s ease;
-}
-.card-email .email-container .item-email {
-  display: flex;
-  width: 100%;
+.login-container .card {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  padding: 30px;
   text-align: center;
-  align-content: center;
-  align-items: center;
-  border: 1px solid #586c7a;
-  margin: 0.5rem 0;
-  background-color: #3b4853;
 }
-.card-email .email-container .item-email label {
-  background-color: #0c6970;
-  padding: 1rem 1rem;
+.login-container .card h2 {
+  color: #24354d;
+  font-size: 32px;
+  text-transform: uppercase;
 }
-.card-email .email-container .item-email input {
-  flex: 1;
+.login-container .card .login-box {
+  max-width: 400px;
+  padding: 30px;
+  text-align: center;
 }
-.card-email .email-container .item-email textarea, .card-email .email-container .item-email input {
+.login-container .card .login-box .input-container {
+  margin-bottom: 20px;
+  text-align: left;
+}
+.login-container .card .login-box .input-container label {
+  font-size: 16px;
+  color: #24354d;
+  font-weight: bold;
+}
+.login-container .card .login-box .input-container input {
   width: 100%;
-  background-color: rgba(0, 0, 0, 0);
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
   outline: none;
-  padding: 1rem 0.5rem;
-  color: #e8ebf0;
+  transition: border-color 0.3s;
+}
+.login-container .card .login-box .input-container input:focus {
+  border-color: #24354d;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background-color: #375179;
+  color: white;
+  font-size: 16px;
   border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
-.card-email .email-container .item-email textarea {
-  min-height: 20rem;
-}
-@media (max-width: 610px) {
-  .card-email {
-    min-width: auto;
-    width: 100%;
-  }
+.btn-login:hover {
+  background-color: #24354d;
 }
 
-/*Per allegare un documento*/
-.file-container {
-  display: block;
-  margin: 0.5rem 0;
-  background-color: #3b4853;
-}
-.file-container .file-label {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 1rem 0.25rem;
-  border: 1px solid #586c7a;
-  background-color: #0c6970;
-  cursor: pointer;
-}
-.file-container .file-label:hover {
-  background-color: #127c84;
-}
-.file-container .file-list {
-  display: block;
-  padding: 0.5rem;
-}
-.file-container .file-list li {
-  display: flex;
-  justify-content: center;
-}
-.file-container .file-list .remove-file {
-  cursor: pointer;
+.footer-links a {
+  color: #375179;
+  font-size: 14px;
+  text-decoration: none;
 }
 
-.file {
-  width: 100%;
-  display: none;
+.footer-links a:hover {
+  text-decoration: underline;
 }

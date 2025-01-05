@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniziare Sessione</title>
+    <link rel="stylesheet" th:href="@{/css/login/login.css}" />
+    <link rel="stylesheet" th:href="@{/styles/css/main/login.css}">
+  </head>
+
+  <body>
+    <div class="login-container">
+      <div class="card">
+        <h2>Login</h2>
+        <!-- Título en italiano -->
+        <div class="login-box">
+          <form th:action="@{/perform-login}" method="post">
+            <div class="input-container">
+              <label for="email">Utente</label>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                placeholder="Inserisce l'email"
+                required
+              />
+            </div>
+            <div class="input-container">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Inserisce la password"
+                required
+              />
+            </div>
+            <button type="submit" class="btn-login">Iniziare Sessione</button>
+            <!--
+                        <div class="footer-links">
+                        <a href="#">¿Olvidaste tu contraseña?</a>
+                        <a href="#">Crear cuenta</a>
+                    </div>
+                    -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

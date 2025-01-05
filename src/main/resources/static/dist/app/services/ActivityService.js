@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchAllActivities, fetchAllActivitiesByClient, fetchSaveActivity } from "../../api/endpoints.js";
+import { fetchAllActivities, fetchAllActivitiesByClient, fetchDeleteActivity, fetchSaveActivity } from "../../api/endpoints.js";
 export class ActivityService {
     constructor() {
         this.activities = [];
@@ -46,6 +46,16 @@ export class ActivityService {
             const fetchClient = yield fetchSaveActivity(activity);
             if (fetchClient) {
                 message = fetchClient.message;
+            }
+            return message;
+        });
+    }
+    deleteActivityService(activityId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let message = "";
+            const fetchActivity = yield fetchDeleteActivity(activityId);
+            if (fetchActivity) {
+                message = fetchActivity.message;
             }
             return message;
         });

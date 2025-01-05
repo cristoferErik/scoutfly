@@ -227,7 +227,7 @@ export class ClientUI {
                         this.updateModalClient(parseInt(button.value));
                         break;
                     case "elimina":
-                        this.deleteClient(parseInt(button.value));
+                        this.modalDeleteClient(parseInt(button.value));
                         break;
                     case "seleziona":
                         //console.log("seleziona");
@@ -488,10 +488,55 @@ export class ClientUI {
             return message;
         });
     }
-    deleteClient(clientId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.clientService.deleteClientService(clientId);
-            this.renderTableClients(null);
+    modalDeleteClient(clientId) {
+        let modal = document.getElementById('modal');
+        /*In caso fai clic fuori del modal, si chiudera */
+        modal === null || modal === void 0 ? void 0 : modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                modal.innerHTML = ``;
+            }
+        });
+        if (!modal)
+            return;
+        modal.style.display = "flex";
+        modal.innerHTML = ``;
+        let contenuto = `
+            <div class="card-modal">
+                <div class="container-bigTittle">
+                    <p>Sei Sicuro di voler eliminare?</p>
+                </div>
+                <div class="button-container mg-y-1">
+                    <button class="button bt-red" name="elimina" type="button" value="${clientId}">Elimina</button>
+                    <button class="button bt-green" name="cancella" type="button">Cancella</button>
+                </div>
+            </div>
+        `;
+        modal.innerHTML = contenuto;
+        this.addEventListenerDeleteClient();
+    }
+    addEventListenerDeleteClient() {
+        let modal = document.getElementById('modal');
+        if (!modal)
+            return;
+        let buttons = modal.querySelectorAll(".button");
+        buttons.forEach((button) => {
+            let btn = button;
+            button.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+                switch (btn.name) {
+                    case 'elimina':
+                        yield this.clientService.deleteClientService(parseInt(btn.value));
+                        this.closeModal();
+                        this.renderTableClients(null);
+                        break;
+                    case 'cancella':
+                        this.closeModal();
+                        this.renderTableClients(null);
+                        break;
+                    default:
+                        break;
+                }
+            }));
         });
     }
     removeUIs() {

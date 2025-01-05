@@ -13,13 +13,16 @@ export const DELETE_CLIENT=API_BASE_URL + '/client';
 /*----------------------------------------------------------------------*/
 export const GET_HOSTINGS_BY_CLIENT = API_BASE_URL + '/hostings';
 export const POST_HOSTING = API_BASE_URL + '/hosting';
+export const DELETE_HOSTING=API_BASE_URL + '/hosting';
 /*----------------------------------------------------------------------*/
 export const GET_WEBSITES_BY_HOSTING = API_BASE_URL + '/websites';
 export const POST_WEBSITE = API_BASE_URL + '/website';
+export const DELETE_WEBSITE=API_BASE_URL + '/website';
 /*----------------------------------------------------------------------*/
 export const GET_ACTIVITIES = API_BASE_URL + '/activities';
 export const GET_ACTIVITIES_CLIENT=API_BASE_URL + '/activities-client';
 export const POST_ACTIVITY=API_BASE_URL+'/activity';
+export const DELETE_ACTIVITY=API_BASE_URL+'/activity';
 /*----------------------------------------------------------------------*/
 /*Client Risorsa */
 //Con questo ottengo i dati che vengono del backend
@@ -131,6 +134,27 @@ export async function fetchSaveHosting(hosting:Hosting):Promise<ResponseMessage>
         throw error;
     }
 }
+export async function fetchDeleteHosting(hostingId:number):Promise<ResponseMessage>{
+    try {
+        
+        const response = await fetch(`${DELETE_HOSTING}/${hostingId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al salvare il cliente');
+        }
+
+        return await response.json();  // Devuelve la respuesta completa
+    } catch (error) {
+        console.error('Error en fetchSaveClient:', error);
+        throw error;
+    }
+}
 /*WebSites risorsa */
 export async function fetchAllWebSiteByHosting(hostingId: number,parameters: string | null): Promise<WebSiteResponse | null> {
     let webSiteResponse: WebSiteResponse | null = null;
@@ -169,6 +193,26 @@ export async function fetchSaveWebSite(webSite:WebSite):Promise<ResponseMessage>
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || 'Error al salvare il Hosting');
+        }
+
+        return await response.json();  // Devuelve la respuesta completa
+    } catch (error) {
+        console.error('Error en fetchSaveClient:', error);
+        throw error;
+    }
+}
+export async function fetchDeleteWebSite(webSiteId:number):Promise<ResponseMessage>{
+    try {
+        const response = await fetch(`${DELETE_WEBSITE}/${webSiteId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al salvare il cliente');
         }
 
         return await response.json();  // Devuelve la respuesta completa
@@ -237,6 +281,26 @@ export async function fetchSaveActivity(activity:Activity):Promise<ResponseMessa
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(activity),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al salvare il cliente');
+        }
+
+        return await response.json();  // Devuelve la respuesta completa
+    } catch (error) {
+        console.error('Error en fetchSaveClient:', error);
+        throw error;
+    }
+}
+export async function fetchDeleteActivity(activityId:number):Promise<ResponseMessage>{
+    try {
+        const response = await fetch(`${DELETE_ACTIVITY}/${activityId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
 
         if (!response.ok) {

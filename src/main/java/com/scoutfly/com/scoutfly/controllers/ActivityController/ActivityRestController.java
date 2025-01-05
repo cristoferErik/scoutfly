@@ -29,7 +29,7 @@ import static com.scoutfly.com.scoutfly.util.helpers.Converters.convertToLocalDa
 import static com.scoutfly.com.scoutfly.util.helpers.Converters.valueToStringIsEmpty;
 import com.scoutfly.com.scoutfly.util.paginator.PageRender;
 import com.scoutfly.com.scoutfly.variables.Variables;
-@RequestMapping("${base.url}")
+@RequestMapping(Variables.baseUrl)
 @Controller
 public class ActivityRestController {
     @Autowired

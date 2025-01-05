@@ -11,6 +11,7 @@ import { Hosting } from "../app/models/Hosting.js";
 import { WebSite } from "../app/models/WebSite.js";
 import { WebSiteService } from "../app/services/WebSiteService.js";
 import { Pagination } from "../modules/Pagination.js";
+import { addSelectRowOfTable } from "../utils/Tools.js";
 export class WebSiteUI {
     constructor(hostingId) {
         this.webSiteService = new WebSiteService();
@@ -68,9 +69,9 @@ export class WebSiteUI {
                                 <th>Id</th>
                                 <th>Nome</th>
                                 <th>url</th>
-                                <th>usernameHosting</th>
-                                <th>passwordHosting</th>
-                                <th>proveedor</th>
+                                <th>data aggiornamento</th>
+                                <th>data Backup</th>
+                                <th>descrizione</th>
                                 <th>dataCreazione</th>
                                 <th>dataModifica</th>
                                 <th>action</th>
@@ -98,7 +99,7 @@ export class WebSiteUI {
                                 <td>
                                     <div class="button-container">
                                         <button type="button" name="vedi" class="button bt-green" value="${website.id}">vedi</button>
-                                        <button type="button" name="elimina" class="button bt-red">elimina</button>
+                                          <button class="button bt-red" name="elimina" type="button" value="${website.id}">Elimina</button>
                                         <button type="button" name="seleziona" class="button bt-light-blue" value="${website.id}">
                                             <img class="icon" src="../../assets/images/check.svg" alt="">
                                         </button>
@@ -118,6 +119,7 @@ export class WebSiteUI {
             }
             this.addEventListenerWebSiteButton();
             this.addPagination();
+            addSelectRowOfTable();
         });
     }
     addPagination() {
@@ -161,7 +163,7 @@ export class WebSiteUI {
                         this.updateModalWebSite(parseInt(button.value));
                         break;
                     case "elimina":
-                        console.log("elimina");
+                        this.modalDeleteClient(parseInt(button.value));
                         break;
                     case "seleziona":
                         console.log("seleziona");
@@ -388,6 +390,57 @@ export class WebSiteUI {
             webSite.hosting = hosting;
             let message = yield this.webSiteService.saveWebSite(webSite);
             return message;
+        });
+    }
+    modalDeleteClient(webSiteId) {
+        let modal = document.getElementById('modal');
+        /*In caso fai clic fuori del modal, si chiudera */
+        modal === null || modal === void 0 ? void 0 : modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                modal.innerHTML = ``;
+            }
+        });
+        if (!modal)
+            return;
+        modal.style.display = "flex";
+        modal.innerHTML = ``;
+        let contenuto = `
+            <div class="card-modal">
+                <div class="container-bigTittle">
+                    <p>Sei Sicuro di voler eliminare?</p>
+                </div>
+                <div class="button-container mg-y-1">
+                    <button class="button bt-red" name="elimina" type="button" value="${webSiteId}">Elimina</button>
+                    <button class="button bt-green" name="cancella" type="button">Cancella</button>
+                </div>
+            </div>
+        `;
+        modal.innerHTML = contenuto;
+        this.addEventListenerDeleteClient();
+    }
+    addEventListenerDeleteClient() {
+        let modal = document.getElementById('modal');
+        if (!modal)
+            return;
+        let buttons = modal.querySelectorAll(".button");
+        buttons.forEach((button) => {
+            let btn = button;
+            button.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+                switch (btn.name) {
+                    case 'elimina':
+                        yield this.webSiteService.deleteWebSite(parseInt(btn.value));
+                        this.closeModal();
+                        this.renderTableWebSites(null);
+                        break;
+                    case 'cancella':
+                        this.closeModal();
+                        this.renderTableWebSites(null);
+                        break;
+                    default:
+                        break;
+                }
+            }));
         });
     }
     removeUIs() {

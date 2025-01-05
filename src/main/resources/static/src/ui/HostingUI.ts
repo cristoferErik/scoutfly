@@ -87,7 +87,7 @@ export class HostingUI {
                                 <td>
                                     <div class="button-container">
                                         <button type="button" name="vedi" class="button bt-green" value="${hosting.id}">vedi</button>
-                                        <button type="button" name="elimina" class="button bt-red">elimina</button>
+                                         <button type="button" name="elimina" class="button bt-red" value="${hosting.id}">elimina</button>
                                         <button type="button" name="seleziona" class="button bt-light-blue" value="${hosting.id}">
                                             <img class="icon" src="../../assets/images/check.svg" alt="">
                                         </button>
@@ -127,7 +127,7 @@ export class HostingUI {
                         this.updateModalHosting(parseInt(button.value));
                         break;
                     case "elimina":
-                        console.log("elimina");
+                        this.modalDeleteHosting(parseInt(button.value));
                         break;
                     case "seleziona":
                         console.log("seleziona");
@@ -374,6 +374,55 @@ export class HostingUI {
 
         let message= await this.hostingService.saveHostingService(hosting);
         return message; 
+    }
+    modalDeleteHosting(hostingId:number){
+        let modal=document.getElementById('modal');
+        /*In caso fai clic fuori del modal, si chiudera */
+        modal?.addEventListener('click',(event)=>{
+            if(event.target === modal){
+                modal.style.display="none";
+                modal.innerHTML=``;
+            }
+        });
+        if(!modal) return;
+        modal.style.display="flex";
+        modal.innerHTML=``;
+        let contenuto=`
+            <div class="card-modal">
+                <div class="container-bigTittle">
+                    <p>Sei Sicuro di voler eliminare?</p>
+                </div>
+                <div class="button-container mg-y-1">
+                    <button class="button bt-red" name="elimina" type="button" value="${hostingId}">Elimina</button>
+                    <button class="button bt-green" name="cancella" type="button">Cancella</button>
+                </div>
+            </div>
+        `;
+        modal.innerHTML=contenuto;
+        this.addEventListenerDeleteHosting();
+    }
+    addEventListenerDeleteHosting(){
+        let modal=document.getElementById('modal');
+        if(!modal)return;
+        let buttons=modal.querySelectorAll(".button");
+        buttons.forEach((button)=>{
+            let btn =button as HTMLButtonElement;
+            button.addEventListener('click',async()=>{
+                switch(btn.name){
+                    case 'elimina':
+                        await this.hostingService.deleteHostingService(parseInt(btn.value));
+                        this.closeModal();
+                        this.renderTableHosting();
+                        break;
+                    case 'cancella':
+                        this.closeModal();
+                        this.renderTableHosting();
+                        break;
+                    default:
+                        break; 
+                }
+            });
+        });
     }
 
     removeUIs() {

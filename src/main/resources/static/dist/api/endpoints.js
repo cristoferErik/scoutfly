@@ -15,13 +15,16 @@ export const DELETE_CLIENT = API_BASE_URL + '/client';
 /*----------------------------------------------------------------------*/
 export const GET_HOSTINGS_BY_CLIENT = API_BASE_URL + '/hostings';
 export const POST_HOSTING = API_BASE_URL + '/hosting';
+export const DELETE_HOSTING = API_BASE_URL + '/hosting';
 /*----------------------------------------------------------------------*/
 export const GET_WEBSITES_BY_HOSTING = API_BASE_URL + '/websites';
 export const POST_WEBSITE = API_BASE_URL + '/website';
+export const DELETE_WEBSITE = API_BASE_URL + '/website';
 /*----------------------------------------------------------------------*/
 export const GET_ACTIVITIES = API_BASE_URL + '/activities';
 export const GET_ACTIVITIES_CLIENT = API_BASE_URL + '/activities-client';
 export const POST_ACTIVITY = API_BASE_URL + '/activity';
+export const DELETE_ACTIVITY = API_BASE_URL + '/activity';
 /*----------------------------------------------------------------------*/
 /*Client Risorsa */
 //Con questo ottengo i dati che vengono del backend
@@ -140,6 +143,27 @@ export function fetchSaveHosting(hosting) {
         }
     });
 }
+export function fetchDeleteHosting(hostingId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch(`${DELETE_HOSTING}/${hostingId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (!response.ok) {
+                const errorData = yield response.json();
+                throw new Error(errorData.message || 'Error al salvare il cliente');
+            }
+            return yield response.json(); // Devuelve la respuesta completa
+        }
+        catch (error) {
+            console.error('Error en fetchSaveClient:', error);
+            throw error;
+        }
+    });
+}
 /*WebSites risorsa */
 export function fetchAllWebSiteByHosting(hostingId, parameters) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -181,6 +205,27 @@ export function fetchSaveWebSite(webSite) {
             if (!response.ok) {
                 const errorData = yield response.json();
                 throw new Error(errorData.message || 'Error al salvare il Hosting');
+            }
+            return yield response.json(); // Devuelve la respuesta completa
+        }
+        catch (error) {
+            console.error('Error en fetchSaveClient:', error);
+            throw error;
+        }
+    });
+}
+export function fetchDeleteWebSite(webSiteId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch(`${DELETE_WEBSITE}/${webSiteId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (!response.ok) {
+                const errorData = yield response.json();
+                throw new Error(errorData.message || 'Error al salvare il cliente');
             }
             return yield response.json(); // Devuelve la respuesta completa
         }
@@ -254,6 +299,27 @@ export function fetchSaveActivity(activity) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(activity),
+            });
+            if (!response.ok) {
+                const errorData = yield response.json();
+                throw new Error(errorData.message || 'Error al salvare il cliente');
+            }
+            return yield response.json(); // Devuelve la respuesta completa
+        }
+        catch (error) {
+            console.error('Error en fetchSaveClient:', error);
+            throw error;
+        }
+    });
+}
+export function fetchDeleteActivity(activityId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch(`${DELETE_ACTIVITY}/${activityId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
             if (!response.ok) {
                 const errorData = yield response.json();

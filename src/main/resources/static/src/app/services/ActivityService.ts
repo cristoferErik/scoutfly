@@ -1,5 +1,5 @@
 
-import { fetchAllActivities, fetchAllActivitiesByClient, fetchSaveActivity } from "../../api/endpoints.js";
+import { fetchAllActivities, fetchAllActivitiesByClient, fetchDeleteActivity, fetchSaveActivity } from "../../api/endpoints.js";
 import { pageLinks } from "../interfaces/ClientInt.js";
 import { Activity } from "../models/Activity.js";
 
@@ -33,6 +33,14 @@ export class ActivityService{
         const fetchClient= await fetchSaveActivity(activity);
         if(fetchClient){
             message=fetchClient.message;
+        }
+        return message;
+    }
+    async deleteActivityService(activityId:number):Promise<string>{
+        let message:string="";
+        const fetchActivity= await fetchDeleteActivity(activityId);
+        if(fetchActivity){
+            message=fetchActivity.message;
         }
         return message;
     }

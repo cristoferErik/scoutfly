@@ -20,8 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.scoutfly.com.scoutfly.db.hosting.entities.Hosting;
 import com.scoutfly.com.scoutfly.db.hosting.services.HostingServices;
+import com.scoutfly.com.scoutfly.variables.Variables;
 
-@RequestMapping("${base.url}")
+@RequestMapping(Variables.baseUrl)
 @Controller
 public class HostingRestController {
     @Autowired

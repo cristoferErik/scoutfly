@@ -71,6 +71,7 @@ public class ActivityServices {
         Map<String,Object> response = new HashMap<>();
         if(activity.getId() ==null){
             activity.setCreateAt(LocalDate.now());
+            activity.setUpdateAt(LocalDateTime.now());
             activity.setPrezzoTotale(activity.getPrezzo()*activity.getDurataOre());
             activityRepository.save(activity);
             response.put("status","success");

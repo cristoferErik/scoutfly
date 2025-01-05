@@ -1,5 +1,6 @@
 import {
     fetchAllWebSiteByHosting,
+    fetchDeleteWebSite,
     fetchSaveWebSite,
 } from "../../api/endpoints.js";
 import { pageLinks } from "../interfaces/ClientInt.js";
@@ -31,6 +32,14 @@ export class WebSiteService {
         const fetchWebSite = await fetchSaveWebSite(webSite);
         if (fetchWebSite) {
             message = fetchWebSite.message;
+        }
+        return message;
+    }
+    async deleteWebSite(webSiteId:number):Promise<string>{
+         let message:string="";
+        const fetchHosting=await fetchDeleteWebSite(webSiteId);
+        if(fetchHosting){
+            message=fetchHosting.message;
         }
         return message;
     }

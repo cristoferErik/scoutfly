@@ -92,7 +92,7 @@ export class ActivityUI {
                                 <td>
                                     <div class="button-container">
                                         <button type="button" name="vedi" class="button bt-green" value="${activity.id}">vedi</button>
-                                        <button type="button" name="elimina" class="button bt-red">elimina</button>
+                                        <button type="button" name="elimina" class="button bt-red" value="${activity.id}">elimina</button>
                                     </div>
                                 </td>
                             `;
@@ -148,7 +148,7 @@ export class ActivityUI {
             this.updateModalActivity(parseInt(button.value));
             break;
           case "elimina":
-            console.log("elimina");
+            this.modalDeleteActivity(parseInt(button.value));
             break;
           default:
             console.log("Azione sconosciuta!");
@@ -457,6 +457,56 @@ export class ActivityUI {
           break;
       }
     });
+  }
+    /*Questi funzione vengono utilizati nella finestra activities! */
+  modalDeleteActivity(activityId:number){
+      let modal=document.getElementById('modal');
+      /*In caso fai clic fuori del modal, si chiudera */
+      modal?.addEventListener('click',(event)=>{
+          if(event.target === modal){
+              modal.style.display="none";
+              modal.innerHTML=``;
+          }
+      });
+      if(!modal) return;
+      modal.style.display="flex";
+      modal.innerHTML=``;
+      let contenuto=`
+          <div class="card-modal">
+              <div class="container-bigTittle">
+                  <p>Sei Sicuro di voler eliminare?</p>
+              </div>
+              <div class="button-container mg-y-1">
+                  <button class="button bt-red" name="elimina" type="button" value="${activityId}">Elimina</button>
+                  <button class="button bt-green" name="cancella" type="button">Cancella</button>
+              </div>
+          </div>
+      `;
+      modal.innerHTML=contenuto;
+      this.addEventListenerDeleteActivity();
+  }
+  addEventListenerDeleteActivity(){
+      let modal=document.getElementById('modal');
+      if(!modal)return;
+      let buttons=modal.querySelectorAll(".button");
+      buttons.forEach((button)=>{
+          let btn =button as HTMLButtonElement;
+          button.addEventListener('click',async()=>{
+              switch(btn.name){
+                  case 'elimina':
+                      await this.activityService.deleteActivityService(parseInt(btn.value));
+                      this.closeModal();
+                      this.renderTableActivities(null);
+                      break;
+                  case 'cancella':
+                      this.closeModal();
+                      this.renderTableActivities(null);
+                      break;
+                  default:
+                      break; 
+              }
+          });
+      });
   }
   closeModal() {
     let modal = document.getElementById('modal');

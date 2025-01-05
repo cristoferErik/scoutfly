@@ -65,7 +65,7 @@ export class EmailModule{
                 li.textContent = file.name;
 
                 const removeButton = document.createElement("span");
-                removeButton.textContent = "❌"; // Usamos el emoji "X"
+                removeButton.textContent = "❌"; // Usiamo il emoji "X"
                 removeButton.classList.add("remove-file");
                 removeButton.addEventListener("click", () => {
                     let fileInput=document.getElementById('file') as HTMLInputElement;

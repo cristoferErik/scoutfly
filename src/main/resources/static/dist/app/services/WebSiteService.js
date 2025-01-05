@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchAllWebSiteByHosting, fetchSaveWebSite, } from "../../api/endpoints.js";
+import { fetchAllWebSiteByHosting, fetchDeleteWebSite, fetchSaveWebSite, } from "../../api/endpoints.js";
 export class WebSiteService {
     constructor() {
         this.websites = [];
@@ -32,6 +32,16 @@ export class WebSiteService {
             const fetchWebSite = yield fetchSaveWebSite(webSite);
             if (fetchWebSite) {
                 message = fetchWebSite.message;
+            }
+            return message;
+        });
+    }
+    deleteWebSite(webSiteId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let message = "";
+            const fetchHosting = yield fetchDeleteWebSite(webSiteId);
+            if (fetchHosting) {
+                message = fetchHosting.message;
             }
             return message;
         });
