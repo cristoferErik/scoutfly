@@ -25,12 +25,12 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http.authorizeHttpRequests((authz)->authz
-        .requestMatchers("/login","/perform-login","/dist/**", "/styles/**","/assets/**").permitAll()
+        .requestMatchers("/manager/login","/manager/perform-login","/dist/**", "/styles/**","/assets/**").permitAll()
         .anyRequest()
         .authenticated())
         .sessionManagement(management->management.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
         .exceptionHandling(exception->exception.authenticationEntryPoint((request,response,authException)->{
-            response.sendRedirect("/login");
+            response.sendRedirect("/manager/login");
         }))
         /*
         .formLogin(form->form

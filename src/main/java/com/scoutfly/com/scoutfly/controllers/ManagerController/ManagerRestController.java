@@ -10,18 +10,21 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.scoutfly.com.scoutfly.security.entities.Manager;
 import com.scoutfly.com.scoutfly.security.services.ManagerService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+@RequestMapping("/manager")
 @Controller
 public class ManagerRestController {
     @Autowired
-    private ManagerService authService;
+    private ManagerService managerService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -39,14 +42,17 @@ public class ManagerRestController {
     ) {
         try{
             //TODO: process POST request
-            /*
-                Gestore gestore=new Gestore();
-                gestore.setId(2L);
-                gestore.setName("Davide");
-                gestore.setEmail("davide.mangione@gmail.com");
-                gestore.setPassword("Mangione.Capo");
-                authService.saveGestore(gestore);
-             */
+            
+              
+                Manager manager=new Manager();
+ 
+                /*
+                    manager.setName("Davide");
+                    manager.setEmail("davide.mangione@gmail.com");
+                    manager.setPassword("Mangione.Capo");
+                    managerService.saveManager(manager);
+                 */
+              
             
              UsernamePasswordAuthenticationToken token=new UsernamePasswordAuthenticationToken(email, password);
              Authentication authentication=authenticationManager.authenticate(token);
@@ -56,7 +62,7 @@ public class ManagerRestController {
              session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
              return "redirect:/";
         }catch(AuthenticationException e){
-            return "redirect:/login";
+            return "redirect:/manager/login";
         }
     }
     @GetMapping("/logout")

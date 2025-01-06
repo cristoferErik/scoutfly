@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var _a;
 export const API_BASE_URL = '/scoutfly/api';
 /*----------------------------------------------------------------------*/
 export const GET_CLIENTS = API_BASE_URL + '/clients';
@@ -26,6 +27,7 @@ export const GET_ACTIVITIES_CLIENT = API_BASE_URL + '/activities-client';
 export const POST_ACTIVITY = API_BASE_URL + '/activity';
 export const DELETE_ACTIVITY = API_BASE_URL + '/activity';
 /*----------------------------------------------------------------------*/
+const csrfToken = (_a = document.querySelector('[name="_csrf"]')) === null || _a === void 0 ? void 0 : _a.value;
 /*Client Risorsa */
 //Con questo ottengo i dati che vengono del backend
 export function fetchAllClients(parameters) {
@@ -61,6 +63,7 @@ export function fetchSaveClient(client) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify(client),
             });
@@ -83,6 +86,7 @@ export function fetchDeleteClient(clientId) {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
             });
             if (!response.ok) {
@@ -128,6 +132,7 @@ export function fetchSaveHosting(hosting) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify(hosting),
             });
@@ -150,6 +155,7 @@ export function fetchDeleteHosting(hostingId) {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
             });
             if (!response.ok) {
@@ -199,6 +205,7 @@ export function fetchSaveWebSite(webSite) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify(webSite),
             });
@@ -221,6 +228,7 @@ export function fetchDeleteWebSite(webSiteId) {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
             });
             if (!response.ok) {
@@ -297,6 +305,7 @@ export function fetchSaveActivity(activity) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify(activity),
             });
@@ -319,6 +328,7 @@ export function fetchDeleteActivity(activityId) {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
             });
             if (!response.ok) {

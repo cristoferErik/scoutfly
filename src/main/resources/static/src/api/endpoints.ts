@@ -24,6 +24,8 @@ export const GET_ACTIVITIES_CLIENT=API_BASE_URL + '/activities-client';
 export const POST_ACTIVITY=API_BASE_URL+'/activity';
 export const DELETE_ACTIVITY=API_BASE_URL+'/activity';
 /*----------------------------------------------------------------------*/
+
+const csrfToken = (document.querySelector('[name="_csrf"]') as HTMLInputElement)?.value;
 /*Client Risorsa */
 //Con questo ottengo i dati che vengono del backend
 export async function fetchAllClients(parameters: string | null): Promise<ClientResponse | null> {
@@ -56,6 +58,7 @@ export async function fetchSaveClient(client:Client):Promise<ResponseMessage>{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
             },
             body: JSON.stringify(client),
         });
@@ -78,6 +81,7 @@ export async function fetchDeleteClient(clientId:number):Promise<ResponseMessage
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
             },
         });
 
@@ -120,6 +124,7 @@ export async function fetchSaveHosting(hosting:Hosting):Promise<ResponseMessage>
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
             },
             body: JSON.stringify(hosting),
         });
@@ -141,6 +146,7 @@ export async function fetchDeleteHosting(hostingId:number):Promise<ResponseMessa
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
             },
         });
 
@@ -187,6 +193,7 @@ export async function fetchSaveWebSite(webSite:WebSite):Promise<ResponseMessage>
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
             },
             body: JSON.stringify(webSite),
         });
@@ -207,6 +214,7 @@ export async function fetchDeleteWebSite(webSiteId:number):Promise<ResponseMessa
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
             },
         });
 
@@ -279,6 +287,7 @@ export async function fetchSaveActivity(activity:Activity):Promise<ResponseMessa
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
             },
             body: JSON.stringify(activity),
         });
@@ -300,6 +309,7 @@ export async function fetchDeleteActivity(activityId:number):Promise<ResponseMes
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
             },
         });
 
