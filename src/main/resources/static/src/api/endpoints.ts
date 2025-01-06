@@ -1,9 +1,11 @@
-import { ActivityResponse, ClientResponse, WebSiteResponse } from "../app/interfaces/ClientInt";
-import { ResponseMessage } from "../app/interfaces/Response";
-import { Activity } from "../app/models/Activity";
-import { Client } from "../app/models/Client";
-import { Hosting } from "../app/models/Hosting";
-import { WebSite } from "../app/models/WebSite";
+
+import { ActivityResponse, ClientResponse, WebSiteResponse } from "../app/interfaces/ClientInt.js";
+import { ResponseMessage } from "../app/interfaces/Response.js";
+import { Activity } from "../app/models/Activity.js";
+import { Client } from "../app/models/Client.js";
+import { Email } from "../app/models/Email.js";
+import { Hosting } from "../app/models/Hosting.js";
+import { WebSite } from "../app/models/WebSite.js";
 
 export const API_BASE_URL = '/scoutfly/api';
 /*----------------------------------------------------------------------*/
@@ -24,6 +26,7 @@ export const GET_ACTIVITIES_CLIENT=API_BASE_URL + '/activities-client';
 export const POST_ACTIVITY=API_BASE_URL+'/activity';
 export const DELETE_ACTIVITY=API_BASE_URL+'/activity';
 /*----------------------------------------------------------------------*/
+export const EMAIL=API_BASE_URL + '/email';
 
 const csrfToken = (document.querySelector('[name="_csrf"]') as HTMLInputElement)?.value;
 /*Client Risorsa */
@@ -318,6 +321,37 @@ export async function fetchDeleteActivity(activityId:number):Promise<ResponseMes
             throw new Error(errorData.message || 'Error al salvare il cliente');
         }
 
+        return await response.json();  // Devuelve la respuesta completa
+    } catch (error) {
+        console.error('Error en fetchSaveClient:', error);
+        throw error;
+    }
+}
+/*Email Controller*/
+export async function fetchSendEmail(email:Email):Promise<ResponseMessage>{
+    try {
+        
+        const formData = new FormData();
+        formData.append('to', email.to);
+        formData.append('subject', email.subject);
+        formData.append('descrizione', email.descrizione);
+        if (email.attachments) {
+            email.attachments.forEach((attachment: File) => {
+                formData.append('file', attachment);
+            });
+        }
+        const response = await fetch(EMAIL, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al salvare il cliente');
+        }
         return await response.json();  // Devuelve la respuesta completa
     } catch (error) {
         console.error('Error en fetchSaveClient:', error);

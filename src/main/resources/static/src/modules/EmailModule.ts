@@ -1,7 +1,11 @@
+import { Email } from "../app/models/Email.js";
+import { EmailService } from "../app/services/EmailService.js";
+
 export class EmailModule{
     private filesArray: File[]=[];
+    private  emailService:EmailService;
     constructor(){
-
+        this.emailService= new EmailService();
     }
     renderEmailUI(){
         let emailCard=document.getElementById("card-email");
@@ -9,7 +13,7 @@ export class EmailModule{
         emailCard.innerHTML=``;
         let email_container:string=
         `
-            <div class="email-container">
+            <form class="email-container" id="email-form">
                 <div class="container-bigTittle">
                     <p>Nuovo Messagio</p>
                 </div>
@@ -29,17 +33,55 @@ export class EmailModule{
                         Allega un documento
                     </label>
                     <input class="file" type="file" name="file" id="file" multiple>
-                    <ul class="file-list" id="file-list">
-                    </ul>
+                        <ul class="file-list" id="file-list">
+                        </ul>
                 </div>
                 <div class="button-container">
                     <button type="button" name="invia" class="button bt-green">Invia messagio</button>
                 </div>
 
-            </div>
+            </form>
         `;    
         emailCard.innerHTML=email_container;
         this.addFiles();
+        this.addEventListenerButton();
+    }
+
+    addEventListenerButton(){
+        const element = document.getElementById("email-form") as HTMLFormElement;
+        if (!element) return;
+        const tableContainer = element.querySelector(".button-container");
+        if(!tableContainer) return;
+        const buttons = tableContainer.querySelectorAll(".button");
+        
+        
+
+        buttons.forEach((button) => {
+            button?.addEventListener("click", async() => {
+                let btn = button as HTMLInputElement;
+                switch (btn.name) {
+                    case 'invia':
+                        this.sendMessage();
+                        break;
+                    default:
+                        break;
+                }
+
+            });
+        });
+    }
+    async sendMessage(){
+        const element = document.getElementById("email-form") as HTMLFormElement;
+        const formData = new FormData(element);
+        let email= new Email();
+        email.to=(formData.get('to') as string).trim();
+        email.subject=formData.get('subject') as string;
+        email.descrizione=formData.get('message') as string;
+        email.attachments= Array.from(formData.getAll('file') as File[]);
+        await this.emailService.sendMessage(email);
+        element.reset();
+        this.filesArray=[];
+        this.updateFileList();
     }
     addFiles(){
         let fileInput=document.getElementById('file') as HTMLInputElement;

@@ -1,6 +1,18 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import { Email } from "../app/models/Email.js";
+import { EmailService } from "../app/services/EmailService.js";
 export class EmailModule {
     constructor() {
         this.filesArray = [];
+        this.emailService = new EmailService();
     }
     renderEmailUI() {
         let emailCard = document.getElementById("card-email");
@@ -8,7 +20,7 @@ export class EmailModule {
             return;
         emailCard.innerHTML = ``;
         let email_container = `
-            <div class="email-container">
+            <form class="email-container" id="email-form">
                 <div class="container-bigTittle">
                     <p>Nuovo Messagio</p>
                 </div>
@@ -28,17 +40,54 @@ export class EmailModule {
                         Allega un documento
                     </label>
                     <input class="file" type="file" name="file" id="file" multiple>
-                    <ul class="file-list" id="file-list">
-                    </ul>
+                        <ul class="file-list" id="file-list">
+                        </ul>
                 </div>
                 <div class="button-container">
                     <button type="button" name="invia" class="button bt-green">Invia messagio</button>
                 </div>
 
-            </div>
+            </form>
         `;
         emailCard.innerHTML = email_container;
         this.addFiles();
+        this.addEventListenerButton();
+    }
+    addEventListenerButton() {
+        const element = document.getElementById("email-form");
+        if (!element)
+            return;
+        const tableContainer = element.querySelector(".button-container");
+        if (!tableContainer)
+            return;
+        const buttons = tableContainer.querySelectorAll(".button");
+        buttons.forEach((button) => {
+            button === null || button === void 0 ? void 0 : button.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+                let btn = button;
+                switch (btn.name) {
+                    case 'invia':
+                        this.sendMessage();
+                        break;
+                    default:
+                        break;
+                }
+            }));
+        });
+    }
+    sendMessage() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const element = document.getElementById("email-form");
+            const formData = new FormData(element);
+            let email = new Email();
+            email.to = formData.get('to').trim();
+            email.subject = formData.get('subject');
+            email.descrizione = formData.get('message');
+            email.attachments = Array.from(formData.getAll('file'));
+            yield this.emailService.sendMessage(email);
+            element.reset();
+            this.filesArray = [];
+            this.updateFileList();
+        });
     }
     addFiles() {
         let fileInput = document.getElementById('file');

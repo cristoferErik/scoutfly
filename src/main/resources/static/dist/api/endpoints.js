@@ -27,6 +27,7 @@ export const GET_ACTIVITIES_CLIENT = API_BASE_URL + '/activities-client';
 export const POST_ACTIVITY = API_BASE_URL + '/activity';
 export const DELETE_ACTIVITY = API_BASE_URL + '/activity';
 /*----------------------------------------------------------------------*/
+export const EMAIL = API_BASE_URL + '/email';
 const csrfToken = (_a = document.querySelector('[name="_csrf"]')) === null || _a === void 0 ? void 0 : _a.value;
 /*Client Risorsa */
 //Con questo ottengo i dati che vengono del backend
@@ -330,6 +331,38 @@ export function fetchDeleteActivity(activityId) {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken,
                 },
+            });
+            if (!response.ok) {
+                const errorData = yield response.json();
+                throw new Error(errorData.message || 'Error al salvare il cliente');
+            }
+            return yield response.json(); // Devuelve la respuesta completa
+        }
+        catch (error) {
+            console.error('Error en fetchSaveClient:', error);
+            throw error;
+        }
+    });
+}
+/*Email Controller*/
+export function fetchSendEmail(email) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const formData = new FormData();
+            formData.append('to', email.to);
+            formData.append('subject', email.subject);
+            formData.append('descrizione', email.descrizione);
+            if (email.attachments) {
+                email.attachments.forEach((attachment) => {
+                    formData.append('file', attachment);
+                });
+            }
+            const response = yield fetch(EMAIL, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: formData,
             });
             if (!response.ok) {
                 const errorData = yield response.json();
