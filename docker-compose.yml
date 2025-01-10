@@ -1,0 +1,43 @@
+services:
+  scoutfly:
+    build: .
+    ports:
+      - "8081:8080"
+    environment:
+        MYSQL_HOST: db
+        MYSQL_USERNAME: root
+        MYSQL_PASSWORD: Cristofer.Calvo
+    depends_on:
+      - db
+    networks:
+        - first_spring
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: Cristofer.Calvo
+      MYSQL_DATABASE: scoutfly
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/my.cnf
+    networks:
+      - first_spring
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin:latest
+    ports:
+      - "8003:80"
+    environment:
+       UPLOAD_LIMIT: 100000000
+    networks:
+      - first_spring
+networks:
+  first_spring:
+    name: first_spring
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local

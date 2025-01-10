@@ -25,7 +25,7 @@ import static com.scoutfly.com.scoutfly.util.helpers.Converters.valueToStringIsE
 import com.scoutfly.com.scoutfly.util.paginator.PageRender;
 import com.scoutfly.com.scoutfly.variables.Variables;
 
-@RequestMapping("${base.url}")
+@RequestMapping(Variables.baseUrl)
 @Controller
 public class WebSiteRestController {
     @Autowired
