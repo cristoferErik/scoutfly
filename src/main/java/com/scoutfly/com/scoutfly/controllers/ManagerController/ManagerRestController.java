@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.scoutfly.com.scoutfly.security.entities.Manager;
 import com.scoutfly.com.scoutfly.security.services.ManagerService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,14 +43,15 @@ public class ManagerRestController {
             //TODO: process POST request
             
               
+               /*
                 Manager manager=new Manager();
- 
-                /*
-                    manager.setName("Davide");
-                    manager.setEmail("davide.mangione@gmail.com");
-                    manager.setPassword("Mangione.Capo");
-                    managerService.saveManager(manager);
-                 */
+
+                manager.setName("Davide");
+                manager.setEmail("cristofererikmilla@gmail.com");
+                manager.setPassword("Cristofer.Calvo");
+                managerService.saveManager(manager);
+                */
+                 
               
             
              UsernamePasswordAuthenticationToken token=new UsernamePasswordAuthenticationToken(email, password);

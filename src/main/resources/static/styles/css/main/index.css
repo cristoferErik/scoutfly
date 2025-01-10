@@ -321,7 +321,8 @@ template {
   box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.1);
 }
 .card {
-  transform: translate(0px, 0px); /* Estado inicial */
+  transform: translate(0px, 0px);
+  /* Estado inicial */
   transition: transform 0.3s ease;
 }
 .card:hover {
@@ -413,7 +414,8 @@ template {
   width: 100%;
   align-items: center;
 }
-.modal .card-modal .items .item label, .modal .card-modal .items .item p {
+.modal .card-modal .items .item label,
+.modal .card-modal .items .item p {
   width: auto;
   padding: 1rem 1rem;
   background-color: #517b74;
@@ -509,7 +511,8 @@ template {
   justify-content: center;
   align-items: center;
 }
-.parameters .container .items .item input, .parameters .container .items .item select {
+.parameters .container .items .item input,
+.parameters .container .items .item select {
   flex: 1;
   padding: 1rem 0.5rem;
   color: #e8ebf0;
@@ -528,6 +531,29 @@ template {
 .parameters .container .button-container .button {
   width: 15rem;
   white-space: nowrap;
+}
+@media (max-width: 1000px) {
+  .parameters .container {
+    display: block;
+  }
+  .parameters .container .items .item {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0rem;
+    padding: 1rem;
+    align-items: normal;
+  }
+}
+@media (max-width: 1000px) and (max-width: 680px) {
+  .parameters .container .items {
+    display: block;
+  }
+}
+@media (max-width: 1000px) and (max-width: 450px) {
+  .parameters .container .items .dropdowns {
+    display: block;
+  }
 }
 
 .dropdowns {
